@@ -1,0 +1,2 @@
+item_id,item_name,skill_kind,skill_lv,gain_skillexp,gain_heroexp,cost_res,cost_num,need_item,need_itemnum,att_rndid,att_rndrate,att_normal,att_normalmin,att_normalmax
+1,巨剑,sk_sword,1,5,5,,,1004;1005,1;1,1001;1002;1003,5;2;1,,,

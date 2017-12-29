@@ -1,0 +1,5 @@
+item_id,skill_kind,skill_lv,gain_skillexp,gain_heroexp,cost_res,cost_num,cost_time,cost_tool
+1000,sk_mine,1,5,20,,,3,1046;1047
+1001,sk_mine,2,5,20,,,5,1046;1047
+1009,sk_mine,1,5,20,,,3,1046;1047
+1010,sk_mine,1,5,20,,,3,1046;1047
