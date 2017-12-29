@@ -1,0 +1,40 @@
+package com.xysk.androidapi;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+
+public class XyskActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_xysk);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.xysk, menu);
+        return true;
+    }
+    
+    public String getMacAddress() {
+        String result = "";
+        String Mac = "";
+        result = callCmd("busybox ifconfig", "HWaddr");
+
+        if (result == null) {
+            return "ÍøÂç³ö´í£¬Çë¼ì²éÍøÂç";
+        }
+        if (result.length() > 0 && result.contains("HWaddr")) {
+            Mac = result.substring(result.indexOf("HWaddr") + 6, result.length() - 1);
+            if (Mac.length() > 1) {
+                result = Mac.toLowerCase();
+            }
+        }
+        return result.trim();
+    }
+    
+}
