@@ -331,6 +331,106 @@ return 0;
 
 }
 
+U32 QueryBabyCache::go(SQLTask *pTask){
+	std::stringstream sstream;
+	sstream << "SELECT * FROM Baby WHERE OwnerName NOT LIKE '++%';";
+
+	DBC *dbc = pTask->getDBC();
+	SRV_ASSERT(dbc);
+	DB_EXEC_GUARD
+#if defined(USE_SQLITE)
+		CppSQLite3Query q = dbc->execQuery(sstream.str().c_str());
+
+	if(!q.eof())
+	{
+		while(!q.eof())
+		{
+			S32 len=0;
+			const unsigned char* pCacheBlob= q.getBlobField("BinData",len);
+			SRV_ASSERT(len);
+			ProtocolMemReader mr(pCacheBlob,len);
+			COM_BabyInst inst;
+			inst.deserialize(&mr);
+			
+			Server::instance()->addBabyInst(inst);
+
+			q.nextRow();
+		}
+	}
+#elif  defined(USE_MYSQL)
+		std::auto_ptr< sql::Statement > stmt(dbc->createStatement());
+	std::auto_ptr< sql::ResultSet > res(stmt->executeQuery(sstream.str().c_str()));
+
+	U32 rank = 0;
+
+	while(res->next())
+	{
+		S32 len=0;
+		sql::SQLString pCacheBlob= res->getString("BinData");
+		ProtocolMemReader mr(pCacheBlob->c_str(),pCacheBlob->length());
+		COM_BabyInst inst;
+		inst.deserialize(&mr);
+		inst.instId_ = res->getInt("BabyGuid");
+		inst.ownerName_ = res->getString("OwnerName");
+		Server::instance()->addBabyInst(inst);
+	}
+
+#endif
+
+	DB_EXEC_UNGUARD_RETURN
+		return 0;
+}
+
+U32 QueryEmployeeCache::go(SQLTask *pTask){
+	std::stringstream sstream;
+	sstream << "SELECT * FROM Employee WHERE OwnerName NOT LIKE '++%';";
+
+	U32 rank = 0;
+
+	DBC *dbc = pTask->getDBC();
+	SRV_ASSERT(dbc);
+	DB_EXEC_GUARD
+#if defined(USE_SQLITE)
+		CppSQLite3Query q = dbc->execQuery(sstream.str().c_str());
+
+	if(!q.eof())
+	{
+		while(!q.eof())
+		{
+			S32 len=0;
+			const unsigned char* pCacheBlob= q.getBlobField("BinData",len);
+			SRV_ASSERT(len);
+			ProtocolMemReader mr(pCacheBlob,len);
+			COM_EmployeeInst inst;
+			inst.deserialize(&mr);
+
+			Server::instance()->addEmployeeInst(inst);
+			q.nextRow();
+		}
+	}
+#elif  defined(USE_MYSQL)
+		std::auto_ptr< sql::Statement > stmt(dbc->createStatement());
+	std::auto_ptr< sql::ResultSet > res(stmt->executeQuery(sstream.str().c_str()));
+
+	U32 rank = 0;
+
+	while(res->next())
+	{
+		S32 len=0;
+		sql::SQLString pCacheBlob= res->getString("BinData");
+		ProtocolMemReader mr(pCacheBlob->c_str(),pCacheBlob->length());
+		COM_EmployeeInst inst;
+		inst.deserialize(&mr);
+		inst.instId_ = res->getInt("EmployeeGuid");
+		inst.ownerName_ = res->getString("OwnerName");
+		Server::instance()->addEmployeeInst(inst);
+	}
+
+#endif
+
+	DB_EXEC_UNGUARD_RETURN
+		return 0;
+}
 
 U32 InstertChargeCache::go(SQLTask *pTask){
 	enum {BUFFER_SIZE = 1024*1024};

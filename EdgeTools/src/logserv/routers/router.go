@@ -16,4 +16,6 @@ func init() {
 	beego.Router("/player/dnu", &controllers.DNUController{})
 	beego.Router("/player/rrs", &controllers.RRSController{})
 	beego.Router("/insert", &controllers.InsertController{})
+
+	beego.Router("/log", &controllers.ClientLogger{})
 }

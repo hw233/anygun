@@ -5,12 +5,12 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/httplib"
 	_"gmtools/models"
-	_ "gmtools/models"
 	_ "strconv"
-	_"encoding/json"
 	"strings"
-	_"encoding/json"
+
+
 )
+
 type Add_Version_sChannel struct {
 	beego.Controller
 }
@@ -22,7 +22,8 @@ type Do_Channel_Versions struct {
 }
 
 func (this *Do_Channel_Versions) Post() {
-	req := httplib.Get(beego.AppConfig.String("logservhost") + ":80/gmtools/channel")
+	//req := httplib.Get(beego.AppConfig.String("logservhost") + ":80/gmtools/channel")
+	req := httplib.Get(beego.AppConfig.String("carriershost") + "gmtools/channel")
 	//req := httplib.Get("http://10.10.10.188:18081/gmtools/channel")
 
 	str, err := req.String()
@@ -44,8 +45,9 @@ func (this *Do_Version_sChannel) Post() {
 	del := this.GetString("delete")
 	//beego.Debug(channel,version,serverids)
 	//beego.Debug(del)
-	req := httplib.Post(beego.AppConfig.String("logservhost") + ":80/gmtools/channel")
+	//req := httplib.Post(beego.AppConfig.String("logservhost") + ":80/gmtools/channel")
 	//req := httplib.Post("http://10.10.10.188:18081/gmtools/channel")
+	req := httplib.Post(beego.AppConfig.String("carriershost") + "gmtools/channel")
 	req.Param("channel", channel)
 	req.Param("version", version)
 	req.Param("delete", del)
@@ -69,8 +71,9 @@ channel := this.GetString("channel")
 version := this.GetString("version")
 
 //beego.Debug(channel,version)
-req := httplib.Post(beego.AppConfig.String("logservhost") + ":80/gmtools/channel")
+//req := httplib.Post(beego.AppConfig.String("logservhost") + ":80/gmtools/channel")
 //req := httplib.Post("http://10.10.10.188:18081/gmtools/channel")
+req := httplib.Post(beego.AppConfig.String("carriershost") + "gmtools/channel")
 req.Param("channel", channel)
 req.Param("version", version)
 str, err := req.String()

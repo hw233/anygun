@@ -29,6 +29,8 @@
 			<event hour="9" minute="00" sec="00" script="sys_refreshWhiteQuest" />
 			<event hour="17" minute="00" sec="00" script="sys_refreshWhiteQuest" />
 			
+			<event hour="0" minute="00" sec="00" script="sys_pass_zero_hour" />
+			
 					
 		</DayEvent>
 		<WeekEvent>

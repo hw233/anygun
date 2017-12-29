@@ -21,7 +21,7 @@ type PlayerRrs struct {
 func (this *PlayerRrs) Post() {
 
 	//beego.Debug(beego.AppConfig.String("logservhost") + ":10998/player/rrs")
-	req := httplib.Get(beego.AppConfig.String("logservhost") + ":10998/player/rrs")
+	req := httplib.Get(beego.AppConfig.String("logservhost") + "player/rrs")
 	str, err := req.String()
 
 	if err != nil {

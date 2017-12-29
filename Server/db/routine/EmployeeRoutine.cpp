@@ -41,6 +41,7 @@ DB_EXEC_UNGUARD_RETURN
 U32
 InsertEmployee::back()
 {
+	Server::instance()->addEmployeeInst(employee_);
 	WorldHandler::instance()->createEmployeeOK(playername_,employee_);
 	return 0;
 }
@@ -78,6 +79,9 @@ DB_EXEC_UNGUARD_RETURN
 U32 
 DeleteEmployee::back()
 {
+	for(size_t i=0; i<ids_.size(); ++i){
+		Server::instance()->delEmployeeInst(ids_[i]);
+	}
 	WorldHandler::instance()->deleteEmployeeOK(playername_,ids_);
 	return 0;
 }
@@ -120,14 +124,14 @@ DB_EXEC_UNGUARD_RETURN
 U32
 UpdateEmployee::back()
 {
-	ACE_DEBUG((LM_INFO,ACE_TEXT("Update Employee ok!!! [%d]\n"),employee_.instId_));
+	//ACE_DEBUG((LM_INFO,ACE_TEXT("Update Employee ok!!! [%d]\n"),employee_.instId_));
 	return 0;
 }
 
 U32 
 QueryEmployeeByFF::go(SQLTask *pTask)
 {
-	ACE_DEBUG((LM_DEBUG ,"QueryBabyByFF go\n"));
+	//ACE_DEBUG((LM_DEBUG ,"QueryBabyByFF go\n"));
 	std::stringstream sstream;
 	sstream << "SELECT * FROM Employee WHERE OwnerName NOT LIKE '++%' ORDER BY EmployeeGrade DESC LIMIT 1000;";
 
@@ -194,7 +198,7 @@ U32
 QueryEmployeeById::go(SQLTask *pTask)
 {
 	std::stringstream sstream;
-	sstream << "SELECT * FROM Employee WHERE EmployeeGuid = \"" << employeeinstID_ << "\"";
+	sstream << "SELECT * FROM Employee WHERE EmployeeGuid = \"" << employeeInstId_ << "\"";
 
 	DBC *dbc = pTask->getDBC();
 	SRV_ASSERT(dbc);
@@ -287,7 +291,7 @@ U32 InsertEmployeeQuest::back(){return 0;}
 U32
 FetchEmployeeQuest::go(SQLTask *pTask)
 {
-	ACE_DEBUG((LM_DEBUG ,"FetchEmployeeQuest go\n"));
+	//ACE_DEBUG((LM_DEBUG ,"FetchEmployeeQuest go\n"));
 	std::stringstream sstream;
 	sstream << "SELECT * FROM EmployeeQuestTable";
 
@@ -337,7 +341,7 @@ DelEmployeeQuest::go(SQLTask *pTask)
 
 	DB_EXEC_GUARD
 		std::stringstream delStr;
-	delStr<<"DELETE FROM EmployeeQuestTable WHERE PlayerId="<<playerID_<<" ";
+	delStr<<"DELETE FROM EmployeeQuestTable WHERE PlayerId="<<playerId_<<" ";
 #ifdef USE_SQLITE
 	CppSQLite3Statement delStmt=dbc->compileStatement(delStr.str().c_str());
 	delStmt.execDML();

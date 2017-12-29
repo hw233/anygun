@@ -231,6 +231,7 @@ public:
 	void reduceQuestCounter(S32 questId);
 	COM_QuestInst* getQuestInst(S32 questId);
 	S32 getQuestIndex(S32 questId);
+	bool isQuestComplate(S32 questId);
 	void prepareAcceptQuest(S32 questId);
 	bool acceptQuest(S32 questId);
 	void prepareSubmitQuest(S32 npcId, S32 questId, int32 instId);
@@ -301,7 +302,7 @@ public:
 	void requestJJCData();
 	void resetRivalTime();
 	void calcRivalNum();
-	void checkMsg(std::string name);
+	void checkMsg(const std::string &name);
 	void battleMsg(COM_JJCBattleMsg& msg);
 	void requestAllBttleMsg();
 	void promoteAward(BattleType type);
@@ -355,6 +356,7 @@ public:
 	void openBuyBox();
 //GM
 public:
+	void gmJumpQuest(S32 questId);
 	void gmAcceptQuest(S32 questId);
 	void gmSubmitQuest(S32 questId);
 	void setHundredTier(S32 tier);

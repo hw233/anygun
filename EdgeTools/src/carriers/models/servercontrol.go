@@ -193,7 +193,6 @@ func BackupAllDBGame()error{
 
 
 func InitBackupDB() {
-
 	task := toolbox.NewTask("BackupDBGameTask", beego.AppConfig.String("backuptime"), BackupAllDBGame)
 	toolbox.AddTask("BackupDBGameTask", task)
 }

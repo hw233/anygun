@@ -26,7 +26,7 @@ type DateQueryLogServs struct {
 }
 
 func (this *DateQueryLog) Post() {
-	req := httplib.Get(beego.AppConfig.String("logservhost") + ":10998/player/dnu")
+	req := httplib.Get(beego.AppConfig.String("logservhost") + "player/dnu")
 	str, err := req.String()
 
 	if err != nil {
@@ -53,7 +53,7 @@ func (this *DateQueryLogServs) Post() {
 	this.Ctx.Request.ParseForm()
 	opentime := this.GetString("open")
 	closetime := this.GetString("close")
-	url := beego.AppConfig.String("logservhost") + ":10998/player/dnu?a=" + opentime + "&b=" + closetime
+	url := beego.AppConfig.String("logservhost") + "player/dnu?a=" + opentime + "&b=" + closetime
 	req := httplib.Get(url)
 	str, err := req.String()
 	if err != nil {

@@ -48,7 +48,7 @@ struct LuaStackChecker
 	}
 	~LuaStackChecker()
 	{
-		SRV_ASSERT( stackTop == lua_gettop(state) );
+		SRV_ASSERT(stackTop == lua_gettop(state));
 	}
 	lua_State*	state;
 	int			stackTop;

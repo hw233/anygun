@@ -685,6 +685,39 @@ function item_10jifuwen(RECEIVER, ARG0)
     return EN_None;
 end
 
+--低级宠物装备礼包
+function item_1jichongwuzhuangbei(RECEIVER, ARG0)
+	if Player.get_bag_free_slot(RECEIVER) < 1 then
+		return EN_OpenBaoXiangBagFull;
+	end
+	local item_fuwen = {70001,70002,70003,70004,70005,70006,70007,70008}
+	local index = math.ceil(math.random(1,8));
+	Player.add_item(RECEIVER,item_fuwen[index],1)
+    return EN_None;
+end
+
+--中级宠物装备礼包
+function item_2jichongwuzhuangbei(RECEIVER, ARG0)
+	if Player.get_bag_free_slot(RECEIVER) < 1 then
+		return EN_OpenBaoXiangBagFull;
+	end
+	local item_fuwen = {70009,70010,70011,70012,70005,70006,70007,70008}
+	local index = math.ceil(math.random(1,8));
+	Player.add_item(RECEIVER,item_fuwen[index],1)
+    return EN_None;
+end
+
+--高级宠物装备礼包
+function item_3jichongwuzhuangbei(RECEIVER, ARG0)
+	if Player.get_bag_free_slot(RECEIVER) < 1 then
+		return EN_OpenBaoXiangBagFull;
+	end
+	local item_fuwen = {70009,70010,70011,70012,70013,70014,70015,700016}
+	local index = math.ceil(math.random(1,8));
+	Player.add_item(RECEIVER,item_fuwen[index],1)
+    return EN_None;
+end
+
 
  -- 充值王宠礼包
 function baby_wangchong(RECEIVER,ARG0)

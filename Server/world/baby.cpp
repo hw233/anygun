@@ -534,10 +534,8 @@ Baby::getBabyInst(COM_BabyInst &out)
 	out.slot_		= slot_;
 	out.intensifyLevel_ = intensifyLevel_;
 	out.intensifynum_	= intensifynum_;
+	//out.properties_ = properties_;
 
-	out.properties_.resize(PT_Max);
-	for(S32 i=PT_None; i<PT_Max; ++i)
-		out.properties_[i] = (S32)properties_[i];
 	out.addprop_.resize(PT_Max);
 	for(S32 i=PT_None; i<PT_Max; ++i)
 		out.addprop_[i] = addprop_[i];

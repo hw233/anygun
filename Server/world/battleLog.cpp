@@ -118,7 +118,7 @@ Battle::checkSameGuid(){
 		for (size_t j=i + 1;j<entities_.size(); ++j){
 			if(entities_[i]->getGUID() == entities_[j]->getGUID()){
 				sames.push_back(entities_[j]->getGUID());
-				ACE_DEBUG((LM_INFO,"Battle check id same &d %d\n",id_,entities_[j]->getGUID()));
+				ACE_DEBUG((LM_INFO,"Battle check id same %d %d\n",id_,entities_[j]->getGUID()));
 			}
 		}
 	}
@@ -126,7 +126,7 @@ Battle::checkSameGuid(){
 	if(sames.empty())
 		return;
 
-	for(size_t i=0;i<entities_.size() -1; ++i){
+	for(size_t i=0;i<entities_.size(); ++i){
 		if(std::find(sames.begin(),sames.end(),entities_[i]->getGUID()) != sames.end()){
 			entities_[i]->cleanBattleStatus();
 			entities_.erase(entities_.begin() + i--);

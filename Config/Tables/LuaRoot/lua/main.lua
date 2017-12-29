@@ -33,6 +33,7 @@ gameLib.PushBattleScene("buluofengyinzhidi_zhandou");
 gameLib.PushBattleScene("xuebaomidao_zhandou");
 gameLib.PushBattleScene("buluochangjing_zhandou");
 gameLib.PushBattleScene("buluoxianzhuzhidi_zhandou");
+gameLib.PushBattleScene("70jifuben_zhandou");
 
 gameLib.PushFBScene("MainScene");
 gameLib.PushFBScene("Ha_Maze");
@@ -70,6 +71,7 @@ gameLib.PushFBScene("buluofengyinzhidi");
 gameLib.PushFBScene("buluoxianzhuzhidi");
 gameLib.PushFBScene("xuebaomidao");
 gameLib.PushFBScene("buluochangjing");
+gameLib.PushFBScene("70jifuben");
 
 
 function GameMain(GAMEEVENT, ARG0, ARG1, ARG2, ARG3, ARG4, ARG5, ARG6, ARG7, ARG8, ARG9)
@@ -450,6 +452,10 @@ function MessageBoxOkHandler(GameEvent,userdata)
 		gameLib.TalkedToNpc(9582)
 		return
 	end
+	if userdata == 99970 then
+		gameLib.TalkedToNpc(9583)
+		return
+	end
 	gameLib.TransforScene(userdata);
 end
 
@@ -578,6 +584,31 @@ function EnterCopy(GameEvent,id)
 		end
 		
 		gameLib.ShowMsgBox("confirmEnterInstance60", 99961)
+		return true
+	elseif id == 1008 then
+		local team_table = gameLib.TeamMemberLevel()
+		if team_table == nil then
+			gameLib.PopText("bunengjinruben")
+			return true
+		end
+		if gameLib.HasLeaveMember() == true then
+			gameLib.PopText("pvpzuduizanli")
+			return true
+		end
+		local num = table.getn(team_table)
+		if num < 3 then
+			gameLib.PopText("bunengjinruben")
+			return true
+		end
+		for i=1,table.getn(team_table),1
+		do
+			if team_table[i] < 70 then
+				gameLib.PopText("teamlevelfuben")
+				return true
+			end
+		end
+		
+		gameLib.ShowMsgBox("confirmEnterInstance70", 99970)
 		return true
 	end
 end

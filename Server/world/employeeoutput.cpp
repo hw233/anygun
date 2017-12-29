@@ -340,8 +340,8 @@ void Employeeoutput::rollGreen(Player *player)
 		if(player->greenBoxTimes_<=0)
 		{
 			player->resetGreenBoxTime();	
-			CALL_CLIENT(player,requestOpenBuyBox(player->greenBoxTimes_,player->blueBoxTimes_,player->greenBoxFreeNum_));
 		}
+		CALL_CLIENT(player,requestOpenBuyBox(player->greenBoxTimes_,player->blueBoxTimes_,player->greenBoxFreeNum_));
 		return;
 	}
 
@@ -368,10 +368,9 @@ void Employeeoutput::rollGreen(Player *player)
 
 	if(player->greenBoxTimes_<=0)
 	{
-		player->resetGreenBoxTime();	
-		CALL_CLIENT(player,requestOpenBuyBox(player->greenBoxTimes_,player->blueBoxTimes_,player->greenBoxFreeNum_));
+		player->resetGreenBoxTime();		
 	}
-
+	CALL_CLIENT(player,requestOpenBuyBox(player->greenBoxTimes_,player->blueBoxTimes_,player->greenBoxFreeNum_));
 }
 
 void Employeeoutput::rollBlue(Player *player)//钻石
@@ -386,7 +385,7 @@ void Employeeoutput::rollBlue(Player *player)//钻石
 	if(player->blueBoxTimes_ > 0)
 	{
 		if(player->getItemNumByItemId( Global::get<int>(C_BoxBlueSpendItem)) >= Global::get<int>(C_BoxBlueSpend))
-			player->delBagItemByItemId(Global::get<int>(C_BoxBlueSpendItem),Global::get<int>(C_BoxBlueSpend));
+			player->delBagItemByItemId(Global::get<int>(C_BoxBlueSpendItem),Global::get<int>(C_BoxBlueSpend),2);
 		else if(player->properties_[PT_Diamond] >= Global::get<int>(C_BoxBlueSpendDiamond)){
 			S32 diamond = Global::get<int>(C_BoxBlueSpendDiamond);
 			if(diamond < 0)
@@ -430,8 +429,8 @@ void Employeeoutput::rollBlue(Player *player)//钻石
 		if(player->blueBoxTimes_<=0)
 		{
 			player->resetBlueBoxTime();	
-			CALL_CLIENT(player,requestOpenBuyBox(player->greenBoxTimes_,player->blueBoxTimes_,player->greenBoxFreeNum_));
 		}
+		CALL_CLIENT(player,requestOpenBuyBox(player->greenBoxTimes_,player->blueBoxTimes_,player->greenBoxFreeNum_));
 		return;
 	}
 
@@ -461,8 +460,8 @@ void Employeeoutput::rollBlue(Player *player)//钻石
 	if(player->blueBoxTimes_<=0)
 	{
 		player->resetBlueBoxTime();	
-		CALL_CLIENT(player,requestOpenBuyBox(player->greenBoxTimes_,player->blueBoxTimes_,player->greenBoxFreeNum_));
 	}
+	CALL_CLIENT(player,requestOpenBuyBox(player->greenBoxTimes_,player->blueBoxTimes_,player->greenBoxFreeNum_));
 }
 
 void Employeeoutput::rollGold(Player *player)//花费砖石
@@ -478,7 +477,7 @@ void Employeeoutput::rollGold(Player *player)//花费砖石
 	}
 
 	if(player->getItemNumByItemId( Global::get<int>(C_BoxBlueSpendItem)) >= Global::get<int>(C_BoxGoldSpend))
-		player->delBagItemByItemId(Global::get<int>(C_BoxBlueSpendItem),Global::get<int>(C_BoxGoldSpend));
+		player->delBagItemByItemId(Global::get<int>(C_BoxBlueSpendItem),Global::get<int>(C_BoxGoldSpend),2);
 	else if(player->properties_[PT_Diamond] >= Global::get<int>(C_BoxGoldSpendDiamond)){
 		S32 diamond = Global::get<int>(C_BoxGoldSpendDiamond);
 		if(diamond < 0)

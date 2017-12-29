@@ -54,10 +54,10 @@ func DumpOrderLog(begin, end string) string {
 		}
 		info.PFID, info.PFName = tools.CareSDKInfo(info.PFID, info.PFName)
 
-		if strings.Index(info.OrderId, "170") != -1{
+		if info.OrderId[:3] == "170" {
 			info.PFID = "10445"
 			info.PFName = "WEB"
-		}else if strings.Index(info.OrderId,"M") != -1{
+		}else if info.OrderId[:1] == "M"{
 			continue
 		}
 		sqlCode += strings.Replace("INSERT INTO `order`(`game`,`pfid`, `pfname`, `orderid`, `roleid`, `serverid`, `rolelv`,`accountid`, `payment`, `paytime`) VALUES"+fmt.Sprintf("('%s','%s','%s','%s', '%s', %d, %d, '%s', %d,'%s');", beego.AppConfig.String("gamename"), info.PFID, info.PFName, info.OrderId, info.RoleId, info.ServerId, info.RoleLevel, info.AccountName, info.Payment, info.PayTime), "\n", "", 0) + "\n"

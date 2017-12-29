@@ -366,6 +366,40 @@ Guild* Guild::addGuild(COM_Guild&guild)
 	return pGuild;
 }
 
+void Guild::checkGuildMember(std::vector< COM_GuildMember >& guildMember)
+{
+	for (size_t i = 0; i < guildMember.size(); ++i){
+		Guild* pGuild = findGuildById(guildMember[i].guildId_);
+		if (pGuild == NULL){
+			ACE_DEBUG((LM_DEBUG ,"1111111111111111111111"));
+			return;
+		}
+		if (pGuild->getLeader() == NULL)
+		{
+			COM_GuildMember * nextPremier =  NULL;
+			for(size_t i=0;i < pGuild->guildMember_.size(); ++i){
+				if (nextPremier == NULL){
+					nextPremier = &pGuild->guildMember_[i];
+					continue;
+				}
+				if(nextPremier->job_ < pGuild->guildMember_[i].job_){
+					nextPremier = &pGuild->guildMember_[i];
+				}
+			}
+			if(nextPremier){
+				//更新帮主名
+				pGuild->guildData_.master_=nextPremier->roleId_;
+				pGuild->guildData_.masterName_=nextPremier->roleName_;
+				//通知客户端更新
+				pGuild->updateGuild();
+				DBHandler::instance()->updateMemberPosition(nextPremier->roleId_, GJ_Premier);
+				DBHandler::instance()->updateGuild(pGuild->guildData_);
+			}
+			
+		}
+	}
+}
+
 bool Guild::delGuild(U32 id)
 {
 	if(battleState_ != BS_Close)
@@ -755,7 +789,7 @@ void Guild::leave( int32 playerId )
 				nextPremier = &pGuild->guildMember_[i];
 				continue;
 			}
-			if(nextPremier->job_ > pGuild->guildMember_[i].job_){
+			if(nextPremier->job_ < pGuild->guildMember_[i].job_){
 				nextPremier = &pGuild->guildMember_[i];
 			}
 		}

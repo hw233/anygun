@@ -73,13 +73,15 @@ public:
 	void createPlayerSameName();
 	void createPlayerOk(SGE_DBPlayerData &inst);
 public:
-	SGE_DBPlayerData* findDBPlayerById(U32 playerId);
-	SGE_DBPlayerData* findDBPlayerByName(std::string& name);
-	void deleteDBPlayer(SGE_DBPlayerData* p);
+	COM_SimpleInformation* findDBPlayerById(U32 playerId);
+	COM_SimpleInformation* findDBPlayerByName(std::string& name);
+	void deleteDBPlayer(COM_SimpleInformation* p);
 	Account *asAccount(){return this;}
-	void setDBPlayers(std::vector<SGE_DBPlayerData>& players);
+	void setDBMiniPlayers(std::vector<COM_SimpleInformation>& players);
+	//void setDBPlayers(std::vector<SGE_DBPlayerData>& players);
 	void getPlayerMini(std::vector<COM_SimpleInformation>& mini);
-	void updateDBPlayer(SGE_DBPlayerData& data);
+	//void updateDBPlayer(SGE_DBPlayerData& data);
+	void enterGame(SGE_DBPlayerData& dbplayer);
 public:
 #include "Client2ServerMethods.h"
 public:
@@ -102,7 +104,7 @@ public:
 	std::string		password_;
 	std::string		phoneNumber_;
 	SDKInfo			sdkInfo_;
-	std::vector<SGE_DBPlayerData>			dbPlayerCache_;
+	std::vector<COM_SimpleInformation> miniPlayerList_;
 	static std::map<std::string, Account*>	sessionStore_;
 	static std::map<std::string, Account*>	accountStore_;		//保存已有角色名称
 

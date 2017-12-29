@@ -488,6 +488,13 @@ function fuben_talk(RECEIVER,ARG0)
 			Player.copyGo(RECEIVER,1007,1007)
 		end
 	end
+	if ARG0 == 9583 then
+		Activity.update(RECEIVER,ACT_Copy,1);
+		local isenter = Player.checkteamLevel(RECEIVER,70)
+		if isenter then
+			Player.copyGo(RECEIVER,1008,1008)
+		end
+	end
 end
 
 --天降宝箱

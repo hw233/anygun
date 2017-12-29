@@ -747,18 +747,19 @@ service SGE_Gateway2World{
 
 service SGE_World2DB
 {
-	queryPlayer(string username,int32 serverId);
+	queryPlayerSimpleInformation(string username,int32 serverId); //查询角色信息
+	queryPlayer(string username,int32 playerId);
 	createPlayer(string username, SGE_DBPlayerData inst, int32 serverId);
 	updatePlayer(string username, SGE_DBPlayerData inst);
 	deletePlayer(string playername);
-	queryPlayerById(string name,int32 instId,bool isFlag);//name请求发起者 
+	queryPlayerById(string name,int32 instId,int32 where);//name请求发起者 
 
 	insertEndlessStair(int32 rank, string name);
 	updateEndlessStair(int32 rank, string name);
 	
 	createBaby(string playername,COM_BabyInst inst,bool isToStorage);
 	deleteBaby(string playername,int32 babyInstId);
-	resetBabyOwner(string playername,int32 babyInstId);
+	//resetBabyOwner(string playername,int32 babyInstId);
 	updateBaby(COM_BabyInst inst);
 	updateBabys(string playername,array<COM_BabyInst> babys);
 	queryBabyById(string name,uint32 instid);
@@ -791,8 +792,8 @@ service SGE_World2DB
 	
 	//@}
 	//---激活码
-	queryIdgen(string playerName,string idgen);
-	updateKeyGift(COM_KeyContent giftdata);
+	//queryIdgen(string playerName,string idgen);
+	//updateKeyGift(COM_KeyContent giftdata);
 	//运营活动
 	insertActivity(ADType adt,SGE_SysActivity date);
 	
@@ -801,6 +802,8 @@ service SGE_World2DB
 	//伙伴任务
 	insertEmployeeQuest(uint32 playerId,SGE_PlayerEmployeeQuest data);
 	delEmployeeQuest(uint32 playerId);
+	
+	deleteEndlessStair(string name);
 };
 
 service SGE_DB2World
@@ -808,10 +811,11 @@ service SGE_DB2World
 	syncGlobalGuid(uint32 id);
 	syncContactInfo(array<SGE_ContactInfoExt> info);
 	
-	queryPlayerOk(string username, array<SGE_DBPlayerData> insts, int32 inDoorId);
+	queryPlayerSimpleInformationOk(string username, array<COM_SimpleInformation> insts,int32 serverId); //查询角色信息
+	queryPlayerOk(string username, SGE_DBPlayerData player);
 	createPlayerOk(string username, SGE_DBPlayerData inst, int32 inDoorId);
 	createPlayerSameName(string username);
-	queryPlayerByIdOK(string playername,SGE_DBPlayerData inst,bool isFlag);  //isFlag true是竞技场查询
+	queryPlayerByIdOK(string playername,SGE_DBPlayerData inst,int32 where);  //where 0是竞技场查询 1是请求角色信息 2 是请求竞技场角色信息 不一样的是调用前端接口不一样
 	queryEndlessStairAllDateOK(array<string> name);
 	queryPlayerByLevelOK(array<COM_ContactInfo> info);
 	queryPlayerByFFOK(array<COM_ContactInfo> info);
@@ -839,7 +843,7 @@ service SGE_DB2World
 	//@}
 	
 	//---激活码
-	queryIdgenOK(string playerName,COM_KeyContent content, bool isHas);
+	//queryIdgenOK(string playerName,COM_KeyContent content, bool isHas);
 	//运营活动
 	fatchActivity(SGE_SysActivity date);
 	//伙伴任务

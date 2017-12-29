@@ -3,7 +3,7 @@ package login
 import (
 	"carriers/models"
 	"encoding/json"
-	"strconv"
+
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/httplib"
@@ -23,8 +23,8 @@ func (c *AnyOauth) Get() {
 }
 
 func (c *AnyOauth) Post() {
-	beego.Info("AnyLogin app host :", c.Ctx.Request.URL.Host)
-	beego.Debug("AnyLoginOauth Post body length :", len(c.Ctx.Input.RequestBody))
+	//beego.Info("AnyLogin app host :", c.Ctx.Request.URL.Host)
+	//beego.Debug("AnyLoginOauth Post body length :", len(c.Ctx.Input.RequestBody))
 	beego.Debug("AnyLoginOauth Post body content :", string(c.Ctx.Input.RequestBody))
 
 	req := httplib.Post(beego.AppConfig.String("anyoauthurl"))
@@ -51,19 +51,28 @@ func (c *AnyOauth) Post() {
 
 	beego.Debug("Login Status:", oauthObj.Status)
 	if oauthObj.Status == "ok" {
-
-		servId, _ := strconv.Atoi(c.Input().Get("server_id"))
-		host := models.GetServOauthHostById(servId)
-		gamereq := httplib.Post(host)
-		gamereq.Body([]byte(str))
-
-		_, gameerr := gamereq.String()
-		if gameerr != nil {
-			beego.Debug(gameerr.Error())
+		channel := oauthObj.Common.Channel
+		//servs := models.GetServsByChannel(channel)
+		servs := models.FindServerByChannel(channel)
+		if len(servs) == 0 {
+			beego.Debug("Channel =======> ", channel, " can not find servs")
+			if b {
+				c.Ctx.WriteString(str)
+				return
+			}
 			c.Ctx.WriteString("{\"status\":\"fail\"}")
 			return
 		}
-
+		for _, id := range servs{
+			host := models.GetServOauthHostById(id)
+			//beego.Debug("Connect game server " + host)
+			gamereq := httplib.Post(host)
+			gamereq.Body([]byte(str))
+			_, gameerr := gamereq.String()
+			if gameerr != nil {
+				beego.Debug(gameerr.Error(), channel, "<>", id)
+			}
+		}
 		c.Ctx.WriteString(str)
 		return
 
@@ -74,4 +83,7 @@ func (c *AnyOauth) Post() {
 		c.Ctx.WriteString("{\"status\":\"fail\"}")
 		return
 	}
+
+	c.Ctx.WriteString(str)
+
 }

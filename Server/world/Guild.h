@@ -105,7 +105,8 @@ public:
 	static Guild*	addGuild(COM_Guild&guild);
 	static bool		delGuild(U32 id);	
 	static bool		addGuildMember(COM_GuildMember& member);
-	static bool		delGuildMember(S32 roleId, bool isKick);	
+	static bool		delGuildMember(S32 roleId, bool isKick);
+	static void		checkGuildMember(std::vector< COM_GuildMember >& guildMember);
 	
 	static void		passZeroHour();
 	static void		createGuild(Player* player,const std::string& guildName);

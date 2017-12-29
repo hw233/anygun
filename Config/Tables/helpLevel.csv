@@ -18,7 +18,8 @@ id,name,icon,desc,level,openui,npc
 17,武斗场,wudouchang_icon,[b]开启武斗场[-],25,,1;9575
 18,职业进阶,zhiyejinjie_icon,[b]开启职业进阶[-],30,,30;205
 19,副本,fuben_icon,[b]开启副本[-],30,,1;9570
-20,更多职业,gengduozhiye_icon,[b]开启更多职业[-],35,,
-21,百人道场,bairendaochang_icon,[b]开启百人道场[-],35,,1;9569
-22,竞技场,jingjichang_icon,[b]开启竞技场[-],35,,1;9564
-23,职业二阶,zhiyeerjie_icon,[b]开启职业二阶[-],50,,5;1111
+20,英雄传任务,huobanweizhi_icon,[b]获得更多伙伴[-],32,,30;1103
+21,更多职业,gengduozhiye_icon,[b]开启更多职业[-],35,,
+22,百人道场,bairendaochang_icon,[b]开启百人道场[-],35,,1;9569
+23,竞技场,jingjichang_icon,[b]开启竞技场[-],35,,1;9564
+24,职业二阶,zhiyeerjie_icon,[b]开启职业二阶[-],50,,5;1111

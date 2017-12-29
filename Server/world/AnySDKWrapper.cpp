@@ -317,9 +317,9 @@ PayNotify::proc( const char* post )
 		
 		std::string accName = pluginid + "=" + userid;
 
-		Account* pAccount = Account::getAccountByName(accName);
+		/*Account* pAccount = Account::getAccountByName(accName);
 		if(pAccount){
-			SGE_DBPlayerData * pPlayerData = pAccount->findDBPlayerById(gameUserId);
+			COM_SimpleInformation * pPlayerData = pAccount->findDBPlayerById(gameUserId);
 			if(pPlayerData){
 				pPlayerData->orders_.push_back(info);
 			}else {
@@ -327,7 +327,7 @@ PayNotify::proc( const char* post )
 			}
 		}else {
 			ACE_DEBUG((LM_INFO,"Charge account is offline %s\n",accName.c_str()));
-		}
+		}*/
 		
 		DBHandler::instance()->insertLoseCharge(gameUserId,info);
 	}

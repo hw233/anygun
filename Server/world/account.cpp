@@ -114,16 +114,16 @@ Account::requestPhoto()
 	//state_ = S_SessionLogin;
 	ACE_DEBUG((LM_DEBUG,"Account::requestPhoto %s\n",username_.c_str()));
 
-	if(dbPlayerCache_.empty())
+	if(miniPlayerList_.empty())
 	{
-		DBHandler::instance()->queryPlayer(username_,client_->serverId_);
+		DBHandler::instance()->queryPlayerSimpleInformation(username_,client_->serverId_);
 	}
 	else
 	{
 		COM_ReconnectInfo info;
 		info.reconnectProcess_ = RECT_LoginOk;
 		info.sessionKey_ = sessionkey_;
-		getPlayerMini(info.roles_);
+		info.roles_ = miniPlayerList_;
 		if(player_ != NULL)
 		{
 			player_->visiblePlayers_.clear();
@@ -216,16 +216,16 @@ Account::reConnect(ClientHandler* cl)
 	client_ = cl;
 	client_->account_ = this;
 	ipaddr_ = client_->ip_;
-	if(dbPlayerCache_.empty())
+	if(miniPlayerList_.empty())
 	{
-		DBHandler::instance()->queryPlayer(username_,client_->serverId_);
+		DBHandler::instance()->queryPlayerSimpleInformation(username_,client_->serverId_);
 	}
 	else
 	{
 		COM_ReconnectInfo info;
 		info.reconnectProcess_ = RECT_LoginOk;
 		info.sessionKey_ = sessionkey_;
-		getPlayerMini(info.roles_);
+		info.roles_ = miniPlayerList_;
 		if(player_ != NULL)
 		{
 			Zhuanpan::request(player_);
@@ -309,13 +309,20 @@ bool Account::login(COM_LoginInfo& info){return true;}
 
 bool Account::logout()
 {
+	if(player_){
+		for(size_t i=0; i<miniPlayerList_.size(); ++i){
+			if(miniPlayerList_[i].instId_ == player_->playerId_){
+				player_->getSimpleInfo(miniPlayerList_[i]);
+				break;
+			}
+		}
+	}
 	SAFE_CALL_PLAYER(logout());
 	player_ = NULL;
 	ACE_DEBUG((LM_DEBUG,"Account logout %s\n",username_.c_str()));
 	WorldServ::instance()->pushLoginLog(this);
-	std::vector<COM_SimpleInformation> mini;
-	getPlayerMini(mini);
-	SAFE_CALL_CLIENT(loginok(sessionkey_,mini));
+
+	SAFE_CALL_CLIENT(loginok(sessionkey_,miniPlayerList_));
 	return true;
 }
 
@@ -908,37 +915,37 @@ Account::requestMyAllbattleMsg()
 ///@group Inside Function
 ///@{
 
-SGE_DBPlayerData* 
+COM_SimpleInformation* 
 Account::findDBPlayerById(U32 playerId)
 {
-	for(size_t i=0; i<dbPlayerCache_.size(); ++i)
+	for(size_t i=0; i<miniPlayerList_.size(); ++i)
 	{
-		if(dbPlayerCache_[i].instId_ == playerId)
-			return &dbPlayerCache_[i];
+		if(miniPlayerList_[i].instId_ == playerId)
+			return &miniPlayerList_[i];
 	}
 	return NULL;
 }
 
-SGE_DBPlayerData* 
+COM_SimpleInformation* 
 Account::findDBPlayerByName(std::string& name)
 {
-	for(size_t i=0; i<dbPlayerCache_.size(); ++i)
+	for(size_t i=0; i<miniPlayerList_.size(); ++i)
 	{
-		if(dbPlayerCache_[i].instName_ == name)
-			return &dbPlayerCache_[i];
+		if(miniPlayerList_[i].instName_ == name)
+			return &miniPlayerList_[i];
 	}
 
 	return NULL;
 }
 
 void
-Account::deleteDBPlayer(SGE_DBPlayerData* p)
+Account::deleteDBPlayer(COM_SimpleInformation* p)
 {
-	for (size_t i=0; i<dbPlayerCache_.size();++i)
+	for (size_t i=0; i<miniPlayerList_.size();++i)
 	{
-		if(&dbPlayerCache_[i] == p)
+		if(&miniPlayerList_[i] == p)
 		{
-			dbPlayerCache_.erase(dbPlayerCache_.begin() + i);
+			miniPlayerList_.erase(miniPlayerList_.begin() + i);
 			return;
 		}
 	}
@@ -952,7 +959,7 @@ Account::deleteDBPlayer(SGE_DBPlayerData* p)
 void 
 Account::getPlayerMini(std::vector<COM_SimpleInformation>& mini)
 {
-	for(size_t i=0; i<dbPlayerCache_.size(); ++i)
+	/*for(size_t i=0; i<dbPlayerCache_.size(); ++i)
 	{
 		COM_SimpleInformation info;
 		info.instId_ = dbPlayerCache_[i].instId_;
@@ -972,28 +979,25 @@ Account::getPlayerMini(std::vector<COM_SimpleInformation>& mini)
 		}
 
 		mini.push_back(info);
-	}
+	}*/
 }
 
-void
-Account::setDBPlayers(std::vector<SGE_DBPlayerData>& players)
-{
-	state_ = S_Normal;
-	dbPlayerCache_ = players;
-	std::vector<COM_SimpleInformation> mini;
-	getPlayerMini(mini);
-	SAFE_CALL_CLIENT(loginok(sessionkey_,mini));
+void Account::setDBMiniPlayers(std::vector<COM_SimpleInformation>& players){
+	miniPlayerList_ = players;
+	SAFE_CALL_CLIENT(loginok(sessionkey_,miniPlayerList_));
 }
 
-void Account::updateDBPlayer(SGE_DBPlayerData& data){
-	for(size_t i=0; i<dbPlayerCache_.size(); ++i)
-	{
-		if(dbPlayerCache_[i].instId_ == data.instId_){
-			dbPlayerCache_[i] = data;
-			return;
-		}
-	}
-}
+
+
+//void Account::updateDBPlayer(SGE_DBPlayerData& data){
+//	for(size_t i=0; i<dbPlayerCache_.size(); ++i)
+//	{
+//		if(dbPlayerCache_[i].instId_ == data.instId_){
+//			dbPlayerCache_[i] = data;
+//			return;
+//		}
+//	}
+//}
 
 void
 Account::createPlayerSameName(){
@@ -1017,7 +1021,7 @@ Account::createPlayerOk(SGE_DBPlayerData &inst)
 	info.instName_	= inst.instName_;
 	info.jt_ = (JobType)(int)inst.properties_[PT_Profession];
 	info.jl_ = inst.properties_[PT_ProfessionLevel];
-	dbPlayerCache_.push_back(inst);
+	miniPlayerList_.push_back(info);
 	SAFE_CALL_CLIENT(createPlayerOk(info));
 	if(!username_.empty())
 	{
@@ -1039,7 +1043,7 @@ Account::createPlayerOk(SGE_DBPlayerData &inst)
 bool
 Account::createPlayer(STRING& playername, U8 playerTmpId)
 {
-	if(dbPlayerCache_.size() >= MAX_PLAYERS){
+	if(miniPlayerList_.size() >= MAX_PLAYERS){
 		ACE_DEBUG((LM_INFO,"Can not create player more than 3 (%s)\n",username_.c_str()));
 		return true;
 	}
@@ -1099,7 +1103,7 @@ Account::createPlayer(STRING& playername, U8 playerTmpId)
 
 	SGE_DBPlayerData inst;
 	Player::genDBPlayerInst(playerTmpId,playername,inst);
-	if(dbPlayerCache_.empty() && Env::get<int>(V_OpenRMBBack) != 0){
+	if(miniPlayerList_.empty() && Env::get<int>(V_OpenRMBBack) != 0){
 		std::vector<std::string> accs = String::Split(username_,"=");
 		if(accs.size() == 2){
 			/*LastOrderTable::Data const* pData =	LastOrderTable::getDataByAccountName(accs[1]);
@@ -1124,7 +1128,7 @@ Account::deletePlayer(STRING& playername)
 		player_ = NULL;
 	}
 
-	SGE_DBPlayerData* dbplayer = findDBPlayerByName(playername);
+	COM_SimpleInformation* dbplayer = findDBPlayerByName(playername);
 	if(dbplayer==NULL){
 		return true;
 	}
@@ -1137,7 +1141,7 @@ Account::deletePlayer(STRING& playername)
 	}
 	
 	WorldServ::instance()->delContactInfo(dbplayer->instId_);
-
+	EndlessStair::instance()->deleteplayerReCalcRank(playername);
 	deleteDBPlayer(dbplayer);
 
 	DBHandler::instance()->deletePlayer(playername);
@@ -1154,14 +1158,18 @@ Account::enterGame(U32 playerInstId)
 		return true;
 	}
 	if(player_!=NULL) return true; /// 这里返回人物界面处理 
-	SGE_DBPlayerData* dbplayer = findDBPlayerById(playerInstId);
+	COM_SimpleInformation* dbplayer = findDBPlayerById(playerInstId);
 	if(NULL == dbplayer)
 	{
 		ACE_DEBUG((LM_ERROR,ACE_TEXT("Enter game cant find player %s %d \n"),username_.c_str(),playerInstId));
 		return true;
 	}
+
+	if(state_ == S_NeedDBBack){
+		return true;
+	}
 	
-	if(dbplayer->freeze_){
+	/*if(dbplayer->freeze_){
 		ACE_DEBUG((LM_ERROR,ACE_TEXT("Enter game cant use freeze player %s %d \n"),username_.c_str(),playerInstId));
 		return false;
 
@@ -1169,13 +1177,24 @@ Account::enterGame(U32 playerInstId)
 	if(dbplayer->seal_){
 		ACE_DEBUG((LM_ERROR,ACE_TEXT("Enter game cant use seal player %s %d \n"),username_.c_str(),playerInstId));
 		return false;
-	}
-
-	player_ = Player::createPlayer(this,*dbplayer,client_->serverId_);
-	SRV_ASSERT(player_);		
-	SAFE_CALL_PLAYER(login());
+	}*/
+	
+	DBHandler::instance()->queryPlayer(username_,dbplayer->instId_);
+	state_ = S_NeedDBBack;
+	//player_ = Player::createPlayer(this,*dbplayer,client_->serverId_);
+	//SRV_ASSERT(player_);		
+	//SAFE_CALL_PLAYER(login());
 	
 	return true;
+}
+
+void Account::enterGame(SGE_DBPlayerData& dbplayer){
+	state_ = S_Normal;
+	if(!client_)
+		return;
+	player_ = Player::createPlayer(this,dbplayer,client_->serverId_);
+	SRV_ASSERT(player_);		
+	SAFE_CALL_PLAYER(login());
 }
 
 bool
@@ -2162,7 +2181,6 @@ Account::redemptionSpree(std::string& code)
 	if(player_ == NULL)
 		return true;
 	player_->exchangeGift(code);
-	//DBHandler::instance()->queryIdgen(player_->getNameC(),code);
 	return true;
 }
 

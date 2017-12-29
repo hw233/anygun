@@ -169,7 +169,7 @@ func GetServerById(serverId int)*Server{
 
 
 func InitUpdateServersTask(){
-	toolbox.AddTask("UpdateServersTask", toolbox.NewTask("UpdateServersTask", "0 */1 * * * *", func()error{
+	toolbox.AddTask("UpdateServersTask", toolbox.NewTask("UpdateServersTask", "0 */30 * * * *", func()error{
 		UpdateServers()
 		return  nil
 	}))

@@ -1,8 +1,6 @@
 package main
 
 import (
-	"bytes"
-	"cleansql/prpc"
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
@@ -10,7 +8,9 @@ import (
 	"time"
 )
 
-var debugLog *os.File
+var (
+	debugLog *os.File
+)
 
 func OpenDB(dsn string) *sql.DB {
 	db, err := sql.Open("mysql", dsn)
@@ -29,7 +29,9 @@ func cleanGO(from string) {
 	}
 	defer db.Close()
 
-	records, err := db.Query("SELECT `BinData` FROM `Player`")
+	records, err := db.Query("SELECT * FROM `Player`")
+	defer records.Close()
+
 
 	if err != nil {
 		fmt.Println(err)
@@ -41,66 +43,146 @@ func cleanGO(from string) {
 		fmt.Println(err)
 	}
 
-
 	var instIds []int
 	var instNames []string
-	//查询符合条件的角色
+
+	player_id, player_level, player_prof, player_grade, player_seal, player_freeze, player_server_id, player_money, player_diamond, player_magic, player_logouttime , versionNumber :=0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	user_name, player_name, player_bin := "", "", ""
 	for records.Next() {
-		var bs []byte
-		err := records.Scan(&bs)
+		err = records.Scan(&player_id, &user_name, &player_name, &player_level, &player_prof, &player_grade, &player_money, &player_diamond, &player_magic, &player_logouttime, &player_bin, &player_seal, &player_freeze, &player_server_id,&versionNumber)
 		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-		b := bytes.NewBuffer(bs)
-		inst := prpc.SGE_DBPlayerData{}
-		err = inst.Deserialize(b)
-		if err != nil {
-			fmt.Println(err)
+			fmt.Println( err)
 			continue
 		}
 
-		playerlevel := inst.GetPlayerLevel()
-		tm := time.Unix(int64(inst.GetLogoutTime()), 0)
+		if IsGuildMember(db,player_name) {
+			continue
+		}
+
+		tm := time.Unix(int64(player_logouttime), 0)
 		cd := time.Now().Sub(tm)
 		days := cd.Hours() / 24
 
-		if playerlevel <= 5 && days > 14 {
-			playerId := inst.GetPlayerInstId()
-			playerName := inst.GetPlayerName()
-			magic := inst.GetM()
-			instIds = append(instIds, playerId)
-			instNames = append(instNames, playerName)
-			fmt.Printf("SELECT PLAYER TABLE %d   %s \n", playerId, playerName)
-
-			debugLog.WriteString(fmt.Sprintf("DELETE PLAYER NAME[%s]  LogoutTime[%d] Level[%d] Magic[%d]\n", playerName, int(days), playerlevel, magic))
-
+		if days > 14 && player_level < 5 {
+			//DELETE
+			instNames = append(instNames,player_name)
+			instIds = append(instIds,player_id)
+			debugLog.WriteString(fmt.Sprintf("DELETE PLAYER NAME[%s]  LogoutTime[%d] Level[%d] Magic[%d]\n", player_name, int(player_logouttime), player_level, player_magic))
+			continue
 		}
+
+		if player_magic < 1 && days > 30 && player_level < 30 {
+			//DELETE
+			instNames = append(instNames,player_name)
+			instIds = append(instIds,player_id)
+			debugLog.WriteString(fmt.Sprintf("DELETE PLAYER NAME[%s]  LogoutTime[%d] Level[%d] Magic[%d]\n", player_name, int(player_logouttime), player_level, player_magic))
+			continue
+		}
+
 	}
+
+	stmtfunc0 := func(params []string, sql string ) <- chan int64{
+		rchan := make(chan int64)
+
+		go func(){
+
+			stmt, err := db.Prepare(sql)
+
+			CheckErr(err)
+
+			var allowed int64 = 0
+
+			for _, i := range params{
+				res , err := stmt.Exec(i)
+				time.Sleep(2)
+				CheckErr(err)
+				allowed,_ = res.RowsAffected()
+			}
+			stmt.Close()
+			rchan <- allowed
+			close(rchan)
+		}()
+
+		return  rchan
+	}
+
+	stmtfunc1 := func(params []int, sql string ) <- chan int64{
+		rchan := make(chan int64)
+
+		go func(){
+
+			stmt, err := db.Prepare(sql)
+
+			CheckErr(err)
+
+			var allowed int64 = 0
+
+			for _, i := range params{
+				res , err := stmt.Exec(i)
+				time.Sleep(2)
+				CheckErr(err)
+				allowed,_ = res.RowsAffected()
+			}
+			stmt.Close()
+			rchan <- allowed
+			close(rchan)
+		}()
+
+		return  rchan
+	}
+
+	//干掉相关表中符合条件的角色
+
+	<- stmtfunc0(instNames,"DELETE FROM `Player` WHERE `PlayerName`= ? ")
+	<- stmtfunc0(instNames,"DELETE FROM `Baby` WHERE `OwnerName`= ? ")
+	<- stmtfunc0(instNames,"DELETE FROM `Employee` WHERE `OwnerName`= ? ")
+	<- stmtfunc0(instNames,"DELETE FROM `EndlessStair` WHERE `PlayerName`= ?  ")
+	<- stmtfunc1(instIds,"DELETE FROM `EmployeeQuestTable` WHERE `PlayerId`= ?  ")
+	<- stmtfunc1(instIds,"DELETE FROM `MallTable` WHERE `PlayerId`= ?   ")
+	<- stmtfunc1(instIds,"DELETE FROM `MallSelledTable` WHERE `PlayerId`= ?  ")
+
+	//for i := 0; i < len(instNames); i++ {
+	//	CheckErr(err1)
+	//	res,err1 := stmt.Exec(instNames[i] )
+	//	CheckErr(err1)
+	//	affect, err1 := res.RowsAffected()
+	//	CheckErr(err1)
+	//	fmt.Println(instNames[i],affect)
+	//
+	//	db.Exec("DELETE FROM `Baby` WHERE `OwnerName`= ? ", instNames[i])
+	//	db.Exec("DELETE FROM `Employee` WHERE `OwnerName`= ? ", instNames[i])
+	//	db.Exec("DELETE FROM `Mail` WHERE `RecvName`= ? ", instNames[i])
+	//	db.Exec("DELETE FROM `EndlessStair` WHERE `PlayerName`= ? ", instNames[i])
+	//
+	//	fmt.Printf("DELETE TABLE PLAYER BABY EMPLOYEE MAIL ENDLESSSTAIR GUILDMEMBER BY %s ===NUM[%d] ===INDEX[%d]\n", instNames[i], len(instNames), i)
+	//
+	//}
+
+
 	debugLog.Sync()
 	debugLog.Close()
-	//干掉相关表中符合条件的角色
-	for i := 0; i < len(instNames); i++ {
-		db.Exec("DELETE FROM `Player` WHERE `PlayerName`= ? ", instNames[i])
-		db.Exec("DELETE FROM `Baby` WHERE `OwnerName`= ? ", instNames[i])
-		db.Exec("DELETE FROM `Employee` WHERE `OwnerName`= ? ", instNames[i])
-		db.Exec("DELETE FROM `Mail` WHERE `RecvName`= ? ", instNames[i])
-		db.Exec("DELETE FROM `EndlessStair` WHERE `PlayerName`= ? ", instNames[i])
-		db.Exec("DELETE FROM `GuildMember` WHERE `RoleName`= ? ", instNames[i])
 
-		fmt.Printf("DELETE TABLE PLAYER BABY EMPLOYEE MAIL ENDLESSSTAIR GUILDMEMBER BY %s ===NUM[%d] ===INDEX[%d]\n", instNames[i], len(instNames), i)
+	fmt.Println("CLEAN END !!!! ")
+}
 
+func CheckErr(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
+func IsGuildMember(db *sql.DB,name string) bool {
+	guild,guilderr := db.Query("SELECT * FROM `GuildMember` WHERE `RoleName`= ? ",name)
+	defer guild.Close()
+	if guilderr != nil {
+		fmt.Println( guilderr)
+		return true
 	}
 
-	for i := 0; i < len(instIds); i++ {
-		db.Exec("DELETE FROM `EmployeeQuestTable` WHERE `PlayerId`= ? ", instIds[i])
-		db.Exec("DELETE FROM `MallTable` WHERE `PlayerId`= ? ", instIds[i])
-		db.Exec("DELETE FROM `MallSelledTable` WHERE `PlayerId`= ? ", instIds[i])
-
-		fmt.Printf("DELETE TABLE EmployeeQuestTable MallTable MallSelledTable BY %d ===NUM[%d] ===INDEX[%d]\n", instIds[i], len(instIds), i)
+	if guild.Next() {
+		return true
 	}
-
-	fmt.Printf("CLEAN END !!!! \n")
+	return false
 }
 
 func main() {
@@ -113,7 +195,4 @@ func main() {
 		fmt.Println("Begin clean ", from)
 		cleanGO(from)
 	}
-
-
-
 }

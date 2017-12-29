@@ -19,13 +19,13 @@ public:
 	static int	findRankByName(std::string name);
 public:
 	
-	void	getEndlessStairDate(std::vector<std::string> name);
+	void	getEndlessStairData(std::vector<std::string> name);
 	void	creatArena(Player* player,std::string name);
 	Robot*	findRobotByName(std::string name);
 	bool	findRivalName(std::string name);
 	void	calcRival(int rank);
 	void	checkRival(Player* pPlayer);
-	void	getPlayerDBData(SGE_DBPlayerData &data);
+	void	queryPlayerDataBack(const std::string &rname ,SGE_DBPlayerData &data);
 	void	requestJJCData(Player* pPlayer);
 	void	requestRank(Player* pPlayer);
 	void	calcRank(Entity* pStart,std::string passName, bool isWin);
@@ -39,13 +39,9 @@ public:
 	static std::map<U32,Robot*>			robots_;
 	static std::vector<std::string>		nameRate_;	//JJC名次序列
 	std::vector<std::string>			rivalName_;
-	std::vector<std::string>			battleName_;
 	std::vector<std::string>			firstwin_;		//已发首胜奖励名单
 
-	bool		isCreatBattle_;			//是否开启战斗
-
-	U32		rivalPlayer_;			//当前挑战者
-	U32		checkPlayer_;			//查看信息请求者
+	std::vector<std::string>		rivalStub_;			//当前挑战者 等待DB返回
 };
 
 #endif

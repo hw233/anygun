@@ -261,6 +261,7 @@ Player::login()
 	}
 
 	calcProperty();
+	Employeeoutput::calcofflinetime(this,offlinetime);
 	COM_PlayerInst inst;
 	getPlayerInst(inst);
 	//上来老刷属性
@@ -268,7 +269,6 @@ Player::login()
 	if(isFirstLogin_){
 		offlinetime = 0;
 	}
-	Employeeoutput::calcofflinetime(this,offlinetime);
 	if(offlinetime > Global::get<int>(C_OfflineExperienceTimeMin))
 	{
 		float offlinetime1 = offlinetime > Global::get<int>(C_OfflineExperienceTimeMax) ? Global::get<int>(C_OfflineExperienceTimeMax) : offlinetime;
@@ -304,6 +304,7 @@ Player::login()
 		if(NULL == q){
 			completeQuest_.erase(completeQuest_.begin() + i--);
 		}
+		
 	}
 
 	isFirstLogin_ = false;
@@ -768,7 +769,7 @@ Player::removePlayer(std::string const &playerName)
 	idStore_[p->playerId_] = NULL;
 	nameStore_[playerName] = NULL;
 	// TODO delete;
-	ACE_DEBUG((LM_INFO,"DELETE Player\n"));
+	//ACE_DEBUG((LM_INFO,"DELETE Player\n"));
 	DEL_MEM(p);
 }
 
@@ -783,24 +784,18 @@ void
 Player::updatePlayer(float dt)
 {
 	for (size_t i=0;i<store_.size();++i)
-	{
 		store_[i]->tick(dt);
-	}
 }
 
 void Player::cleanActivationAll(ActivityType type){
 	for (size_t i=0;i<store_.size();++i)
-	{
 		store_[i]->cleanActivation(type);
-	}
 }
 
 void Player::OnlinePlayerPassZeroHour()
 {
 	for (size_t i=0;i<store_.size();++i)
-	{
 		store_[i]->passZeroHour();
-	}
 }
 
 void Player::uiBehavior(UIBehaviorType type){
@@ -832,7 +827,9 @@ void Player::passZeroHour()
 	if(logoutDT.month() != nowDT.month()){
 		signs_ = 0;
 	}
-	if(nowDT.day() > creatDT.day())
+	int32 currentDay= WorldServ::instance()->curTime_/ ONE_DAY_SEC;
+	int32 lououtDay = logoutTime_ / ONE_DAY_SEC;
+	if(currentDay - lououtDay == 1) //昨天登录了 今天再登才计算
 		calcConvertExp();
 	resetCard(true);
 	resetIntegralState();
@@ -861,6 +858,9 @@ void Player::passZeroHour()
 		{
 			completeQuest_.erase(completeQuest_.begin() + i--);
 		}
+		else if(q->questKind_ == QK_Sub1){
+			completeQuest_.erase(completeQuest_.begin() + i--); ///娓呴櫎 
+		}
 	}
 	CALL_CLIENT(this,initQuest(currentQuest_,completeQuest_));
 
@@ -881,6 +881,8 @@ void Player::passZeroHour()
 	greenBoxFreeNum_ = Global::get<int>(C_BoxGreenFreeNum);
 	warriortrophyNum_ = 0;
 	CALL_CLIENT(this,requestOpenBuyBox(greenBoxTimes_,blueBoxTimes_,greenBoxFreeNum_));
+
+	ACE_DEBUG((LM_INFO,"requestOpenBuyBox Player[%d] greenBoxTimes_[%f] blueBoxTimes_[%f]\n",playerId_,greenBoxTimes_,blueBoxTimes_));
 
 	{
 		ACE_Date_Time dt(ACE_OS::gettimeofday());
@@ -976,11 +978,11 @@ Player::save()
 	getDBPlayerData(data);
 
 	
-	if(account_)
-	{
-		//ACE_DEBUG((LM_INFO,"Save update account--> %s\n",playerName_.c_str()));
-		account_->updateDBPlayer(data);
-	}
+	//if(account_)
+	//{
+	//	//ACE_DEBUG((LM_INFO,"Save update account--> %s\n",playerName_.c_str()));
+	//	account_->updateDBPlayer(data);
+	//}
 	if(account_)
 		DBHandler::instance()->updatePlayer(account_->username_,data);
 	else
@@ -1109,7 +1111,7 @@ ClientHandler *Player::getClient()
 {
 	if(account_)
 		return account_->getClient();
-	ACE_DEBUG((LM_DEBUG,ACE_TEXT("Player::getClient() account_ is null \n")));
+	//ACE_DEBUG((LM_DEBUG,ACE_TEXT("Player::getClient() account_ is null \n")));
 	return NULL;
 }
 
@@ -1185,7 +1187,7 @@ Player::addBaby(S32 monsterId,bool isToStorage)
 void
 Player::addBaby2(COM_BabyInst& inst,bool isToStorage)
 {
-	ACE_DEBUG((LM_DEBUG,"ADD BABAY\n"));
+	//ACE_DEBUG((LM_DEBUG,"ADD BABAY\n"));
 	inst.instId_ = WorldServ::instance()->getMaxGuid();
 	inst.ownerName_ = playerName_;
 	
@@ -1235,7 +1237,7 @@ void Player::delBaby(S32 instId)
 			Baby* p = babies_[i];
 			babies_.erase(babies_.begin() + i);
 			CALL_CLIENT(this,delBabyOK(p->getGUID()));
-			ACE_DEBUG((LM_INFO,"Player %d delete baby %d \n",getGUID(),p->getGUID()));
+			//ACE_DEBUG((LM_INFO,"Player %d delete baby %d \n",getGUID(),p->getGUID()));
 			DEL_MEM(p);
 			WorldServ::instance()->delBabyRank(instId);
 			return;
@@ -1253,7 +1255,7 @@ void Player::delBabyOk(S32 instId)
 			Baby* p = babies_[i];
 			babies_.erase(babies_.begin() + i);
 			CALL_CLIENT(this,delBabyOK(p->getGUID()));
-			ACE_DEBUG((LM_INFO,"Player %d delete baby %d \n",getGUID(),p->getGUID()));
+			//ACE_DEBUG((LM_INFO,"Player %d delete baby %d \n",getGUID(),p->getGUID()));
 			DEL_MEM(p);
 			return;
 		}
@@ -1660,7 +1662,7 @@ Player::getItemNumByItemId(U32 itemId)
 void 
 Player::delBagItemByInstId(U32 itemInstId, U32 stack,S32 fromid)
 {
-	ACE_DEBUG((LM_INFO,"Del item %d %d \n",itemInstId,stack));
+	//ACE_DEBUG((LM_INFO,"Del item %d %d \n",itemInstId,stack));
 	COM_Item *p = getBagItemByInstId(itemInstId);
 
 	if(NULL == p)
@@ -1679,7 +1681,7 @@ Player::delBagItemByInstId(U32 itemInstId, U32 stack,S32 fromid)
 	track.from_ = fromid;
 	track.itemId_ = p->itemId_;
 	track.itemInstId_ = itemInstId;
-	track.itemStack_ = -stack;
+	track.itemStack_ = -(int32)stack;
 	LogHandler::instance()->playerTrack(track);
 
 	if(p->stack_ <= 0)
@@ -1708,7 +1710,7 @@ Player::delBagItemByItemId(U32 itemId, U32 stack, int32 fromId)
 	track.from_ = fromId;
 	track.itemId_ = itemId;
 	track.itemInstId_ = 0;
-	track.itemStack_ = -stack;
+	track.itemStack_ = -(int32)stack;
 	LogHandler::instance()->playerTrack(track);
 
 	while(stack > 0 && !items.empty())
@@ -1856,7 +1858,7 @@ bool Player::stopAutoBattle(){
 		return true;
 	if(isTeamMember() && !isTeamLeader() && !isLeavingTeam_)
 		return true;
-	ACE_DEBUG((LM_INFO,"void Player::stopAutoBattle(){ \n"));
+	//ACE_DEBUG((LM_INFO,"void Player::stopAutoBattle(){ \n"));
 	scenePlayer_->stopMove();
 	return true;
 }
@@ -2049,7 +2051,7 @@ void Player::useItem(U32 slot , U32 target , int32 stack)
 	if(0 >= stack){
 		return;
 	}
-	ACE_DEBUG((LM_INFO,"Use item slot %d\n",slot));
+	//ACE_DEBUG((LM_INFO,"Use item slot %d\n",slot));
 	if(slot >= bagItmes_.size()){
 		ACE_DEBUG((LM_ERROR,"Can not use this slot %d\n",playerId_));
 		return;
@@ -2497,11 +2499,11 @@ bool Player::drawLotteryBox(BoxType type, bool isfree){
 
 void 
 Player::getScenePlayerInfo(SGE_ScenePlayerInfo& info){
-	if( !(guideIdx_ & (0x1 << Global::get<int>(C_GuideNewSceneId0)))){
+	if( !(guideIdx_ & (0x1 << (U64)Global::get<int>(C_GuideNewSceneId0)))){
 		PlayerTmpTable::Core const * p = PlayerTmpTable::getTemplateById((int)getProp(PT_TableId));
 		if(p)
 			info.sceneId_ = p->defaultSceneId_;
-	}else if( !(guideIdx_ & (0x1 << Global::get<int>(C_GuideNewSceneId1))))
+	}else if( !(guideIdx_ & (0x1 << (U64)Global::get<int>(C_GuideNewSceneId1))))
 	{
 		PlayerTmpTable::Core const * p = PlayerTmpTable::getTemplateById((int)getProp(PT_TableId));
 		if(p)
@@ -3270,7 +3272,7 @@ Player::usessItem(S32 target,U32 itemID)
 
 	std::string err;
 	int ret = EN_None;
-	ACE_DEBUG((LM_DEBUG,ACE_TEXT("LUA UseItem ACTIVE ==> %s\n"),pItem->gloAction_.c_str()));
+	//ACE_DEBUG((LM_DEBUG,ACE_TEXT("LUA UseItem ACTIVE ==> %s\n"),pItem->gloAction_.c_str()));
 	if(false == ScriptEnv::callGEProc(pItem->gloAction_.c_str(), this->handleId_,param,ARG_MAX,ret,err))
 	{
 		return EN_Max;
@@ -4948,9 +4950,18 @@ Player::calcRivalNum()
 }
 
 void
-Player::checkMsg(std::string name)
+Player::checkMsg(const std::string &name)
 {
-	EndlessStair::instance()->checkMsg(this,name);
+	//EndlessStair::instance()->checkMsg(this,name);
+
+	COM_ContactInfo* pCont = WorldServ::instance()->findContactInfo(name);
+
+	if(pCont == NULL)
+	{
+		ACE_DEBUG((LM_ERROR,"Can not find in contact info %s\n",name.c_str()));
+		return;
+	}
+	DBHandler::instance()->queryPlayerById(getNameC(),pCont->instId_,true);
 }
 
 void
@@ -5577,10 +5588,13 @@ Player::requestEmpRank()
 	WorldServ::instance()->getEmployeeFFRank(tmpInfos);
 	for (size_t i = 0; i < tmpInfos.size(); ++i)
 	{
-		if(i < 100)
+		if(tmpInfos[i].rank_ <= 100)
 			rankdata.push_back(tmpInfos[i]);
-		if(playerName_ == tmpInfos[i].ownerName_ && myRank == 0)
-			myRank = tmpInfos[i].rank_;
+		if(playerName_ == tmpInfos[i].ownerName_){
+			if (tmpInfos[i].rank_ < myRank || myRank == 0){
+				myRank = tmpInfos[i].rank_;
+			}
+		}
 	}
 	CALL_CLIENT(this,requestEmpRankOK(myRank,rankdata));
 }
@@ -7073,6 +7087,9 @@ Player::queryOnlinePlayer(std::string& name)
 void
 Player::queryPlayerbyName(std::string& name)
 {
+	enum {
+		W_QUERY_PLAYER_INFO = 1,
+	};
 	COM_ContactInfo* pContactInfo = WorldServ::instance()->findContactInfo(name);
 	Robot* pRobot = EndlessStair::instance()->findRobotByName(name);
 	if(pContactInfo == NULL && pRobot == NULL)
@@ -7082,7 +7099,7 @@ Player::queryPlayerbyName(std::string& name)
 	}	
 	
 	if(pContactInfo)
-		DBHandler::instance()->queryPlayerById(getNameC(),pContactInfo->instId_,false);
+		DBHandler::instance()->queryPlayerById(getNameC(),pContactInfo->instId_,W_QUERY_PLAYER_INFO);
 	else if (pRobot)
 	{
 		COM_SimplePlayerInst inst;
@@ -7096,10 +7113,10 @@ Player::queryPlayerbyName(std::string& name)
 void
 Player::queryPlayerInstOK(SGE_DBPlayerData &data)
 {
-	COM_SimplePlayerInst inst;
-	Player::transforDBPlayer2SimplePlayer(inst,data);
-	//临时屏蔽
-	CALL_CLIENT(this,queryPlayerOK(inst));
+	//COM_SimplePlayerInst inst;
+	//Player::transforDBPlayer2SimplePlayer(inst,data);
+	////临时屏蔽
+	//CALL_CLIENT(this,queryPlayerOK(inst));
 }
 
 void
@@ -7425,7 +7442,7 @@ void Player::openCard(U16 index){
 	S32 emptySlot_ = getFirstEmptySlot();
 	if(emptySlot_ < 0)
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 
@@ -7523,7 +7540,7 @@ void Player::requestFestival(int index){
 	S32 emptySlot_ = getFirstEmptySlot();
 	if(emptySlot_ < 0)
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 	if(index < 0 || index >= festival_.contents_.size())
@@ -7534,7 +7551,7 @@ void Player::requestFestival(int index){
 	S32 emptySlot = getBagEmptySlot();
 	if(emptySlot < festival_.contents_[index].itemIds_.size())
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 
@@ -7603,7 +7620,7 @@ void Player::requestSysRecharge(int index){
 	S32 emptySlot_ = getFirstEmptySlot();
 	if(emptySlot_ < 0)
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 	if(index < 0 || index >= sysRecharge_.contents_.size())
@@ -7614,7 +7631,7 @@ void Player::requestSysRecharge(int index){
 	S32 emptySlot = getBagEmptySlot();
 	if(emptySlot < sysRecharge_.contents_[index].itemIds_.size())
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 
@@ -7636,7 +7653,7 @@ void Player::updateSelfDiscountStore(){
 void Player::buySelfDiscountStore(int itemId, int buyStack){
 	S32 emptySlot_ = getFirstEmptySlot();
 	if(emptySlot_ < 0){
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 	if(selfDiscountStore_.contents_.empty())
@@ -7674,7 +7691,7 @@ void Player::buySysDiscountStore(int itemId, int buyStack){
 	S32 emptySlot_ = getFirstEmptySlot();
 	if(emptySlot_ < 0)
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		errorMessageToC(EN_BagFull);
 		return;
 	}
@@ -7719,7 +7736,7 @@ void Player::requestSelfOnceRecharge(int index){
 	S32 emptySlot_ = getFirstEmptySlot();
 	if(emptySlot_ < 0)
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 	if(selfOnceRecharge_.contents_.empty())
@@ -7730,7 +7747,7 @@ void Player::requestSelfOnceRecharge(int index){
 	S32 emptySlot = getBagEmptySlot();
 	if(emptySlot < selfOnceRecharge_.contents_[index].itemIds_.size())
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 
@@ -7759,7 +7776,7 @@ void Player::requestSysOnceRecharge(int index){
 	S32 emptySlot_ = getFirstEmptySlot();
 	if(emptySlot_ < 0)
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 	if(sysOnceRecharge_.contents_.empty())
@@ -7770,7 +7787,7 @@ void Player::requestSysOnceRecharge(int index){
 	S32 emptySlot = getBagEmptySlot();
 	if(emptySlot < sysOnceRecharge_.contents_[index].itemIds_.size())
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 
@@ -7824,7 +7841,7 @@ void Player::requestEmployeeActivity(int index){
 	S32 emptySlot_ = getFirstEmptySlot();
 	if(emptySlot_ < 0)
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 
@@ -7836,7 +7853,7 @@ void Player::requestEmployeeActivity(int index){
 	S32 emptySlot = getBagEmptySlot();
 	if(emptySlot < empact_.contents_[index].itemIds_.size())
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 
@@ -7992,7 +8009,7 @@ void Player::requestmySelfRecharge(int index){
 	S32 emptySlot_ = getBagEmptySlot();
 	if(emptySlot_ < myselfrecharge_.contents_[index].itemIds_.size())
 	{
-		ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
+		//ACE_DEBUG((LM_INFO,ACE_TEXT("Bag Full\n")));
 		return;
 	}
 
@@ -8210,7 +8227,7 @@ void Player::compFuwen(int32 itemInstId){
 }
 
 void Player::requestEmployeeQuest(){
-	ACE_DEBUG((LM_INFO,"Request employee list\n"));
+	//ACE_DEBUG((LM_INFO,"Request employee list\n"));
 	std::vector<COM_EmployeeQuestInst> questList = EmployeeQuestSystem::GetQuestList(getGUID());
 	CALL_CLIENT(this,requestEmployeeQuestOk(questList));
 }

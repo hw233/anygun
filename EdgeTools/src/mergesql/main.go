@@ -93,15 +93,16 @@ func Merge(from, to, tag string) {
 		return
 	}
 
-	player_id, player_level, player_prof, player_grade, player_seal, player_freeze, player_server_id, player_money, player_diamond, player_magic, player_logouttime := 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	player_id, player_level, player_prof, player_grade, player_seal, player_freeze, player_server_id, player_money, player_diamond, player_magic, player_logouttime , versionNumber :=0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	user_name, player_name, player_bin := "", "", ""
 	for records.Next() {
-		err = records.Scan(&player_id, &user_name, &player_name, &player_level, &player_prof, &player_grade, &player_money, &player_diamond, &player_magic, &player_logouttime, &player_bin, &player_seal, &player_freeze, &player_server_id)
+		err = records.Scan(&player_id, &user_name, &player_name, &player_level, &player_prof, &player_grade, &player_money, &player_diamond, &player_magic, &player_logouttime, &player_bin, &player_seal, &player_freeze, &player_server_id,&versionNumber)
 		if err != nil {
-			fmt.Errorf("%s", err)
+			fmt.Println( err)
 			continue
 		}
 		if user_name == "" {
+			fmt.Println( "user_name == nil")
 			continue
 		}
 		if same_players[player_name] > 1 {
@@ -112,9 +113,9 @@ func Merge(from, to, tag string) {
 			player_id = max_entity_id + 1
 		}
 		max_entity_id = player_id
-		_,err = t_db.Exec("INSERT INTO `Player`(`PlayerGuid`,`UserName`,`PlayerName`,`PlayerLevel`,`PlayerProfession`,`PlayerGrade`,`Money`,`Diamond`,`Magic`,`LogoutTime`,`BinData`,`Seal`, `Freeze`,`InDoorId`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", player_id, user_name, player_name, player_level, player_prof, player_grade, player_money, player_diamond, player_magic, player_logouttime, player_bin, player_seal, player_freeze, player_server_id)
+		_,err = t_db.Exec("INSERT INTO `Player`(`PlayerGuid`,`UserName`,`PlayerName`,`PlayerLevel`,`PlayerProfession`,`PlayerGrade`,`Money`,`Diamond`,`Magic`,`LogoutTime`,`BinData`,`Seal`, `Freeze`,`InDoorId`,`VersionNumber`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", player_id, user_name, player_name, player_level, player_prof, player_grade, player_money, player_diamond, player_magic, player_logouttime, player_bin, player_seal, player_freeze, player_server_id,versionNumber)
 		if err != nil{
-			fmt.Println(player_id,player_name,user_name)
+			fmt.Println(player_id,player_name,user_name,err)
 		}
 		player_id2id[old_player_id] = player_id
 	}
@@ -210,11 +211,11 @@ func Merge(from, to, tag string) {
 	fmt.Println("------------------------------------------MAIL OK------------------------------------------")
 	records, _ = f_db.Query("SELECT * FROM `Guild`")
 
-	guild_id, guild_level, guild_contri, guild_fundz, guild_credit, guild_master_id := 0, 0, 0, 0, 0, 0
+	guild_id, guild_level, guild_contri, guild_fundz, guild_credit, guild_master_id, pNum := 0, 0, 0, 0, 0, 0,0
 	guild_name, guild_master_name, guild_notice, guild_request, guild_buildings, guild_progenitus, guild_progenitu_positions := "", "", "", "", "", "", ""
 
 	for records.Next() {
-		err := records.Scan(&guild_id, &guild_name, &guild_level, &guild_contri, &guild_fundz, &guild_credit, &guild_master_id, &guild_master_name, &guild_notice, &guild_request, &guild_buildings, &guild_progenitus, &guild_progenitu_positions)
+		err := records.Scan(&guild_id, &guild_name, &guild_level, &guild_contri, &guild_fundz, &guild_credit, &guild_master_id, &guild_master_name, &guild_notice, &guild_request, &guild_buildings, &guild_progenitus, &guild_progenitu_positions,&pNum)
 		if err != nil {
 			fmt.Println(err)
 			continue
@@ -234,7 +235,7 @@ func Merge(from, to, tag string) {
 		}
 		max_guild_id = guild_id
 
-		_, err = t_db.Exec("INSERT INTO `Guild`(`GuildId`,`GuildName`,`GuildLevel`,`Contribution`,`Fundz`,`Credit`,`Master`,`MasterName`,`Notice`,`RequestList`,`Buildings`,`Progenitus`,`ProgenitusPos`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", guild_id, guild_name, guild_level, guild_contri, guild_fundz, guild_credit, guild_master_id, guild_master_name, guild_notice, guild_request, guild_buildings, guild_progenitus, guild_progenitu_positions)
+		_, err = t_db.Exec("INSERT INTO `Guild`(`GuildId`,`GuildName`,`GuildLevel`,`Contribution`,`Fundz`,`Credit`,`Master`,`MasterName`,`Notice`,`RequestList`,`Buildings`,`Progenitus`,`ProgenitusPos`,`PresentNum`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", guild_id, guild_name, guild_level, guild_contri, guild_fundz, guild_credit, guild_master_id, guild_master_name, guild_notice, guild_request, guild_buildings, guild_progenitus, guild_progenitu_positions,pNum)
 		if err != nil {
 			fmt.Println(guild_id,guild_name)
 		}

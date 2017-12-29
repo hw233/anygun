@@ -25,9 +25,7 @@ std::vector<std::string>	EndlessStair::nameRate_;
 
 EndlessStair::EndlessStair()
 {
-	isCreatBattle_	= false;
-	rivalPlayer_	= 0;
-	checkPlayer_	= 0;
+
 }
 
 void
@@ -37,7 +35,7 @@ EndlessStair::init()
 }
 
 void
-EndlessStair::getEndlessStairDate(std::vector<std::string> name)
+EndlessStair::getEndlessStairData(std::vector<std::string> name)
 {
 	for (size_t i = 0; i < name.size(); ++i)
 	{
@@ -92,41 +90,31 @@ EndlessStair::robotInst()
 }
 
 void
-EndlessStair::getPlayerDBData(SGE_DBPlayerData &data)
+EndlessStair::queryPlayerDataBack(const std::string &rname ,SGE_DBPlayerData &data)
 {
-	if(isCreatBattle_)
+	
+	std::vector<std::string>::iterator itr = std::find(rivalStub_.begin(),rivalStub_.end(), rname);
+	if(itr == rivalStub_.end()){
+		return; //没有在注册列表里 直接返回
+	}
+	rivalStub_.erase(itr);
+	
+	Player* rp = Player::getPlayerByName(rname);
+	if(rp == NULL)
+		return;
+	
+	if(rp->isBattle())
 	{
-		Player* rp = Player::getPlayerByInstId(rivalPlayer_);
-		if(rp == NULL)
-			return;
-
-		Robot*	robot = NEW_MEM(Robot,data);
-		Battle* pBattle = Battle::getOneFree();
-
-		if(rp->isBattle() || robot->isBattle())
-		{
-			CALL_CLIENT(rp, errorno(EN_Battle));
-			return;
-		}
-
-		pBattle->create(rp,robot);
-		
-		rp->resetRivalTime();
-		rp->calcRivalNum();
-
-		isCreatBattle_ = false;
+		CALL_CLIENT(rp, errorno(EN_Battle));
+		return;
 	}
 
-	Player* cp = Player::getPlayerByInstId(checkPlayer_);
-	if(cp == NULL)
-		return;
+	Robot*	robot = NEW_MEM(Robot,data);
+	Battle* pBattle = Battle::getOneFree();
 
-	COM_SimplePlayerInst inst;
-	Player::transforDBPlayer2SimplePlayer(inst,data);
-	CALL_CLIENT(cp,checkMsgOK(inst));
-
-	checkPlayer_ = 0;
-	rivalPlayer_ = 0;
+	pBattle->create(rp,robot);	
+	rp->resetRivalTime();
+	rp->calcRivalNum();
 }
 
 Robot*
@@ -329,8 +317,7 @@ EndlessStair::creatArena(Player* player,std::string name)
 	if(player->rivalTimes_ > 0)
 		return;
 
-	rivalPlayer_ = player->getGUID();
-
+	
 	Battle* pBattle = Battle::getOneFree();
 
 	Robot* pRobot = findRobotByName(name);
@@ -350,14 +337,26 @@ EndlessStair::creatArena(Player* player,std::string name)
 	}
 	else
 	{
+
+		std::vector<std::string>::iterator itr = std::find(rivalStub_.begin(), rivalStub_.end(), player->getNameC());
+		if(itr != rivalStub_.end()){
+			return ;//耐心等待创建战斗
+		}
+
+
 		COM_ContactInfo* pCont = WorldServ::instance()->findContactInfo(name);
 
 		if(pCont == NULL)
-			SRV_ASSERT(0);
+		{
+			ACE_DEBUG((LM_ERROR,"can not find player %d jjc \n",name.c_str()));
+			return;
+		}
+	
+		rivalStub_.push_back(player->getNameC());
 
-		DBHandler::instance()->queryPlayerById(player->getNameC(),pCont->instId_,true);
+		DBHandler::instance()->queryPlayerById(player->getNameC(),pCont->instId_,0);
+		
 
-		isCreatBattle_ = true;
 	}
 
 	GEParam params[1];
@@ -514,6 +513,11 @@ EndlessStair::checkMsg(Player* pPlayer, std::string name)
 	}
 	else
 	{
+
+	
+		enum {
+			W_JJC_PLAYER_INFO = 2
+		};
 		COM_ContactInfo* pCont = WorldServ::instance()->findContactInfo(name);
 
 		if(pCont == NULL)
@@ -521,9 +525,9 @@ EndlessStair::checkMsg(Player* pPlayer, std::string name)
 			ACE_DEBUG((LM_ERROR,"Can not find in contact info %s\n",name.c_str()));
 			return;
 		}
-		DBHandler::instance()->queryPlayerById(pPlayer->getNameC(),pCont->instId_,true);
 
-		checkPlayer_ = pPlayer->getGUID();
+	
+		DBHandler::instance()->queryPlayerById(pPlayer->getNameC(),pCont->instId_,W_JJC_PLAYER_INFO);
 	}
 }
 
@@ -605,7 +609,12 @@ EndlessStair::deleteplayerReCalcRank(std::string playname)
 		if(nameRate_[i] == playname)
 		{
 			nameRate_.erase(nameRate_.begin() + i);
+			DBHandler::instance()->deleteEndlessStair(playname);
 			break;
 		}
+	}
+	for (size_t i = 0; i < nameRate_.size(); ++i)
+	{
+		DBHandler::instance()->updateEndlessStair(i + 1 ,nameRate_[i]);
 	}
 }

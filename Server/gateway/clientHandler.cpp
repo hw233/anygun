@@ -97,7 +97,11 @@ int ClientHandler::handleReceived(void* data, size_t size){
 
 		if(l>size)
 			return 0;
-
+		else if (l <= 0){
+			ACE_DEBUG((LM_INFO,"Invalid sending data %d | %d\n",channelId_,handlerId_));
+			close();
+			return size;
+		}
 		p = p + sizeof(U16);
 		channel->fillBegin();
 		channel->fill(p,l);

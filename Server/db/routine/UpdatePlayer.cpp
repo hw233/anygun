@@ -2,10 +2,10 @@
 #include "config.h"
 #include "../routine.h"
 #include "../sqltask.h"
-
 U32 
 UpdatePlayer::go(SQLTask *pTask)
-{
+{	
+	//ACE_DEBUG((LM_INFO,ACE_TEXT("Update player go!!! [%s]\n"),username_.c_str()));
 	enum {BUFFER_SIZE = 1024*1024};
 	char *buffer = new char[BUFFER_SIZE];
 	static const char * pCode =
@@ -15,16 +15,13 @@ UpdatePlayer::go(SQLTask *pTask)
 	SRV_ASSERT(dbc);
 
 	{
-		UpdateBaby ub;
-		for (size_t i=0; i<player_.babies_.size(); ++i){
-			ub.baby_ = 	player_.babies_[i];	
-			ub.go(pTask);
+		for (size_t i=0; i<player_.babies_.size(); ++i){			
+			
+			WorldHandler::instance()->updateBaby(player_.babies_[i]);
 		}
 	
-		UpdateEmployee ue;
 		for (size_t i=0; i<player_.employees_.size(); ++i){
-			ue.employee_ = player_.employees_[i];
-			ue.go(pTask);
+			WorldHandler::instance()->updateEmployee(player_.employees_[i]);
 		}
 		
 	}
@@ -70,6 +67,6 @@ DB_EXEC_UNGUARD_RETURN
 U32 
 UpdatePlayer::back()
 {
-	ACE_DEBUG((LM_INFO,ACE_TEXT("Update player ok!!! [%s]\n"),username_.c_str()));
+	//ACE_DEBUG((LM_INFO,ACE_TEXT("Update player ok!!! [%s]\n"),username_.c_str()));
 	return 0;
 }

@@ -529,6 +529,67 @@ GAME_SCRIPT_API( Player, submit_quest)
 
 	R_NONE;
 }
+GAME_SCRIPT_API( Player, is_complate_quest)
+{
+	P_BEGIN;
+	P_PTR(handle);
+	P_INT(questId);
+	P_END;
+	if(NULL == handle)
+	{
+		R_BEGIN;
+		R_BOOL(0);
+		R_END;
+	}
+	Player *player = handle->asPlayer();
+	if(NULL == player)
+	{
+		R_BEGIN;
+		R_BOOL(0);
+		R_END;
+	}
+	R_BEGIN;
+	R_BOOL(player->isQuestComplate(questId)) ;
+	R_END;
+}
+
+GAME_SCRIPT_API( Player, is_current_quest){
+	P_BEGIN;
+	P_PTR(handle);
+	P_INT(questId);
+	P_END;
+	if(NULL == handle)
+	{
+		R_BEGIN;
+		R_BOOL(0);
+		R_END;
+	}
+	Player *player = handle->asPlayer();
+	if(NULL == player)
+	{
+		R_BEGIN;
+		R_BOOL(0);
+		R_END;
+	}
+	R_BEGIN;
+	R_BOOL( (player->getQuestIndex(questId) != -1));
+	R_END;
+}
+GAME_SCRIPT_API( Player, jump_quest)
+{
+	P_BEGIN;
+	P_PTR(handle);
+	P_INT(questId);
+	P_END;
+	if(NULL == handle)
+		R_NONE ;
+	Player *player = handle->asPlayer();
+	if(NULL == player)
+		R_NONE ;
+	player->gmJumpQuest(questId);
+
+	R_NONE;
+}
 
 GAME_SCRIPT_API( Player, gm_add_skillExp)
 {
@@ -1240,7 +1301,7 @@ GAME_SCRIPT_API( Player, set_guide)
 		R_NONE;
 	}
 
-	player->guideIdx_ |= (1<<guide);
+	player->guideIdx_ |= (1<<(U64)guide);
 	//CALL_CLIENT(player,initGuide(player->guideIdx_));
 	R_NONE;
 }

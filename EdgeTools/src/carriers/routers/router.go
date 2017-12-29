@@ -11,6 +11,9 @@ import (
 	"carriers/tables"
 
 	"github.com/astaxie/beego"
+
+	"carriers/controllers/cl"
+	"carriers/controllers/2"
 )
 
 func init() {
@@ -52,4 +55,15 @@ func init() {
 
 	beego.Router("/tables/order", &tables.GetOrder{})
 
+	beego.Router("/login/anyoauth/2", &subserver.AnyOauth{})
+	beego.Router("/login/oauth/2", &subserver.Oauth{})
+	beego.Router("/notice/system/2", &subserver.System{})
+	beego.Router("/notice/server/2", &subserver.Server{})
+	beego.Router("/servs/query/2", &subserver.Query{})
+	beego.Router("/pay/notify/private/2", &subserver.Private{})
+
+	beego.Router("/cl/servers", &cl.Channels{})
+	beego.Router("/cl/login", &cl.Login{})
+	beego.Router("/cl/pay",&cl.PayOrder{})
+	beego.Router("/cl/notifypay",&cl.Pay{})
 }

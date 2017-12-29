@@ -6,7 +6,7 @@
 U32
 InsertBaby::go(SQLTask *pTask)
 {
-	ACE_DEBUG((LM_DEBUG,"DB INSERT BABY\n"));
+	//ACE_DEBUG((LM_DEBUG,"DB INSERT BABY\n"));
 	static const char * pCode =
 		"INSERT INTO Baby(BabyGuid,BabyName,BinData,OwnerName,BabyGrade,BabyLevel,TableID,AddProp)"
 		"VALUES(?,?,?,?,?,?,?,?);";
@@ -55,7 +55,8 @@ DB_EXEC_UNGUARD_RETURN
 U32
 InsertBaby::back()
 {
-	ACE_DEBUG((LM_DEBUG,"DB INSERT BABY BK\n"));
+	//ACE_DEBUG((LM_DEBUG,"DB INSERT BABY BK\n"));
+	Server::instance()->addBabyInst(baby_);
 	WorldHandler::instance()->createBabyOK(playername_,baby_,isToStorage_);
 	return 0;
 }
@@ -87,6 +88,7 @@ DB_EXEC_UNGUARD_RETURN
 U32 
 DeleteBaby::back()
 {
+	Server::instance()->delBabyInst(babyId_);
 	WorldHandler::instance()->deleteBabyOK(playername_,babyId_);
 	return 0;
 }
@@ -133,7 +135,7 @@ DB_EXEC_GUARD
 	prep_stmt->setInt(7,baby_.instId_);
 	prep_stmt->executeUpdate();
 #endif
-	ACE_DEBUG((LM_DEBUG,ACE_TEXT("UPDATE BABY[%d] SLOT[%d]\n"),baby_.instId_,baby_.slot_));
+	//ACE_DEBUG((LM_DEBUG,ACE_TEXT("UPDATE BABY[%d] SLOT[%d]\n"),baby_.instId_,baby_.slot_));
 DB_EXEC_UNGUARD_RETURN	
 
 	return 0;
@@ -142,7 +144,7 @@ DB_EXEC_UNGUARD_RETURN
 U32
 UpdateBaby::back()
 {
-	ACE_DEBUG((LM_INFO,ACE_TEXT("Update baby ok!!! [%d]\n"),baby_.instId_));
+	//ACE_DEBUG((LM_INFO,ACE_TEXT("Update baby ok!!! [%d]\n"),baby_.instId_));
 	return 0;
 }
 
@@ -185,7 +187,7 @@ ResetBabyOwner::back()
 U32 
 QueryBabyByFF::go(SQLTask *pTask)
 {
-	ACE_DEBUG((LM_DEBUG ,"QueryBabyByFF go\n"));
+	//ACE_DEBUG((LM_DEBUG ,"QueryBabyByFF go\n"));
 	std::stringstream sstream;
 	sstream << "SELECT * FROM Baby WHERE OwnerName NOT LIKE '++%' ORDER BY BabyGrade DESC LIMIT 1000;";
 
@@ -251,9 +253,9 @@ QueryBabyByFF::go(SQLTask *pTask)
 U32
 QueryBabyById::go(SQLTask *pTask)
 {
-	ACE_DEBUG((LM_DEBUG ,"QueryPlayerById go\n"));
+	//ACE_DEBUG((LM_DEBUG ,"QueryPlayerById go\n"));
 	std::stringstream sstream;
-	sstream << "SELECT * FROM Baby WHERE BabyGuid = \"" << babyInstID_ << "\"";
+	sstream << "SELECT * FROM Baby WHERE BabyGuid = \"" << babyInstId_ << "\"";
 
 	DBC *dbc = pTask->getDBC();
 	SRV_ASSERT(dbc);

@@ -89,8 +89,10 @@ NpcTable::check()
 	for(size_t i=0; i<cache_.size(); ++i){
 		for(size_t j=0; j<cache_[i]->filterQuest_.size(); ++j){
 			//ACE_DEBUG((LM_ERROR,ACE_TEXT("npc has same id in row %d , id is %d\n"),cache_[i]->npcId_,cache_[i]->filterQuest_[j]));
-			SRV_ASSERT(Quest::getQuestById(cache_[i]->filterQuest_[j]));
-				
+			if(NULL == Quest::getQuestById(cache_[i]->filterQuest_[j])){
+				ACE_DEBUG((LM_ERROR,"NPC %d quest %d can not find!!!\n",cache_[i]->npcId_,cache_[i]->filterQuest_[j]));	
+				SRV_ASSERT(0);
+			}
 		}
 	}
 	return true;

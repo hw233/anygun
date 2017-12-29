@@ -40,30 +40,30 @@ func (c *Private) Post() {
 
 	sort.Strings(names)
 	var values = make([]string, len(params))
-	//beego.Debug(names)
+	beego.Debug(names)
 	for j := 0; j < i; j++ {
 		values[j] = strings.Join(params[names[j]], "")
 	}
 
 	var value = strings.Join(values, "")
-	//beego.Debug(value)
+	beego.Debug(value)
 	var md5value = md5.Sum([]byte(value))
 
 	md5str := hex.EncodeToString(md5value[:])
-	//beego.Debug(md5str)
+	beego.Debug(md5str)
 	passstr := md5str + beego.AppConfig.String("privatecode")
 
-	//beego.Debug(passstr)
+	beego.Debug(passstr)
 
 	passmd5str := md5.Sum([]byte(passstr))
 
 	pass := hex.EncodeToString(passmd5str[:])
 	// or
 
-	//beego.Debug("MD5[", pass, "]Sign[", sign, "]")
+	beego.Debug("MD5[", pass, "]Sign[", sign, "]")
 
 	if pass == sign {
-		//beego.Debug("pass == sign")
+		beego.Debug("pass == sign")
 		servId, _ := strconv.Atoi(c.Input().Get("server_id"))
 
 		if models.CheckSandbox(servId) {
@@ -84,7 +84,7 @@ func (c *Private) Post() {
 			c.Ctx.WriteString("FAIL")
 			return
 		}
-		//beego.Info(string(b))
+		beego.Debug(string(b))
 		c.Ctx.WriteString("OK")
 	} else {
 		c.Ctx.WriteString("FAIL")

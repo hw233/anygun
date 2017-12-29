@@ -51,8 +51,20 @@ DBHandler::syncContactInfo(std::vector< SGE_ContactInfoExt >& info)
 	return true;
 }
 
+bool
+DBHandler::queryPlayerSimpleInformationOk(std::string &username, std::vector<COM_SimpleInformation>& insts,int32 serverId){ //查询角色信息
+
+	Account *account = Account::getAccountByName(username);
+	if(NULL == account)
+	{
+		ACE_DEBUG((LM_INFO,ACE_TEXT("Account is offline  %s...!!!\n"),username.c_str()));
+		return true;
+	}
+	account->setDBMiniPlayers(insts);
+	return true;
+}
 bool 
-DBHandler::queryPlayerOk(STRING& username, std::vector< SGE_DBPlayerData >& insts, int32 inDoorId)
+DBHandler::queryPlayerOk(STRING& username, SGE_DBPlayerData & insts)
 {
 	Account *account = Account::getAccountByName(username);
 	if(NULL == account)
@@ -60,7 +72,7 @@ DBHandler::queryPlayerOk(STRING& username, std::vector< SGE_DBPlayerData >& inst
 		ACE_DEBUG((LM_INFO,ACE_TEXT("Account is offline  %s...!!!\n"),username.c_str()));
 		return true;
 	}
-	account->setDBPlayers(insts);
+	account->enterGame(insts);
 	return true;
 }
 
@@ -68,8 +80,7 @@ DBHandler::queryPlayerOk(STRING& username, std::vector< SGE_DBPlayerData >& inst
 bool 
 DBHandler::createPlayerSameName(STRING& username){
 	Account *account = Account::getAccountByName(username);
-	if(NULL == account)
-	{
+	if(NULL == account){
 		ACE_DEBUG((LM_INFO,ACE_TEXT("Account is offline  %s...!!!\n"),username.c_str()));
 		return true;
 	}
@@ -104,25 +115,48 @@ DBHandler::createPlayerOk(STRING& username,SGE_DBPlayerData &inst, int32 inDoorI
 }
 
 bool
-DBHandler::queryPlayerByIdOK(std::string& playername,SGE_DBPlayerData& inst, bool isFlag)
+DBHandler::queryPlayerByIdOK(std::string& playername,SGE_DBPlayerData& inst, int32 where)
 {
-	if(isFlag)
-		EndlessStair::instance()->getPlayerDBData(inst);
-	else
-	{
-		Player* player = Player::getPlayerByName(playername);
-		if(NULL == player)
-			return true;
-		player->queryPlayerInstOK(inst);
+	enum {
+		W_JJC,
+		W_QUERY_PLAYER_INFO,
+		W_JJC_PLAYER_INFO,
+	};
+	switch(where){
+		case W_JJC:{
+										EndlessStair::instance()->queryPlayerDataBack(playername,inst);
+										break;
+				   }
+		case W_QUERY_PLAYER_INFO:{
+										Player* player = Player::getPlayerByName(playername);
+										if(NULL == player)
+											return true;
+										COM_SimplePlayerInst inst2;
+										Player::transforDBPlayer2SimplePlayer(inst2,inst);
+										//临时屏蔽
+										CALL_CLIENT(player,queryPlayerOK(inst2));
+										
+										break;
+								 }
+		case W_JJC_PLAYER_INFO:{
+										Player* player = Player::getPlayerByName(playername);
+										if(NULL == player)
+											return true;
+										COM_SimplePlayerInst inst2;
+										Player::transforDBPlayer2SimplePlayer(inst2,inst);
+										//临时屏蔽
+										CALL_CLIENT(player,checkMsgOK(inst2));
+										break;
+							   }
+
 	}
-		
 	return true;
 }
 
 bool
 DBHandler::queryEndlessStairAllDateOK(std::vector< STRING >& name)
 {
-	EndlessStair::instance()->getEndlessStairDate(name);
+	EndlessStair::instance()->getEndlessStairData(name);
 	return true;
 }
 
@@ -150,11 +184,11 @@ DBHandler::createBabyOK(STRING& playername,COM_BabyInst& inst,bool isToStorage)
 	
 	if(isToStorage)
 	{
-			ACE_DEBUG((LM_DEBUG,"DB INSERT BABY BK 1\n"));
+			//ACE_DEBUG((LM_DEBUG,"DB INSERT BABY BK 1\n"));
 		player->depositBaby(inst);
 	}else
 	{
-			ACE_DEBUG((LM_DEBUG,"DB INSERT BABY BK 2\n"));
+			//ACE_DEBUG((LM_DEBUG,"DB INSERT BABY BK 2\n"));
 		player->addBaby(inst);
 	}
 	return true;
@@ -264,6 +298,7 @@ DBHandler::syncGuildMember(std::vector< COM_GuildMember >& guildMember)
 	{
 		Guild::addGuildMember(guildMember[i]);
 	}
+	Guild::checkGuildMember(guildMember);
 	return true;
 }
 
@@ -289,19 +324,23 @@ bool
 DBHandler::updateMemberJobOk(S32 roleId, GuildJob job)
 {
 	Guild* pGuild = Guild::findGuildByPlayer(roleId);
-	SRV_ASSERT(pGuild);
+	if(!pGuild){
+		return true;
+	}
 	COM_GuildMember* pMember = pGuild->findMember(roleId);
-	SRV_ASSERT(pMember);
+	if(!pMember){
+		return true;
+	}
 	pMember->job_ = job;
 	pGuild->updateMember(*pMember,MLF_ChangePosition,true);
 	return true;
 }
 
-bool
-DBHandler::queryIdgenOK(std::string& playerName, COM_KeyContent& content, bool isHas)
-{
-	return true;
-}
+//bool
+//DBHandler::queryIdgenOK(std::string& playerName, COM_KeyContent& content, bool isHas)
+//{
+//	return true;
+//}
 
 bool
 DBHandler::fatchActivity(SGE_SysActivity& date)

@@ -24,6 +24,42 @@ public:
 	inline U32 getTaskId(){return TASK_PLAYER;}
 };
 
+class QueryBabyCache : public Routine
+{
+public:
+	U32 go(SQLTask *pTask);
+	U32 back(){ 
+		ACE_DEBUG((LM_INFO,"Query baby cache ok!!\n"));
+		
+		return 0;};
+	inline U32 getTaskId(){return TASK_BABY;}
+};
+
+class QueryEmployeeCache : public Routine
+{
+public:
+	U32 go(SQLTask *pTask);
+	U32 back(){ 
+		ACE_DEBUG((LM_INFO,"Query employee cache ok!!\n"));
+
+		return 0;};
+		inline U32 getTaskId(){return TASK_EMPLOYEE;}
+};
+
+///查询角色
+class QueryPlayerSimple : public Routine
+{
+public:
+	U32 go(SQLTask *pTask);
+	U32 back();
+	inline U32 getTaskId(){return TASK_PLAYER;}
+
+	bool								hasPlayer_;
+	int32								serverId_;
+	std::string							username_;
+	std::vector<COM_SimpleInformation>	players_;
+};
+
 ///查询角色
 class QueryPlayer : public Routine
 {
@@ -32,10 +68,9 @@ public:
 	U32 back();
 	inline U32 getTaskId(){return TASK_PLAYER;}
 	
-	bool						hasPlayer_;
-	int32 serverId_;
+	int32						playerId_;
 	std::string					username_;
-	std::vector<SGE_DBPlayerData>	players_;
+	SGE_DBPlayerData			player_;
 };
 
 class QueryPlayerById : public Routine
@@ -44,7 +79,7 @@ public:
 	U32 go(SQLTask *pTask);
 	U32 back();
 	inline U32 getTaskId(){return TASK_PLAYER;}
-	bool						hasPlayer_;
+	int32						where_;
 	std::string					initiator_;
 	U32							playerGuid_;
 	SGE_DBPlayerData			player_;
@@ -107,6 +142,17 @@ public:
 
 	std::string			playerName_;
 	U32					rank_;
+};
+
+//更新JJC数据
+class DeleteEndlsee : public Routine
+{
+public:
+	U32 go(SQLTask *pTask);
+	U32 back();
+	inline U32 getTaskId(){return TASK_ENDLESSSTAIR;}
+
+	std::string			playerName_;
 };
 
 //更新JJC数据
@@ -199,7 +245,7 @@ public:
 	inline U32 getTaskId(){return TASK_BABY;}
 	bool						hasBaby_;
 	std::string					playerName_;
-	U32							babyInstID_;
+	U32							babyInstId_;
 	COM_BabyInst				baby_;
 };
 
@@ -247,7 +293,7 @@ public:
 	inline U32 getTaskId(){return TASK_EMPLOYEE;}
 	bool							hasEmployee_;
 	std::string						playerName_;
-	U32								employeeinstID_;
+	U32								employeeInstId_;
 	COM_EmployeeInst				employee_;
 };
 
@@ -449,17 +495,17 @@ public:
 };
 
 //激活码
-class Queryidgen : public Routine
-{
-public:
-	U32 go(SQLTask *pTask);
-	U32 back();
-	inline U32 getTaskId(){return TASK_IDGEN;}
-	std::string idgen_;
-	bool		hasIdgen_;
-	std::string playerName_;
-	COM_KeyContent content_;
-};
+//class Queryidgen : public Routine
+//{
+//public:
+//	U32 go(SQLTask *pTask);
+//	U32 back();
+//	inline U32 getTaskId(){return TASK_IDGEN;}
+//	std::string idgen_;
+//	bool		hasIdgen_;
+//	std::string playerName_;
+//	COM_KeyContent content_;
+//};
 
 class UpdateKeyGift : public Routine
 {
@@ -527,7 +573,7 @@ public:
 	U32 go(SQLTask *pTask);
 	inline U32 getTaskId(){return TASK_EMPLOYEEQUEST;}
 
-	U32			playerID_;
+	U32			playerId_;
 };
 
 class FetchEmployeeQuest : public Routine

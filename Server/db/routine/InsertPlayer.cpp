@@ -31,6 +31,7 @@ InsertPlayer::go(SQLTask *pTask)
 			ib.baby_ = player_.babies_[i];
 			ib.go(pTask);
 			player_.babies_[i] = ib.baby_;
+			Server::instance()->addBabyInst(ib.baby_);
 		}
 	}
 
@@ -41,6 +42,7 @@ InsertPlayer::go(SQLTask *pTask)
 			ie.employee_ = player_.employees_[i];
 			ie.go(pTask);
 			player_.employees_[i] = ie.employee_;
+			Server::instance()->addEmployeeInst(ie.employee_);
 		}
 	}
 	//player_.babies_.clear();

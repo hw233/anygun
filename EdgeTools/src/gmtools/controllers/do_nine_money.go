@@ -84,7 +84,7 @@ func (c *DoNineMoney) Post() {
 
 	}
 
-	url := beego.AppConfig.String("logservhost") + ":28080/insert"
+	url := beego.AppConfig.String("jiuyouservhost") + "insert"
 
 	req := httplib.Post(url)
 

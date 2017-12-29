@@ -2,7 +2,6 @@ package main
 
 import (
 	_ "logserv/controllers"
-	"logserv/models"
 	_ "logserv/routers"
 	"os"
 	"os/exec"
@@ -10,8 +9,6 @@ import (
 	"time"
 
 	"github.com/astaxie/beego"
-	"logserv/logs"
-	"github.com/astaxie/beego/toolbox"
 )
 
 func main() {
@@ -30,11 +27,11 @@ func main() {
 			return
 		}
 	}
-	models.InitAccountSet()
-	logs.InitLogging()
+	//models.InitAccountSet()
+	//logs.InitLogging()
 
-	toolbox.StartTask()
-	defer toolbox.StopTask()
+	//toolbox.StartTask()
+	//defer toolbox.StopTask()
 
 	beego.Run()
 }

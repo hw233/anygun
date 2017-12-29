@@ -13,7 +13,11 @@ type Query struct {
 }
 
 func (c *Query) Post() {
-	c.Ctx.Request.ParseForm()
+	//beego.Debug(string(c.Ctx.Input.RequestBody))
+	err := c.Ctx.Request.ParseForm()
+	if err != nil {
+		beego.Debug(err)
+	}
 	username := c.Input().Get("username")
 	version := c.Input().Get("version")
 	channel := c.Input().Get("channel")

@@ -56,7 +56,7 @@ LoginHandler::queryAccountOk(COM_AccountInfo& info, bool isNew,bool isSeal)
 	acc = Account::createAccount(va->client_,info);
 	acc->sdkInfo_ = va->sdkInfo_;
 	SRV_ASSERT(acc);
-	DBHandler::instance()->queryPlayer(info.username_,acc->client_->serverId_);
+	DBHandler::instance()->queryPlayerSimpleInformation(info.username_,acc->client_->serverId_);
 	
 	
 	if(isNew){

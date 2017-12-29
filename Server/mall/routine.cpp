@@ -49,6 +49,9 @@ DB_EXEC_UNGUARD_RETURN
 U32 FetchSell::go(SQLTask *pTask){
 	std::stringstream count;
 	std::stringstream sstream;
+	if (context_.begin_ < 0){
+		context_.begin_ = 0;
+	}
 	if(!context_.title_.empty())
 	{
 		sstream << "SELECT * FROM MallTable WHERE Title LIKE \'%" << context_.title_  << "%\'  ORDER BY ItemId ASC,BabyId ASC,SellPrice ASC LIMIT "<< context_.begin_ << " , " << context_.limit_ << ";";

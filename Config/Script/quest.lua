@@ -396,6 +396,10 @@ function QuestSubmit_fuben_602(RECEIVER, ARG0, ARG1, ARG2,ARG3)
 	Player.addAchuevementValue(RECEIVER,AT_Copy60,1);
 end
 
+function QuestSubmit_fuben_70(RECEIVER, ARG0, ARG1, ARG2,ARG3)
+	Player.addAchuevementValue(RECEIVER,AT_Copy70,1);
+end
+
 
 function QuestAccept_xinshou(RECEIVER, ARG0, ARG1, ARG2,ARG3)
 	--Player.accept_quest(RECEIVER,90007)

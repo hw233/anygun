@@ -94,4 +94,5 @@ sceneId,SceneType,scene_name,scene_icon,scene_xml,UnLockQuestID,EffectId,NavMesh
 1005,SCT_Instance,时光废墟,50jifuben,Scene/Scene_1005.xml,-1,shiguangfeixu,Scene/1005.obj,6,50jifuben,50jifuben_zhandou,4,-33,1,140,50jifuben01,
 1006,SCT_Instance,烈焰之地,60jima,Scene/Scene_1006.xml,-1,lieyanzhidi,Scene/1006.obj,6,60jifuben,MagmaScene_zhandou,-6,-13,1,140,60jifuben,
 1007,SCT_Instance,织网洞穴,60jilong,Scene/Scene_1007.xml,-1,zhiwangdongxue,Scene/1007.obj,6,chongdong,chongdong_zhandou,-17,1,1,140,chongdong,
+1008,SCT_Instance,星空祭坛,loding,Scene/Scene_1008.xml,-1,70jifuben,Scene/1008.obj,6,70jifuben,70jifuben_zhandou,10,-20,1,140,70jifuben,
 1100,SCT_GuildHome,家族领地,loding,Scene/Scene_1100.xml,-1,jiazulingdi,Scene/1100.obj,6,jiazu_changjing,AttackScene,8,13,1,140,jiazu_changjing,

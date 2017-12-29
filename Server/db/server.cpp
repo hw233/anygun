@@ -71,6 +71,7 @@ Server::handle_timeout (const ACE_Time_Value &current_time, const void *act)
 	if(!contactCache_.empty())
 	{
 		ACE_DEBUG((LM_INFO,"Sync player infos \n"));
+		
 		enum{ INFO_SIZE = 200 };
 		std::vector<SGE_ContactInfoExt> info;
 		for(int i=0; i<INFO_SIZE && !contactCache_.empty(); ++i)
@@ -84,6 +85,30 @@ Server::handle_timeout (const ACE_Time_Value &current_time, const void *act)
 		WorldHandler::instance()->syncGlobalGuid(maxGuid_);
 		maxGuid_ = 0;
 	}
+	
+	static U64 oldTime = current_time.get_msec();
+	U64 currTime = current_time.get_msec() ;
+	float delta =  (currTime - oldTime) / 1000.F ;
+	oldTime = currTime;
+
+	{ ///¼à²âÄÚ´æ
+		enum{
+			CHECK_INTERVAL = 300
+		};
+
+		static float check_interval = CHECK_INTERVAL;
+		check_interval -= delta;
+
+		if (check_interval < 0){
+			ACE_DEBUG((LM_INFO,"Baby Cache Length = %d , Index Length = %d\n",playerBabyCache_.size(),idBabyCache_.size()));
+			ACE_DEBUG((LM_INFO,"Employee Cache Length = %d Index Length = %d\n",playerEmployeeCache_.size(),idEmployeeCache_.size()));
+			check_interval = CHECK_INTERVAL;
+		}
+
+	}
+
+
+
 	initRank();
 	SQLTask::ping();
 	return 0;
@@ -99,7 +124,14 @@ Server::initData()
 	QueryPlayerContact* pQueryPlayerContact = NULL;
 	Routine::create(pQueryPlayerContact);
 	SQLTask::sglob(pQueryPlayerContact);
+	
+	QueryBabyCache *pQueryBabyCache = NULL;
+	Routine::create(pQueryBabyCache);
+	SQLTask::sglob(pQueryBabyCache);
 
+	QueryEmployeeCache *pQueryEmployeeCache = NULL;
+	Routine::create(pQueryEmployeeCache);
+	SQLTask::sglob(pQueryEmployeeCache);
 	//°ïÅÉ
 	FetchGuild* pGuild = NULL;
 	Routine::create(pGuild);
@@ -206,5 +238,105 @@ void Server::initRank(){
 			employeeQuestCache_.pop_back();
 		}
 		WorldHandler::instance()->syncEmployeeQuest(info);
+	}
+}
+
+void Server::addBabyInst(COM_BabyInst &inst){
+	COM_BabyInst *p = new COM_BabyInst(inst);
+	idBabyCache_[p->instId_] = p;
+	playerBabyCache_[p->ownerName_].push_back(p);
+}
+void Server::delBabyInst(U32 instId){
+	std::map<U32,COM_BabyInst*>::iterator mItr = idBabyCache_.find(instId);
+	if(mItr == idBabyCache_.end())
+		return;
+	COM_BabyInst*p = mItr->second;
+	idBabyCache_.erase(mItr);
+	if(NULL == p)
+		return;
+	std::vector<COM_BabyInst*> &li = playerBabyCache_[p->ownerName_];
+	std::vector<COM_BabyInst*>::iterator itr = std::find(li.begin(),li.end(),p);
+	if(itr != li.end()){
+		li.erase(itr);
+	}
+	delete p;
+}
+void Server::updateBabyInst(COM_BabyInst &inst){
+	std::map<U32,COM_BabyInst*>::iterator mItr = idBabyCache_.find(inst.instId_);
+	if(mItr == idBabyCache_.end())
+		return;
+	COM_BabyInst*p = mItr->second;
+	if(NULL == p)
+		return;
+	*p = inst;
+}
+
+bool Server::getBabyInst(U32 instId, COM_BabyInst &inst){
+	std::map<U32,COM_BabyInst*>::iterator mItr = idBabyCache_.find(inst.instId_);
+	if(mItr == idBabyCache_.end())
+		return false;
+	COM_BabyInst*p = mItr->second;
+	if(NULL == p)
+		return false;
+	 inst = *p;
+	return true;
+}
+
+void Server::getPlayerBabyList(std::string& playerName, std::vector<COM_BabyInst>& out){
+	if(playerBabyCache_.find(playerName) == playerBabyCache_.end())
+		return;
+	std::vector<COM_BabyInst*> &li = playerBabyCache_[playerName];
+	for(size_t i=0; i<li.size(); ++i){
+		out.push_back(*li[i]);
+	}
+}
+
+void Server::addEmployeeInst(COM_EmployeeInst &inst){
+	COM_EmployeeInst *p = new COM_EmployeeInst(inst);
+	idEmployeeCache_[p->instId_] = p;
+	playerEmployeeCache_[p->ownerName_].push_back(p);
+}
+void Server::delEmployeeInst(U32 instId){
+	std::map<U32,COM_EmployeeInst*>::iterator mItr = idEmployeeCache_.find(instId);
+	if(mItr == idEmployeeCache_.end())
+		return;
+	COM_EmployeeInst*p = mItr->second;
+	idEmployeeCache_.erase(mItr);
+	if(NULL == p)
+		return;
+	std::vector<COM_EmployeeInst*> &li = playerEmployeeCache_[p->ownerName_];
+	std::vector<COM_EmployeeInst*>::iterator itr = std::find(li.begin(),li.end(),p);
+	if(itr != li.end()){
+		li.erase(itr);
+	}
+	delete p;
+}
+void Server::updateEmployeeInst(COM_EmployeeInst &inst){
+	std::map<U32,COM_EmployeeInst*>::iterator mItr = idEmployeeCache_.find(inst.instId_);
+	if(mItr == idEmployeeCache_.end())
+		return;
+	COM_EmployeeInst*p = mItr->second;
+	if(NULL == p)
+		return;
+	*p = inst;
+}
+
+bool Server::getEmployeeInst(U32 instId, COM_EmployeeInst &inst){
+	std::map<U32,COM_EmployeeInst*>::iterator mItr = idEmployeeCache_.find(inst.instId_);
+	if(mItr == idEmployeeCache_.end())
+		return false;
+	COM_EmployeeInst*p = mItr->second;
+	if(NULL == p)
+		return false;
+	 inst = *p;
+	return true;
+}
+
+void Server::getPlayerEmployeeList(std::string& playerName, std::vector<COM_EmployeeInst>& out){
+	if(playerEmployeeCache_.find(playerName) == playerEmployeeCache_.end())
+		return;
+	std::vector<COM_EmployeeInst*> &li = playerEmployeeCache_[playerName];
+	for(size_t i=0; i<li.size(); ++i){
+		out.push_back(*li[i]);
 	}
 }

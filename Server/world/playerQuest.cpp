@@ -32,6 +32,14 @@ Player::getQuestInst(S32 questId)
 	return NULL;
 }
 
+bool Player::isQuestComplate(S32 questId){
+	for(size_t i=0; i<completeQuest_.size(); ++i){
+		if(questId == completeQuest_[i])
+			return true;
+	}
+	return false;
+}
+
 void
 Player::addQuestCounter(S32 questId)
 {
@@ -110,6 +118,8 @@ void Player::prepareAcceptQuest(S32 questId){
 		if(quest->questKind_ == QK_Tongji){
 			U32 level = getProp(PT_Level);
 			if(level < Global::get<int>(C_TongjiTeamMemberLevelMin))
+				return;
+			if(hasQuestByType(QK_Tongji))
 				return;
 			quest = Quest::randomTongjiQuest(level);
 		}
@@ -750,6 +760,21 @@ Player::gmAcceptQuest(S32 questId)
 	currentQuest_.push_back(inst);
 	postAcceptEvent(questId);
 	CALL_CLIENT(this,acceptQuestOk(inst));
+}
+
+
+void
+Player::gmJumpQuest(S32 questId)
+{
+	if(!Quest::getQuestById(questId))
+		return;
+	for(size_t i=0; i<completeQuest_.size(); ++i){
+		if (completeQuest_[i] == questId)
+			return;
+	}
+
+	completeQuest_.push_back(questId);
+	CALL_CLIENT(this,submitQuestOk(questId));
 }
 
 void

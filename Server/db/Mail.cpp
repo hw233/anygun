@@ -195,7 +195,7 @@ DB_EXEC_UNGUARD_RETURN
 }
 
 U32 FatchMail::back(){
-	ACE_DEBUG((LM_DEBUG,ACE_TEXT("Name = %s,FatchMail::back() mails_.Size == %d\n"),recvName_.c_str(),mails_.size()));
+	//ACE_DEBUG((LM_DEBUG,ACE_TEXT("Name = %s,FatchMail::back() mails_.Size == %d\n"),recvName_.c_str(),mails_.size()));
 	WorldHandler::instance()->appendMail(recvName_, mails_);
 	return 0;
 }

@@ -547,8 +547,6 @@ void Team::acceptTeamQuest(Player* leader, S32 questId){
 	if(!(isTeamMember(leader) && isTeamLeader(leader))){
 		return ; ///不是队长不能接取任务
 	}
-	if(true == leader->hasQuestByType(QK_Tongji))
-		return;	
 	
 	const Quest* q = Quest::getQuestById(questId);
 	if(NULL == q)
@@ -556,6 +554,8 @@ void Team::acceptTeamQuest(Player* leader, S32 questId){
 	if(q->questKind_ == QK_Guild)
 		return;//家族任务组队不能接
 	if(q->questKind_ == QK_Tongji){
+		if(leader->hasQuestByType(QK_Tongji))
+			return;	
 		S32 level = getMinLevel();
 		q = Quest::randomTongjiQuest(level);
 		if(q == NULL)

@@ -9,7 +9,6 @@ U32
 QueryPlayerById::go(SQLTask *pTask)
 {
 	ACE_DEBUG((LM_INFO,ACE_TEXT("QueryPlayerById player %d \n"),playerGuid_));
-	ACE_DEBUG((LM_DEBUG ,"QueryPlayerById go\n"));
 	std::stringstream sstream;
 	sstream << "SELECT * FROM Player WHERE playerGuid = \"" << playerGuid_ << "\"";
 
@@ -32,37 +31,7 @@ QueryPlayerById::go(SQLTask *pTask)
 			inst.instId_ = instId;
 			inst.deserialize(&mr);
 
-			{
-				std::stringstream ssbaby;
-				ssbaby << "SELECT * FROM Baby WHERE OwnerName = \"" << inst.instName_ << "\"";
-				CppSQLite3Query qbaby = dbc->execQuery(ssbaby.str().c_str());
-				inst.babies_.clear();
-				while(!qbaby.eof())
-				{
-					const unsigned char* pCacheBlobBaby= qbaby.getBlobField("BinData",len);
-					ProtocolMemReader mrbaby(pCacheBlobBaby,len);
-					COM_BabyInst instbaby;
-					instbaby.deserialize(&mrbaby);
-					inst.babies_.push_back(instbaby);
-					qbaby.nextRow();
-				}
-			}
-
-			{
-				std::stringstream ssemployee;
-				ssemployee << "SELECT * FROM Employee WHERE OwnerName = \"" << inst.instName_ << "\"";
-				CppSQLite3Query qemployees = dbc->execQuery(ssemployee.str().c_str());
-				inst.employees_.clear();
-				while(!qemployees.eof())
-				{
-					const unsigned char* pCacheBlobEmployee= qemployees.getBlobField("BinData",len);
-					ProtocolMemReader mremployee(pCacheBlobEmployee,len);
-					COM_EmployeeInst instemployee;
-					instemployee.deserialize(&mremployee);
-					inst.employees_.push_back(instemployee);
-					qemployees.nextRow();
-				}
-			}
+			
 
 			player_ = inst;
 			q.nextRow();
@@ -72,7 +41,7 @@ QueryPlayerById::go(SQLTask *pTask)
 	std::auto_ptr< sql::Statement > stmt(dbc->createStatement());
 	std::auto_ptr< sql::ResultSet > res(stmt->executeQuery(sstream.str().c_str()));
 
-	while(res->next())
+	if(res->next())
 	{
 		U32 instId = res->getInt("PlayerGuid");
 		S32 len=0;
@@ -81,38 +50,9 @@ QueryPlayerById::go(SQLTask *pTask)
 		SGE_DBPlayerData inst;
 		inst.instId_ = instId;
 		inst.deserialize(&mr);
-
-		{
-			std::stringstream ssbaby;
-			ssbaby << "SELECT * FROM Baby WHERE OwnerName = \"" << inst.instName_ << "\"";
-			std::auto_ptr< sql::Statement > stmt1(dbc->createStatement());
-			std::auto_ptr< sql::ResultSet > res1(stmt1->executeQuery(ssbaby.str().c_str()));
-			inst.babies_.clear();
-			while(res1->next())
-			{
-				sql::SQLString pCacheBlob1= res1->getString("BinData");
-				ProtocolMemReader mrbaby(pCacheBlob1->c_str(),pCacheBlob1->length());
-				COM_BabyInst instbaby;
-				instbaby.deserialize(&mrbaby);
-				inst.babies_.push_back(instbaby);
-			}
-		}
-
-		{
-			std::stringstream ssemployee;
-			ssemployee << "SELECT * FROM Employee WHERE OwnerName = \"" << inst.instName_ << "\"";
-			std::auto_ptr< sql::Statement > stmt1(dbc->createStatement());
-			std::auto_ptr< sql::ResultSet > res1(stmt1->executeQuery(ssemployee.str().c_str()));
-			inst.employees_.clear();
-			while(res1->next())
-			{
-				sql::SQLString pCacheBlob1= res1->getString("BinData");
-				ProtocolMemReader mremployee(pCacheBlob1->c_str(),pCacheBlob1->length());
-				COM_EmployeeInst instemployee;
-				instemployee.deserialize(&mremployee);
-				inst.employees_.push_back(instemployee);
-			}
-		}
+		
+		inst.instId_ =  res->getInt("PlayerGuid");
+		inst.instName_	= res->getString("PlayerName").c_str();
 
 		player_ = inst;
 	}
@@ -125,8 +65,10 @@ QueryPlayerById::go(SQLTask *pTask)
 U32
 QueryPlayerById::back()
 {
-	ACE_DEBUG((LM_INFO,ACE_TEXT("QueryPlayerById player %d back\n"),playerGuid_));
-	WorldHandler::instance()->queryPlayerByIdOK(initiator_,player_,hasPlayer_);
+	//ACE_DEBUG((LM_INFO,ACE_TEXT("QueryPlayerById player %d back\n"),playerGuid_));
+	Server::instance()->getPlayerBabyList(player_.instName_,player_.babies_);
+	Server::instance()->getPlayerEmployeeList(player_.instName_,player_.employees_);
+	WorldHandler::instance()->queryPlayerByIdOK(initiator_,player_,where_);
 	
 	return 0;
 }
