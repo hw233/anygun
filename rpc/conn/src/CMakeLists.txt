@@ -1,0 +1,13 @@
+# connections 
+
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+
+# Set lib dir to lib
+SET( LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/../lib )
+
+AUX_SOURCE_DIRECTORY( . sources )
+IF( CMAKE_BUILD_TYPE MATCHES "Debug" )
+	ADD_LIBRARY(connections_d STATIC ${sources} ) 
+ELSE( CMAKE_BUILD_TYPE MATCHES "Debug" )
+	ADD_LIBRARY(connections STATIC ${sources} ) 
+ENDIF( CMAKE_BUILD_TYPE MATCHES "Debug" )
