@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="script">
+      <UniqueIdentifier>{f354223e-6b9a-4fcc-b914-f9196c4ca0d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="handler">
+      <UniqueIdentifier>{cf5323b1-517b-45b9-bd1b-0766ddcaf666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{708614cf-c20b-4518-984b-79e57851c299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="battle">
+      <UniqueIdentifier>{be978894-cae4-4c4a-880f-929e2e2cf4e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="employee">
+      <UniqueIdentifier>{3a28e98b-f71c-4546-b62a-88c5d47d2d73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="skill">
+      <UniqueIdentifier>{ffe4c0d3-ae34-42b3-88ac-0ed47cd8bf11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="entity">
+      <UniqueIdentifier>{336f7daf-ba57-402e-8527-6ce92fb137ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="team">
+      <UniqueIdentifier>{73d8e58a-e295-4a45-8256-4d358471fd65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="activity">
+      <UniqueIdentifier>{d6009c87-82c0-4087-bc61-fac565f4a718}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="guild">
+      <UniqueIdentifier>{febeb079-f8e8-4d4c-a3a4-97970c012841}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="storage">
+      <UniqueIdentifier>{e6ab7587-4d25-4a25-9207-1408203bb3eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="player">
+      <UniqueIdentifier>{6b7904b3-2a79-4d01-8630-fd925aa21208}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="script\GameScript.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="script\ScriptHandle.cpp">
+      <Filter>script</Filter>
+    </ClCompile>
+    <ClCompile Include="AnySDKWrapper.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="broadcaster.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="client.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="dbhandler.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="GMThandler.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="gwhandler.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="loghandler.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="loginhandler.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="MallHandle.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="scenehandler.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="worldserv.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="battle.cpp">
+      <Filter>battle</Filter>
+    </ClCompile>
+    <ClCompile Include="battleAPI.cpp">
+      <Filter>battle</Filter>
+    </ClCompile>
+    <ClCompile Include="battleCreat.cpp">
+      <Filter>battle</Filter>
+    </ClCompile>
+    <ClCompile Include="battleLog.cpp">
+      <Filter>battle</Filter>
+    </ClCompile>
+    <ClCompile Include="battleOrderMgr.cpp">
+      <Filter>battle</Filter>
+    </ClCompile>
+    <ClCompile Include="battleStateMgr.cpp">
+      <Filter>battle</Filter>
+    </ClCompile>
+    <ClCompile Include="EndlessStair.cpp">
+      <Filter>battle</Filter>
+    </ClCompile>
+    <ClCompile Include="pvpJJC.cpp">
+      <Filter>battle</Filter>
+    </ClCompile>
+    <ClCompile Include="employee.cpp">
+      <Filter>employee</Filter>
+    </ClCompile>
+    <ClCompile Include="employeeoutput.cpp">
+      <Filter>employee</Filter>
+    </ClCompile>
+    <ClCompile Include="EmployeeQuestSystem.cpp">
+      <Filter>employee</Filter>
+    </ClCompile>
+    <ClCompile Include="skill.cpp">
+      <Filter>skill</Filter>
+    </ClCompile>
+    <ClCompile Include="account.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="achuevement.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="baby.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="InnerPlayer.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="monster.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Robot.cpp">
+      <Filter>entity</Filter>
+    </ClCompile>
+    <ClCompile Include="team.cpp">
+      <Filter>team</Filter>
+    </ClCompile>
+    <ClCompile Include="Activity.cpp">
+      <Filter>activity</Filter>
+    </ClCompile>
+    <ClCompile Include="exam.cpp">
+      <Filter>activity</Filter>
+    </ClCompile>
+    <ClCompile Include="pkActity.cpp">
+      <Filter>activity</Filter>
+    </ClCompile>
+    <ClCompile Include="Guild.cpp">
+      <Filter>guild</Filter>
+    </ClCompile>
+    <ClCompile Include="Storage.cpp">
+      <Filter>storage</Filter>
+    </ClCompile>
+    <ClCompile Include="GameRuler.cpp">
+      <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerChat.cpp">
+      <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerEmployee.cpp">
+      <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerQuest.cpp">
+      <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="playerTeam.cpp">
+      <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneplayer.cpp">
+      <Filter>player</Filter>
+    </ClCompile>
+    <ClCompile Include="centerServer.cpp" />
+    <ClCompile Include="gift.cpp" />
+    <ClCompile Include="GMCmdMgr.cpp" />
+    <ClCompile Include="logTask.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="sms.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="script\GameScript.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="script\ScriptHandle.h">
+      <Filter>script</Filter>
+    </ClInclude>
+    <ClInclude Include="AnySDKWrapper.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="broadcaster.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="client.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="dbhandler.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="GMThandler.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="gwhandler.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="loghandler.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="loginhandler.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="MallHandle.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="scenehandler.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="ShowDataTemplate.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="worldserv.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="battle.h">
+      <Filter>battle</Filter>
+    </ClInclude>
+    <ClInclude Include="EndlessStair.h">
+      <Filter>battle</Filter>
+    </ClInclude>
+    <ClInclude Include="pvpJJC.h">
+      <Filter>battle</Filter>
+    </ClInclude>
+    <ClInclude Include="employee.h">
+      <Filter>employee</Filter>
+    </ClInclude>
+    <ClInclude Include="employeeoutput.h">
+      <Filter>employee</Filter>
+    </ClInclude>
+    <ClInclude Include="EmployeeQuestSystem.h">
+      <Filter>employee</Filter>
+    </ClInclude>
+    <ClInclude Include="skill.h">
+      <Filter>skill</Filter>
+    </ClInclude>
+    <ClInclude Include="account.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="baby.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="InnerPlayer.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="monster.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Robot.h">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="team.h">
+      <Filter>team</Filter>
+    </ClInclude>
+    <ClInclude Include="Activity.h">
+      <Filter>activity</Filter>
+    </ClInclude>
+    <ClInclude Include="exam.h">
+      <Filter>activity</Filter>
+    </ClInclude>
+    <ClInclude Include="pkActity.h">
+      <Filter>activity</Filter>
+    </ClInclude>
+    <ClInclude Include="Guild.h">
+      <Filter>guild</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRuler.h">
+      <Filter>player</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>player</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneplayer.h">
+      <Filter>player</Filter>
+    </ClInclude>
+    <ClInclude Include="centerServer.h" />
+    <ClInclude Include="gift.h" />
+    <ClInclude Include="GMCmdMgr.h" />
+    <ClInclude Include="logTask.h" />
+    <ClInclude Include="sms.h" />
+  </ItemGroup>
+</Project>

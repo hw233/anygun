@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="routine">
+      <UniqueIdentifier>{9d80459d-98d9-41bb-915c-816226c450f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="handler">
+      <UniqueIdentifier>{aabb27e9-5c77-4579-9b1c-a917cd11c47a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="routine\BabyRoutine.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\DBActivity.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\DBGuild.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\DBIdgen.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\DeletePlayer.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\EmployeeRoutine.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\InsertEndlessStair.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\InsertPlayer.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="Mail.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\QueryEndlessAllDate.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\QueryPlayer.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\QueryPlayerById.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\QueryPlayerByLevel.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\UpdataEndlessStair.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\UpdatePlayer.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="handler.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="routine.cpp" />
+    <ClCompile Include="server.cpp" />
+    <ClCompile Include="sqltask.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="handler.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="routine.h" />
+    <ClInclude Include="server.h" />
+    <ClInclude Include="sqltask.h" />
+  </ItemGroup>
+</Project>

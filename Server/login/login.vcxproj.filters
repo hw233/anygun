@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="routine">
+      <UniqueIdentifier>{f1da2cb8-247f-424e-a21f-ac5c78e14c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="handler">
+      <UniqueIdentifier>{efc7bc7b-7008-4358-8ab5-667e2dd47611}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="routine\InsertAccount.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="routine\QueryAccount.cpp">
+      <Filter>routine</Filter>
+    </ClCompile>
+    <ClCompile Include="handler.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="routine.cpp" />
+    <ClCompile Include="server.cpp" />
+    <ClCompile Include="sqltask.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="handler.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="routine.h" />
+    <ClInclude Include="server.h" />
+    <ClInclude Include="sqltask.h" />
+  </ItemGroup>
+</Project>

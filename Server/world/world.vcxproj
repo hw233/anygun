@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{723A357C-6747-41FC-91D5-B0796BC8E995}</ProjectGuid>
+    <RootNamespace>serv</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\bin\</OutDir>
+    <IntDir>..\..\object\debug\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\</OutDir>
+    <IntDir>..\..\object\release\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\;..\;.\script;..\tables;..\common\ace;..\common;..\common\rpc;..\common\gen_rpc;..\common\lua;$(BOOST_INCLUDEDIR);$(SQLITE_INCLUDEDIR);$(MYSQL_INCLUDEDIR);$(LIBCURL_INCLUDEDIR);$(ACE_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>ACEd.lib;libcurld.lib;Ws2_32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName)d.exe</OutputFile>
+      <AdditionalLibraryDirectories>$(ACE_ROOT)/lib;$(BOOST_LIBRARYDIR);$(SQLITE_LIBRARYDIR);$(MYSQL_LIBRARYDIR);$(LIBCURL_LIBRARYDIR);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.\;..\;.\script;..\tables;..\common\ace;..\depend;..\depend\mysql\win32;..\common;..\common\rpc;..\common\gen_rpc;..\common\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>../depend/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="account.cpp" />
+    <ClCompile Include="achuevement.cpp" />
+    <ClCompile Include="Activity.cpp" />
+    <ClCompile Include="AnySDKWrapper.cpp" />
+    <ClCompile Include="baby.cpp" />
+    <ClCompile Include="battle.cpp" />
+    <ClCompile Include="battleAPI.cpp" />
+    <ClCompile Include="battleCreat.cpp" />
+    <ClCompile Include="battleLog.cpp" />
+    <ClCompile Include="battleOrderMgr.cpp" />
+    <ClCompile Include="battleStateMgr.cpp" />
+    <ClCompile Include="broadcaster.cpp" />
+    <ClCompile Include="centerServer.cpp" />
+    <ClCompile Include="client.cpp" />
+    <ClCompile Include="dbhandler.cpp" />
+    <ClCompile Include="employee.cpp" />
+    <ClCompile Include="employeeoutput.cpp" />
+    <ClCompile Include="EmployeeQuestSystem.cpp" />
+    <ClCompile Include="EndlessStair.cpp" />
+    <ClCompile Include="entity.cpp" />
+    <ClCompile Include="exam.cpp" />
+    <ClCompile Include="GameRuler.cpp" />
+    <ClCompile Include="gift.cpp" />
+    <ClCompile Include="GMCmdMgr.cpp" />
+    <ClCompile Include="GMThandler.cpp" />
+    <ClCompile Include="Guild.cpp" />
+    <ClCompile Include="gwhandler.cpp" />
+    <ClCompile Include="InnerPlayer.cpp" />
+    <ClCompile Include="loghandler.cpp" />
+    <ClCompile Include="loginhandler.cpp" />
+    <ClCompile Include="logTask.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MallHandle.cpp" />
+    <ClCompile Include="monster.cpp" />
+    <ClCompile Include="pkActity.cpp" />
+    <ClCompile Include="player.cpp" />
+    <ClCompile Include="PlayerChat.cpp" />
+    <ClCompile Include="playerEmployee.cpp" />
+    <ClCompile Include="playerQuest.cpp" />
+    <ClCompile Include="playerTeam.cpp" />
+    <ClCompile Include="pvpJJC.cpp" />
+    <ClCompile Include="Robot.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="scenehandler.cpp" />
+    <ClCompile Include="sceneplayer.cpp" />
+    <ClCompile Include="script\GameScript.cpp" />
+    <ClCompile Include="script\ScriptHandle.cpp" />
+    <ClCompile Include="skill.cpp" />
+    <ClCompile Include="sms.cpp" />
+    <ClCompile Include="Storage.cpp" />
+    <ClCompile Include="team.cpp" />
+    <ClCompile Include="worldserv.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="account.h" />
+    <ClInclude Include="Activity.h" />
+    <ClInclude Include="AnySDKWrapper.h" />
+    <ClInclude Include="baby.h" />
+    <ClInclude Include="battle.h" />
+    <ClInclude Include="broadcaster.h" />
+    <ClInclude Include="centerServer.h" />
+    <ClInclude Include="client.h" />
+    <ClInclude Include="dbhandler.h" />
+    <ClInclude Include="employee.h" />
+    <ClInclude Include="employeeoutput.h" />
+    <ClInclude Include="EmployeeQuestSystem.h" />
+    <ClInclude Include="EndlessStair.h" />
+    <ClInclude Include="entity.h" />
+    <ClInclude Include="exam.h" />
+    <ClInclude Include="GameRuler.h" />
+    <ClInclude Include="gift.h" />
+    <ClInclude Include="GMCmdMgr.h" />
+    <ClInclude Include="GMThandler.h" />
+    <ClInclude Include="Guild.h" />
+    <ClInclude Include="gwhandler.h" />
+    <ClInclude Include="InnerPlayer.h" />
+    <ClInclude Include="loghandler.h" />
+    <ClInclude Include="loginhandler.h" />
+    <ClInclude Include="logTask.h" />
+    <ClInclude Include="MallHandle.h" />
+    <ClInclude Include="monster.h" />
+    <ClInclude Include="pkActity.h" />
+    <ClInclude Include="player.h" />
+    <ClInclude Include="pvpJJC.h" />
+    <ClInclude Include="Robot.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="scenehandler.h" />
+    <ClInclude Include="sceneplayer.h" />
+    <ClInclude Include="script\GameScript.h" />
+    <ClInclude Include="script\ScriptHandle.h" />
+    <ClInclude Include="ShowDataTemplate.h" />
+    <ClInclude Include="skill.h" />
+    <ClInclude Include="sms.h" />
+    <ClInclude Include="team.h" />
+    <ClInclude Include="worldserv.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\common\common.vcxproj">
+      <Project>{e06cf65e-5aa4-426f-a8d2-133f99872d03}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\tables\tables.vcxproj">
+      <Project>{2e2e4e4b-5ace-4cf8-ad67-4ab0a68fb7de}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

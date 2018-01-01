@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="handler">
+      <UniqueIdentifier>{ea91b8c2-9a22-41cf-8185-e2647a7cc88e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="handler.cpp">
+      <Filter>handler</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="routine.cpp" />
+    <ClCompile Include="server.cpp" />
+    <ClCompile Include="sqltask.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="handler.h">
+      <Filter>handler</Filter>
+    </ClInclude>
+    <ClInclude Include="routine.h" />
+    <ClInclude Include="server.h" />
+    <ClInclude Include="sqltask.h" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E06CF65E-5AA4-426F-A8D2-133F99872D03}</ProjectGuid>
+    <RootNamespace>serv</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\lib\</OutDir>
+    <IntDir>..\..\object\debug\common\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\</OutDir>
+    <IntDir>..\..\object\release\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\;..\;.\rpc;.\gen_rpc;.\lua;$(BOOST_INCLUDEDIR);$(SQLITE_INCLUDEDIR);$(MYSQL_INCLUDEDIR);$(LIBCURL_INCLUDEDIR);$(ACE_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(ProjectName)d.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.\;..\;.\rpc;.\gen_rpc;.\lua;$(BOOST_INCLUDEDIR);$(SQLITE_INCLUDEDIR);$(MYSQL_INCLUDEDIR);$(LIBCURL_INCLUDEDIR);$(ACE_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="ace\BINChannel.h" />
+    <ClInclude Include="ace\BINChannelBroadcaster.h" />
+    <ClInclude Include="ace\BINChannelConnection.h" />
+    <ClInclude Include="ace\BINCompressConnection.h" />
+    <ClInclude Include="ace\BINConnection.h" />
+    <ClInclude Include="ace\Channel.h" />
+    <ClInclude Include="ace\ChannelBroadcaster.h" />
+    <ClInclude Include="ace\ChannelConnection.h" />
+    <ClInclude Include="ace\CompressConnection.h" />
+    <ClInclude Include="ace\Connection.h" />
+    <ClInclude Include="ComEnv.h" />
+    <ClInclude Include="ComGlobal.h" />
+    <ClInclude Include="ComScriptApi.h" />
+    <ClInclude Include="ComScriptEvn.h" />
+    <ClInclude Include="ComScriptHeader.h" />
+    <ClInclude Include="ComScriptRegster.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="coredump.h" />
+    <ClInclude Include="CppSQLite3.h" />
+    <ClInclude Include="CSVParser.h" />
+    <ClInclude Include="fastlz.h" />
+    <ClInclude Include="gen_rpc\Client2ServerMethods.h" />
+    <ClInclude Include="gen_rpc\com.h" />
+    <ClInclude Include="gen_rpc\env.h" />
+    <ClInclude Include="gen_rpc\global.h" />
+    <ClInclude Include="gen_rpc\proto.h" />
+    <ClInclude Include="gen_rpc\Server2ClientMethods.h" />
+    <ClInclude Include="gen_rpc\struct.h" />
+    <ClInclude Include="gen_rpc\structold.h" />
+    <ClInclude Include="GlobalConstants.h" />
+    <ClInclude Include="gzip.h" />
+    <ClInclude Include="HttpParser.h" />
+    <ClInclude Include="http_parser.h" />
+    <ClInclude Include="json\autolink.h" />
+    <ClInclude Include="json\config.h" />
+    <ClInclude Include="json\features.h" />
+    <ClInclude Include="json\forwards.h" />
+    <ClInclude Include="json\json.h" />
+    <ClInclude Include="json\json_batchallocator.h" />
+    <ClInclude Include="json\reader.h" />
+    <ClInclude Include="json\value.h" />
+    <ClInclude Include="json\writer.h" />
+    <ClInclude Include="LinuxCommon.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="lua\lapi.h" />
+    <ClInclude Include="lua\lauxlib.h" />
+    <ClInclude Include="lua\lcode.h" />
+    <ClInclude Include="lua\ldebug.h" />
+    <ClInclude Include="lua\ldo.h" />
+    <ClInclude Include="lua\lfunc.h" />
+    <ClInclude Include="lua\lgc.h" />
+    <ClInclude Include="lua\llex.h" />
+    <ClInclude Include="lua\llimits.h" />
+    <ClInclude Include="lua\lmem.h" />
+    <ClInclude Include="lua\lobject.h" />
+    <ClInclude Include="lua\lopcodes.h" />
+    <ClInclude Include="lua\lparser.h" />
+    <ClInclude Include="lua\lstate.h" />
+    <ClInclude Include="lua\lstring.h" />
+    <ClInclude Include="lua\ltable.h" />
+    <ClInclude Include="lua\ltm.h" />
+    <ClInclude Include="lua\lua.h" />
+    <ClInclude Include="lua\luaconf.h" />
+    <ClInclude Include="lua\lualib.h" />
+    <ClInclude Include="lua\lundump.h" />
+    <ClInclude Include="lua\lvm.h" />
+    <ClInclude Include="lua\lzio.h" />
+    <ClInclude Include="MD5.h" />
+    <ClInclude Include="MemRecord.h" />
+    <ClInclude Include="nedmalloc\malloc.c.h" />
+    <ClInclude Include="nedmalloc\nedmalloc.h" />
+    <ClInclude Include="PeriodEvent.h" />
+    <ClInclude Include="rpc\Common.h" />
+    <ClInclude Include="rpc\EnumInfo.h" />
+    <ClInclude Include="rpc\FieldMask.h" />
+    <ClInclude Include="rpc\ProtocolBytesReader.h" />
+    <ClInclude Include="rpc\ProtocolBytesWriter.h" />
+    <ClInclude Include="rpc\ProtocolMemReader.h" />
+    <ClInclude Include="rpc\ProtocolMemWriter.h" />
+    <ClInclude Include="rpc\ProtocolReader.h" />
+    <ClInclude Include="rpc\ProtocolWriter.h" />
+    <ClInclude Include="SqlCommon.h" />
+    <ClInclude Include="sqlite3\sqlite3.h" />
+    <ClInclude Include="stdext.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="tinyxml\tinystr.h" />
+    <ClInclude Include="tinyxml\tinyxml.h" />
+    <ClInclude Include="TokenParser.h" />
+    <ClInclude Include="UtlMath.h" />
+    <ClInclude Include="zlib\zconf.h" />
+    <ClInclude Include="zlib\zlib.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ace\Channel.cpp" />
+    <ClCompile Include="ace\ChannelConnection.cpp" />
+    <ClCompile Include="ace\CompressConnection.cpp" />
+    <ClCompile Include="ace\Connection.cpp" />
+    <ClCompile Include="Base64.cpp" />
+    <ClCompile Include="ComEnv.cpp" />
+    <ClCompile Include="ComGlobal.cpp" />
+    <ClCompile Include="ComScriptApi.cpp" />
+    <ClCompile Include="ComScriptEvn.cpp" />
+    <ClCompile Include="config.cpp" />
+    <ClCompile Include="CppSQLite3.cpp" />
+    <ClCompile Include="CSVParser.cpp" />
+    <ClCompile Include="fastlz.c" />
+    <ClCompile Include="gen_rpc\com.cpp" />
+    <ClCompile Include="gen_rpc\env.cpp" />
+    <ClCompile Include="gen_rpc\global.cpp" />
+    <ClCompile Include="gen_rpc\proto.cpp" />
+    <ClCompile Include="gen_rpc\struct.cpp" />
+    <ClCompile Include="gen_rpc\structold.cpp" />
+    <ClCompile Include="gzip.cpp" />
+    <ClCompile Include="HttpParser.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessSuppressLineNumbers>
+    </ClCompile>
+    <ClCompile Include="http_parser.c" />
+    <ClCompile Include="json\json_reader.cpp" />
+    <ClCompile Include="json\json_value.cpp" />
+    <ClCompile Include="json\json_writer.cpp" />
+    <ClCompile Include="LinuxCommon.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="lua\lapi.c" />
+    <ClCompile Include="lua\lauxlib.c" />
+    <ClCompile Include="lua\lbaselib.c" />
+    <ClCompile Include="lua\lcode.c" />
+    <ClCompile Include="lua\ldblib.c" />
+    <ClCompile Include="lua\ldebug.c" />
+    <ClCompile Include="lua\ldo.c" />
+    <ClCompile Include="lua\ldump.c" />
+    <ClCompile Include="lua\lfunc.c" />
+    <ClCompile Include="lua\lgc.c" />
+    <ClCompile Include="lua\linit.c" />
+    <ClCompile Include="lua\liolib.c" />
+    <ClCompile Include="lua\llex.c" />
+    <ClCompile Include="lua\lmathlib.c" />
+    <ClCompile Include="lua\lmem.c" />
+    <ClCompile Include="lua\loadlib.c" />
+    <ClCompile Include="lua\lobject.c" />
+    <ClCompile Include="lua\lopcodes.c" />
+    <ClCompile Include="lua\loslib.c" />
+    <ClCompile Include="lua\lparser.c" />
+    <ClCompile Include="lua\lstate.c" />
+    <ClCompile Include="lua\lstring.c" />
+    <ClCompile Include="lua\lstrlib.c" />
+    <ClCompile Include="lua\ltable.c" />
+    <ClCompile Include="lua\ltablib.c" />
+    <ClCompile Include="lua\ltm.c" />
+    <ClCompile Include="lua\lua.c" />
+    <ClCompile Include="lua\luac.c" />
+    <ClCompile Include="lua\lundump.c" />
+    <ClCompile Include="lua\lvm.c" />
+    <ClCompile Include="lua\lzio.c" />
+    <ClCompile Include="lua\print.c" />
+    <ClCompile Include="MD5.cpp" />
+    <ClCompile Include="MemRecord.cpp" />
+    <ClCompile Include="nedmalloc\nedmalloc.cc" />
+    <ClCompile Include="PeriodEvent.cpp" />
+    <ClCompile Include="sqlite3\sqlite3.c" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="tinyxml\tinystr.cpp" />
+    <ClCompile Include="tinyxml\tinyxml.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="TokenParser.cpp" />
+    <ClCompile Include="UtlMath.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Schema\com.arpc" />
+    <None Include="..\..\Schema\env.arpc" />
+    <None Include="..\..\Schema\global.arpc" />
+    <None Include="..\..\Schema\proto.arpc" />
+    <None Include="..\..\Schema\struct.arpc" />
+    <None Include="..\..\Schema\structold.arpc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

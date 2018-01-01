@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2E2E4E4B-5ACE-4CF8-AD67-4AB0A68FB7DE}</ProjectGuid>
+    <RootNamespace>serv</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>..\..\lib\</OutDir>
+    <IntDir>..\..\object\debug\tables\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>..\..\bin\</OutDir>
+    <IntDir>..\..\object\release\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\;..\;.\script;..\common\ace;..\common;..\common\rpc;..\common\gen_rpc;..\common\lua;$(BOOST_INCLUDEDIR);$(SQLITE_INCLUDEDIR);$(MYSQL_INCLUDEDIR);$(LIBCURL_INCLUDEDIR);$(ACE_ROOT);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;USE_SQLITE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(ProjectName)d.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.\;..\;.\script;..\common\ace;..\depend;..\depend\mysql\win32;..\common;..\common\rpc;..\common\gen_rpc;..\common\lua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="achievementTable.cpp" />
+    <ClCompile Include="Activities.cpp" />
+    <ClCompile Include="ArtifactChangeData.cpp" />
+    <ClCompile Include="ArtifactConfigTable.cpp" />
+    <ClCompile Include="ArtifactLevelTable.cpp" />
+    <ClCompile Include="BattleData.cpp" />
+    <ClCompile Include="challengeTable.cpp" />
+    <ClCompile Include="copyscene.cpp" />
+    <ClCompile Include="DailyReward.cpp" />
+    <ClCompile Include="DebrisTable.cpp" />
+    <ClCompile Include="DropTable.cpp" />
+    <ClCompile Include="EmployeeConfig.cpp" />
+    <ClCompile Include="EmployeeQuestTable.cpp" />
+    <ClCompile Include="employeeTable.cpp" />
+    <ClCompile Include="FilterWord.cpp" />
+    <ClCompile Include="GameEvent.cpp" />
+    <ClCompile Include="GuildData.cpp" />
+    <ClCompile Include="itemtable.cpp" />
+    <ClCompile Include="lastOrder.cpp" />
+    <ClCompile Include="LiveSkilltable.cpp" />
+    <ClCompile Include="LotteryTable.cpp" />
+    <ClCompile Include="monstertable.cpp" />
+    <ClCompile Include="npctable.cpp" />
+    <ClCompile Include="profession.cpp" />
+    <ClCompile Include="PVPrunkTable.cpp" />
+    <ClCompile Include="Quest.cpp" />
+    <ClCompile Include="randName.cpp" />
+    <ClCompile Include="robotTable.cpp" />
+    <ClCompile Include="scenetable.cpp" />
+    <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="skilltable.cpp" />
+    <ClCompile Include="sttable.cpp" />
+    <ClCompile Include="TableSystem.cpp" />
+    <ClCompile Include="titleTable.cpp" />
+    <ClCompile Include="tmptable.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="achievementTable.h" />
+    <ClInclude Include="Activities.h" />
+    <ClInclude Include="ArtifactChangeData.h" />
+    <ClInclude Include="ArtifactConfigTable.h" />
+    <ClInclude Include="ArtifactLevelTable.h" />
+    <ClInclude Include="BattleData.h" />
+    <ClInclude Include="challengeTable.h" />
+    <ClInclude Include="copyscene.h" />
+    <ClInclude Include="DailyReward.h" />
+    <ClInclude Include="DebrisTable.h" />
+    <ClInclude Include="DropTable.h" />
+    <ClInclude Include="EmployeeConfig.h" />
+    <ClInclude Include="EmployeeQuestTable.h" />
+    <ClInclude Include="employeeTable.h" />
+    <ClInclude Include="FilterWord.h" />
+    <ClInclude Include="GameEvent.h" />
+    <ClInclude Include="GuildData.h" />
+    <ClInclude Include="itemtable.h" />
+    <ClInclude Include="lastOrder.h" />
+    <ClInclude Include="LiveSkilltable.h" />
+    <ClInclude Include="LotteryTable.h" />
+    <ClInclude Include="monstertable.h" />
+    <ClInclude Include="npctable.h" />
+    <ClInclude Include="profession.h" />
+    <ClInclude Include="PVPrunkTable.h" />
+    <ClInclude Include="Quest.h" />
+    <ClInclude Include="randName.h" />
+    <ClInclude Include="robotTable.h" />
+    <ClInclude Include="scenetable.h" />
+    <ClInclude Include="Shop.h" />
+    <ClInclude Include="skilltable.h" />
+    <ClInclude Include="sttable.h" />
+    <ClInclude Include="TableSystem.h" />
+    <ClInclude Include="titleTable.h" />
+    <ClInclude Include="tmptable.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

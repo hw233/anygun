@@ -1,0 +1,455 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="rpc">
+      <UniqueIdentifier>{4c2459ea-b8be-494e-9c43-1bb6174caab5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gen_rpc">
+      <UniqueIdentifier>{cef2b1d6-677d-4955-b8d9-124ffe5c8c62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="schema">
+      <UniqueIdentifier>{018caea9-a76e-4700-b4ed-4f633c3bae62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lua">
+      <UniqueIdentifier>{89f212bb-9538-49b6-a93a-5203c8bb4702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nedmalloc">
+      <UniqueIdentifier>{5e3d5903-a037-498f-baee-bcaad971f56a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tinyxml">
+      <UniqueIdentifier>{1ded35cb-f1ef-4878-a436-6ee0a9c771ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ace">
+      <UniqueIdentifier>{137007cb-8f07-4779-ab1a-1dffb0a80c67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{2dd65130-5149-4225-b6c2-ef6b2f25ded9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zlib">
+      <UniqueIdentifier>{2f288cf6-2f2f-4873-9e5e-7125dd464aea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sqlite3">
+      <UniqueIdentifier>{f0bb5588-54bf-49e9-bf97-d4131c5158be}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rpc\Common.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="rpc\EnumInfo.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="rpc\FieldMask.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="rpc\ProtocolBytesReader.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="rpc\ProtocolBytesWriter.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="rpc\ProtocolMemReader.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="rpc\ProtocolMemWriter.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="rpc\ProtocolReader.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="rpc\ProtocolWriter.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="gen_rpc\Client2ServerMethods.h">
+      <Filter>gen_rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="gen_rpc\com.h">
+      <Filter>gen_rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="gen_rpc\env.h">
+      <Filter>gen_rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="gen_rpc\global.h">
+      <Filter>gen_rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="gen_rpc\proto.h">
+      <Filter>gen_rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="gen_rpc\Server2ClientMethods.h">
+      <Filter>gen_rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="gen_rpc\struct.h">
+      <Filter>gen_rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="gen_rpc\structold.h">
+      <Filter>gen_rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lapi.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lauxlib.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lcode.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\ldebug.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\ldo.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lfunc.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lgc.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\llex.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\llimits.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lmem.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lobject.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lopcodes.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lparser.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lstate.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lstring.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\ltable.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\ltm.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lua.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\luaconf.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lualib.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lundump.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lvm.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\lzio.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="nedmalloc\malloc.c.h">
+      <Filter>nedmalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="nedmalloc\nedmalloc.h">
+      <Filter>nedmalloc</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinystr.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinyxml.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\BINChannel.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\BINChannelBroadcaster.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\BINChannelConnection.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\BINCompressConnection.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\BINConnection.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\Channel.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\ChannelBroadcaster.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\ChannelConnection.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\CompressConnection.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="ace\Connection.h">
+      <Filter>ace</Filter>
+    </ClInclude>
+    <ClInclude Include="json\autolink.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\config.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\features.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\forwards.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\json.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\json_batchallocator.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\reader.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\value.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\writer.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zconf.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib\zlib.h">
+      <Filter>zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlite3\sqlite3.h">
+      <Filter>sqlite3</Filter>
+    </ClInclude>
+    <ClInclude Include="ComEnv.h" />
+    <ClInclude Include="ComGlobal.h" />
+    <ClInclude Include="ComScriptApi.h" />
+    <ClInclude Include="ComScriptEvn.h" />
+    <ClInclude Include="ComScriptHeader.h" />
+    <ClInclude Include="ComScriptRegster.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="coredump.h" />
+    <ClInclude Include="CppSQLite3.h" />
+    <ClInclude Include="CSVParser.h" />
+    <ClInclude Include="fastlz.h" />
+    <ClInclude Include="GlobalConstants.h" />
+    <ClInclude Include="gzip.h" />
+    <ClInclude Include="http_parser.h" />
+    <ClInclude Include="HttpParser.h" />
+    <ClInclude Include="LinuxCommon.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="MD5.h" />
+    <ClInclude Include="MemRecord.h" />
+    <ClInclude Include="PeriodEvent.h" />
+    <ClInclude Include="SqlCommon.h" />
+    <ClInclude Include="stdext.h" />
+    <ClInclude Include="timer.h" />
+    <ClInclude Include="TokenParser.h" />
+    <ClInclude Include="UtlMath.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="gen_rpc\com.cpp">
+      <Filter>gen_rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="gen_rpc\env.cpp">
+      <Filter>gen_rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="gen_rpc\global.cpp">
+      <Filter>gen_rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="gen_rpc\proto.cpp">
+      <Filter>gen_rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="gen_rpc\struct.cpp">
+      <Filter>gen_rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="gen_rpc\structold.cpp">
+      <Filter>gen_rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lapi.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lauxlib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lbaselib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lcode.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\ldblib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\ldebug.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\ldo.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\ldump.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lfunc.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lgc.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\linit.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\liolib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\llex.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lmathlib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lmem.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\loadlib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lobject.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lopcodes.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\loslib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lparser.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lstate.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lstring.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lstrlib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\ltable.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\ltablib.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\ltm.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lua.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\luac.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lundump.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lvm.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\lzio.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\print.c">
+      <Filter>lua</Filter>
+    </ClCompile>
+    <ClCompile Include="nedmalloc\nedmalloc.cc">
+      <Filter>nedmalloc</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinystr.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxml.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="ace\Channel.cpp">
+      <Filter>ace</Filter>
+    </ClCompile>
+    <ClCompile Include="ace\ChannelConnection.cpp">
+      <Filter>ace</Filter>
+    </ClCompile>
+    <ClCompile Include="ace\CompressConnection.cpp">
+      <Filter>ace</Filter>
+    </ClCompile>
+    <ClCompile Include="ace\Connection.cpp">
+      <Filter>ace</Filter>
+    </ClCompile>
+    <ClCompile Include="json\json_reader.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="json\json_value.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="json\json_writer.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlite3\sqlite3.c">
+      <Filter>sqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="Base64.cpp" />
+    <ClCompile Include="ComEnv.cpp" />
+    <ClCompile Include="ComGlobal.cpp" />
+    <ClCompile Include="ComScriptApi.cpp" />
+    <ClCompile Include="ComScriptEvn.cpp" />
+    <ClCompile Include="config.cpp" />
+    <ClCompile Include="CppSQLite3.cpp" />
+    <ClCompile Include="CSVParser.cpp" />
+    <ClCompile Include="fastlz.c" />
+    <ClCompile Include="gzip.cpp" />
+    <ClCompile Include="http_parser.c" />
+    <ClCompile Include="HttpParser.cpp" />
+    <ClCompile Include="LinuxCommon.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="MD5.cpp" />
+    <ClCompile Include="MemRecord.cpp" />
+    <ClCompile Include="PeriodEvent.cpp" />
+    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="TokenParser.cpp" />
+    <ClCompile Include="UtlMath.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Schema\com.arpc">
+      <Filter>schema</Filter>
+    </None>
+    <None Include="..\..\Schema\env.arpc">
+      <Filter>schema</Filter>
+    </None>
+    <None Include="..\..\Schema\global.arpc">
+      <Filter>schema</Filter>
+    </None>
+    <None Include="..\..\Schema\proto.arpc">
+      <Filter>schema</Filter>
+    </None>
+    <None Include="..\..\Schema\struct.arpc">
+      <Filter>schema</Filter>
+    </None>
+    <None Include="..\..\Schema\structold.arpc">
+      <Filter>schema</Filter>
+    </None>
+  </ItemGroup>
+</Project>

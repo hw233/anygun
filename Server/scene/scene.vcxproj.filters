@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="navigation">
+      <UniqueIdentifier>{50a291a7-eeda-49be-886a-124a3e774e1c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ChunkyTriMesh.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourAlloc.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourCommon.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourCrowd.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourLocalBoundary.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourNavMesh.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourNavMeshBuilder.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourNavMeshQuery.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourNode.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourObstacleAvoidance.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourPathCorridor.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourPathQueue.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourProximityGrid.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourTileCache.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="DetourTileCacheBuilder.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="InputGeom.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjFile.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="Recast.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastAlloc.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastArea.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastContour.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastDump.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastFilter.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastLayers.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastMesh.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastMeshDetail.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastRasterization.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="RecastRegion.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="NavMesh.cpp" />
+    <ClCompile Include="scene.cpp" />
+    <ClCompile Include="scenebuild.cpp" />
+    <ClCompile Include="sceneplayer.cpp" />
+    <ClCompile Include="server.cpp" />
+    <ClCompile Include="worldhandler.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ChunkyTriMesh.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourAlloc.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourCommon.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourCrowd.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourLocalBoundary.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourMath.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourNavMesh.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourNavMeshBuilder.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourNavMeshQuery.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourNode.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourObstacleAvoidance.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourPathCorridor.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourPathQueue.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourProximityGrid.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourStatus.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourTileCache.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="DetourTileCacheBuilder.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="InputGeom.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjFile.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="Recast.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="RecastAlloc.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="RecastDump.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="NavMesh.h" />
+    <ClInclude Include="scene.h" />
+    <ClInclude Include="sceneplayer.h" />
+    <ClInclude Include="server.h" />
+    <ClInclude Include="worldhandler.h" />
+  </ItemGroup>
+</Project>
