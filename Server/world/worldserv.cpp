@@ -51,9 +51,9 @@
 #include "Guild.h"
 #include "DropTable.h"
 #include "exam.h"
-#include "gift.h"
+//#include "gift.h"
 #include "json/json.h"
-#include "curl/curl.h"
+//#include "curl/curl.h"
 #include "timer.h"
 #include "EmployeeQuestSystem.h"
 #include "MD5.h"
@@ -163,14 +163,14 @@ WorldServ::init (int argc, ACE_TCHAR *argv[])
 	t.set((double)1.0/(double)(TIMER_FREQ));
 	reactor()->schedule_timer(this, NULL, ACE_Time_Value(0), t);
 
-	CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
+	//CURLcode result = curl_global_init(CURL_GLOBAL_ALL);
 
-	if(CURLE_OK != result)
+	/*if(CURLE_OK != result)
 	{
 		/// curl 全局初始化失败
 		ACE_DEBUG((LM_INFO, ACE_TEXT("curl_global_init(CURL_GLOBAL_ALL) = %d is failed\n"), result));
 		return -1;
-	}
+	}*/
 	ScriptEnv::init();
 	UtlMath::init();
 #include "ComScriptRegster.h"
@@ -284,15 +284,18 @@ WorldServ::init (int argc, ACE_TCHAR *argv[])
 	maxShowItemId_ = 0;
 #ifndef _WIN32 
 	syncCentreTask_.init();
-#endif
 	giftTask_.init();
 	logTask_.init();
+	smsTimeout_ = ACE_OS::atoi(Env::get<std::string>(V_SMSTimeout).c_str()) * 60;
+
+	smsTask_.init(Env::get<std::string>(V_SMSUsername), Env::get<std::string>(V_SMSAuthToken), Env::get<std::string>(V_SMSAppId), Env::get<std::string>(V_SMSTmplateId), Env::get<std::string>(V_SMSTimeout));
+
+#endif
+	
 	accept();
 	curTime_=ACE_OS::gettimeofday().sec();
 	ACE_DEBUG((LM_INFO,ACE_TEXT("Init world serv succ... \n")));
 	
-	smsTimeout_ = ACE_OS::atoi(Env::get<std::string>(V_SMSTimeout).c_str()) * 60;
-	smsTask_.init(Env::get<std::string>(V_SMSUsername),Env::get<std::string>(V_SMSAuthToken),Env::get<std::string>(V_SMSAppId),Env::get<std::string>(V_SMSTmplateId),Env::get<std::string>(V_SMSTimeout));
 	
 	std::string conf = Env::get<std::string>(V_GatewayListenClientMultiIndoor);
 	std::vector<std::string> arr = String::Split(conf,";");
@@ -323,15 +326,15 @@ int WorldServ::fini (void)
 	contactInfoCache_.clear();
 	contactInfoIdIndex_.clear();
 	contactInfoNameIndex_.clear();
-	syncCentreTask_.fini();
+	//syncCentreTask_.fini();
 	Battle::fini();
 	EndlessStair::fini();
-	smsTask_.fini();
-	giftTask_.fini();
-	logTask_.fini();
+	//smsTask_.fini();
+	//giftTask_.fini();
+	//logTask_.fini();
 	SceneManager::instance()->fini();
 	Guild::clear();
-	curl_global_cleanup();
+	//curl_global_cleanup();
 
 	return 0;
 }
@@ -395,10 +398,10 @@ int WorldServ::handle_timeout (const ACE_Time_Value &tv, const void *act)
 	
 	//手机验证相关
 	{
-		smsTask_.inout(prepareSMS_,complateSMS_);
+		//smsTask_.inout(prepareSMS_,complateSMS_);
 		complateVerificationCode();
 	}
-	GiftTask::updateResult();
+	//GiftTask::updateResult();
 	Battle::updateBattle(delta);
 	Player::updatePlayer(delta);
 	PvpJJC::tick(delta);
@@ -679,7 +682,7 @@ void WorldServ::addContactInfo(SGE_ContactInfoExt info)
 	contactInfoCache_.push_back(p);	
 	contactInfoIdIndex_[info.instId_] = p;
 	contactInfoNameIndex_[info.name_] = p;
-	syncCentreTask_.pushAdded(info);
+	//syncCentreTask_.pushAdded(info);
 }
 
 void WorldServ::delContactInfo(U32 id){
@@ -692,7 +695,7 @@ void WorldServ::delContactInfo(U32 id){
 	if(itr!=contactInfoCache_.end())
 		contactInfoCache_.erase(itr);
 	
-	syncCentreTask_.pushDeled(*p);
+	//syncCentreTask_.pushDeled(*p);
 	
 	DEL_MEM(p);
 }
@@ -1509,12 +1512,12 @@ void WorldServ::checkplayerlevelrank(){
 }
 
 void WorldServ::reqCDKey(std::string cdkey, std::string playername, std::vector<std::string> &giftNames){
-	giftTask_.pushAdded(playername,cdkey,giftNames);
+	//giftTask_.pushAdded(playername,cdkey,giftNames);
 }
 
 
 void WorldServ::prepareVerificationCode(std::string phoneNumber, uint32 playerId){
-	for(size_t i=0; i<prepareSMS_.size(); ++i){
+	/*for(size_t i=0; i<prepareSMS_.size(); ++i){
 		if(prepareSMS_[i].playerId_ == playerId)
 		{
 			prepareSMS_[i].phoneNumber_ = phoneNumber;
@@ -1524,38 +1527,38 @@ void WorldServ::prepareVerificationCode(std::string phoneNumber, uint32 playerId
 	SMSContent sc;
 	sc.phoneNumber_ = phoneNumber;
 	sc.playerId_ = playerId;
-	prepareSMS_.push_back(sc);
+	prepareSMS_.push_back(sc);*/
 }
 
 void WorldServ::complateVerificationCode(){
-	for(size_t i=0; i<complateSMS_.size(); ++i){
+	/*for(size_t i=0; i<complateSMS_.size(); ++i){
 		Player* p = Player::getPlayerByInstId(complateSMS_[i].playerId_);
-		
+
 		if(!p){
-			complateSMS_.erase(complateSMS_.begin() + i--);
-			
+		complateSMS_.erase(complateSMS_.begin() + i--);
+
 		}else {
-			p->smsCode_ = complateSMS_[i].smsCode_;
-			p->phoneNumber_ = complateSMS_[i].phoneNumber_;
-			p->smsTime_ = curTime_;
-			complateSMS_.erase(complateSMS_.begin() + i--);
+		p->smsCode_ = complateSMS_[i].smsCode_;
+		p->phoneNumber_ = complateSMS_[i].phoneNumber_;
+		p->smsTime_ = curTime_;
+		complateSMS_.erase(complateSMS_.begin() + i--);
 		}
-		
-	}
+
+		}*/
 }
 
 void WorldServ::pushAccountLog(Account* acc){
-	logTask_.pushAccountLog(acc);
+	//logTask_.pushAccountLog(acc);
 }
 void WorldServ::pushLoginLog(Player *player){
-	logTask_.pushLoginLog(player);
+	//logTask_.pushLoginLog(player);
 }
 void WorldServ::pushLoginLog(Account *acc){
-	logTask_.pushLoginLog(acc);
+	//logTask_.pushLoginLog(acc);
 }
 void WorldServ::pushOrderLog(Account *acc, int32 playerId, int32 playerLevel, std::string const &orderId, int32 payment, std::string const &payTime){
-	logTask_.pushOrderLog(acc,playerId,playerLevel,orderId,payment,payTime);
+	//logTask_.pushOrderLog(acc,playerId,playerLevel,orderId,payment,payTime);
 }
 void WorldServ::pushRoleLog(std::vector<SGE_ContactInfoExt*> &infos){
-	logTask_.pushRoleLog(infos);
+	//logTask_.pushRoleLog(infos);
 }

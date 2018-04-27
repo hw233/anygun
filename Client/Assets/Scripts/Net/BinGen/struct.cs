@@ -4318,6 +4318,7 @@ public class COM_FPosition
 public class COM_ScenePlayerInformation
 {
 	public bool isLeader_;
+	public bool isTeamMember_;
 	public bool isInBattle_;
 	public short vip_;
 	public int instId_;
@@ -4331,6 +4332,7 @@ public class COM_ScenePlayerInformation
 	public int level_;
 	public int battlePower_;
 	public int jl_;
+	public int magicLv_;
 	public ulong openSubSystemFlag_;
 	public int title_;
 	public string instName_ = "";
@@ -4344,34 +4346,37 @@ public class COM_ScenePlayerInformation
 	public enum FID
 	{
 		isLeader_ = 0,
-		isInBattle_ = 1,
-		vip_ = 2,
-		instId_ = 3,
-		assetId_ = 4,
-		weaponItemId_ = 5,
-		fashionId_ = 6,
-		hpMax_ = 7,
-		hpCrt_ = 8,
-		mpMax_ = 9,
-		mpCrt_ = 10,
-		level_ = 11,
-		battlePower_ = 12,
-		jl_ = 13,
-		openSubSystemFlag_ = 14,
-		title_ = 15,
-		instName_ = 16,
-		guildeName_ = 17,
-		jt_ = 18,
-		type_ = 19,
-		originPos_ = 20,
-		showBabyTableId_ = 21,
-		showBabyName_ = 22,
-		MAX = 23,
+		isTeamMember_ = 1,
+		isInBattle_ = 2,
+		vip_ = 3,
+		instId_ = 4,
+		assetId_ = 5,
+		weaponItemId_ = 6,
+		fashionId_ = 7,
+		hpMax_ = 8,
+		hpCrt_ = 9,
+		mpMax_ = 10,
+		mpCrt_ = 11,
+		level_ = 12,
+		battlePower_ = 13,
+		jl_ = 14,
+		magicLv_ = 15,
+		openSubSystemFlag_ = 16,
+		title_ = 17,
+		instName_ = 18,
+		guildeName_ = 19,
+		jt_ = 20,
+		type_ = 21,
+		originPos_ = 22,
+		showBabyTableId_ = 23,
+		showBabyName_ = 24,
+		MAX = 25,
 	}
 	public  void serialize(bin.IWriter w)
 	{
-		bin.FieldMask __fm__ = new bin.FieldMask(new byte[3]);
+		bin.FieldMask __fm__ = new bin.FieldMask(new byte[4]);
 		__fm__.writeBit(isLeader_);
+		__fm__.writeBit(isTeamMember_);
 		__fm__.writeBit(isInBattle_);
 		__fm__.writeBit(vip_==0?false:true);
 		__fm__.writeBit(instId_==0?false:true);
@@ -4385,6 +4390,7 @@ public class COM_ScenePlayerInformation
 		__fm__.writeBit(level_==0?false:true);
 		__fm__.writeBit(battlePower_==0?false:true);
 		__fm__.writeBit(jl_==0?false:true);
+		__fm__.writeBit(magicLv_==0?false:true);
 		__fm__.writeBit(openSubSystemFlag_==0?false:true);
 		__fm__.writeBit(title_==0?false:true);
 		__fm__.writeBit(instName_.Length>0?true:false);
@@ -4395,6 +4401,8 @@ public class COM_ScenePlayerInformation
 		__fm__.writeBit(showBabyTableId_==0?false:true);
 		__fm__.writeBit(showBabyName_.Length>0?true:false);
 		bin.ProtocolWriter.writeType(w, __fm__.getBits());
+		{
+		}
 		{
 		}
 		{
@@ -4448,6 +4456,10 @@ public class COM_ScenePlayerInformation
 				bin.ProtocolWriter.writeType(w, jl_);
 		}
 		{
+			if(magicLv_ != 0)
+				bin.ProtocolWriter.writeType(w, magicLv_);
+		}
+		{
 			if(openSubSystemFlag_ != 0)
 				bin.ProtocolWriter.writeType(w, openSubSystemFlag_);
 		}
@@ -4488,10 +4500,13 @@ public class COM_ScenePlayerInformation
 	public  bool deserialize(bin.IReader r)
 	{
 		byte[] __fmbits__;
-		if(!bin.ProtocolReader.readType(r, out __fmbits__, 3)) return false;
+		if(!bin.ProtocolReader.readType(r, out __fmbits__, 4)) return false;
 		bin.FieldMask __fm__ = new bin.FieldMask(__fmbits__);
 		{
 			isLeader_ = __fm__.readBit();
+		}
+		{
+			isTeamMember_ = __fm__.readBit();
 		}
 		{
 			isInBattle_ = __fm__.readBit();
@@ -4571,6 +4586,12 @@ public class COM_ScenePlayerInformation
 		{
 			if(__fm__.readBit())
 			{
+				if(!bin.ProtocolReader.readType(r, out magicLv_)) return false;
+			}
+		}
+		{
+			if(__fm__.readBit())
+			{
 				if(!bin.ProtocolReader.readType(r, out openSubSystemFlag_)) return false;
 			}
 		}
@@ -4634,6 +4655,13 @@ public class COM_ScenePlayerInformation
 			{
 				{
 					bin.ProtocolWriter.writeType(w, isLeader_);
+				}
+			}
+			return true;
+			case (uint)FID.isTeamMember_:
+			{
+				{
+					bin.ProtocolWriter.writeType(w, isTeamMember_);
 				}
 			}
 			return true;
@@ -4728,6 +4756,13 @@ public class COM_ScenePlayerInformation
 				}
 			}
 			return true;
+			case (uint)FID.magicLv_:
+			{
+				{
+					bin.ProtocolWriter.writeType(w, magicLv_);
+				}
+			}
+			return true;
 			case (uint)FID.openSubSystemFlag_:
 			{
 				{
@@ -4804,6 +4839,13 @@ public class COM_ScenePlayerInformation
 			{
 				{
 					if(!bin.ProtocolReader.readType(r, out isLeader_)) return false;
+				}
+			}
+			return true;
+			case (uint)FID.isTeamMember_:
+			{
+				{
+					if(!bin.ProtocolReader.readType(r, out isTeamMember_)) return false;
 				}
 			}
 			return true;
@@ -4895,6 +4937,13 @@ public class COM_ScenePlayerInformation
 			{
 				{
 					if(!bin.ProtocolReader.readType(r, out jl_)) return false;
+				}
+			}
+			return true;
+			case (uint)FID.magicLv_:
+			{
+				{
+					if(!bin.ProtocolReader.readType(r, out magicLv_)) return false;
 				}
 			}
 			return true;
@@ -7571,7 +7620,7 @@ public class COM_BabyInst : COM_Entity
 	public int slot_;
 	public uint intensifyLevel_;
 	public uint intensifynum_;
-	public uint lastSellTime_;
+	public int lastSellTime_;
 	public int[] gear_ = new int[0];
 	public float[] addprop_ = new float[0];
 	// member ids.
@@ -8154,7 +8203,7 @@ public class COM_ContactInfo
 	public uint instId_;
 	public string name_ = "";
 	public uint level_;
-	public uint exp_;
+	public float exp_;
 	public JobType job_;
 	public uint assetId_;
 	public uint jobLevel_;
@@ -15281,6 +15330,7 @@ public class COM_Gather
 //=============================================================
 public class SGE_DBPlayerData : COM_PlayerInst
 {
+	public int versionNumber_;
 	public bool freeze_;
 	public bool seal_;
 	public uint signs_;
@@ -15289,6 +15339,8 @@ public class SGE_DBPlayerData : COM_PlayerInst
 	public int acceptRandQuestCounter_;
 	public int submitRandQuestCounter_;
 	public string pfid_ = "";
+	public int itemStoreSize_;
+	public int babyStoreSize_;
 	public SGE_OrderInfo[] orders_ = new SGE_OrderInfo[0];
 	public ulong loginTime_;
 	public ulong logoutTime_;
@@ -15317,45 +15369,49 @@ public class SGE_DBPlayerData : COM_PlayerInst
 	// member ids.
 	public enum FID
 	{
-		freeze_ = 79,
-		seal_ = 80,
-		signs_ = 81,
-		sellIdMax_ = 82,
-		push_ = 83,
-		acceptRandQuestCounter_ = 84,
-		submitRandQuestCounter_ = 85,
-		pfid_ = 86,
-		orders_ = 87,
-		loginTime_ = 88,
-		logoutTime_ = 89,
-		genItemMaxGuid_ = 90,
-		gaterMaxNum_ = 91,
-		firstRollEmployeeCon_ = 92,
-		firstRollEmployeeDia_ = 93,
-		employees_ = 94,
-		itemStorage_ = 95,
-		babyStorage_ = 96,
-		babies_ = 97,
-		bagItems_ = 98,
-		quests_ = 99,
-		completeQuests_ = 100,
-		mineReward_ = 101,
-		jjcBattleMsg_ = 102,
-		friend_ = 103,
-		blacklist_ = 104,
-		achValues_ = 105,
-		achievement_ = 106,
-		empBattleGroup_ = 107,
-		employeeGroup1_ = 108,
-		employeeGroup2_ = 109,
-		gatherData_ = 110,
-		compoundList_ = 111,
-		MAX = 112,
+		versionNumber_ = 79,
+		freeze_ = 80,
+		seal_ = 81,
+		signs_ = 82,
+		sellIdMax_ = 83,
+		push_ = 84,
+		acceptRandQuestCounter_ = 85,
+		submitRandQuestCounter_ = 86,
+		pfid_ = 87,
+		itemStoreSize_ = 88,
+		babyStoreSize_ = 89,
+		orders_ = 90,
+		loginTime_ = 91,
+		logoutTime_ = 92,
+		genItemMaxGuid_ = 93,
+		gaterMaxNum_ = 94,
+		firstRollEmployeeCon_ = 95,
+		firstRollEmployeeDia_ = 96,
+		employees_ = 97,
+		itemStorage_ = 98,
+		babyStorage_ = 99,
+		babies_ = 100,
+		bagItems_ = 101,
+		quests_ = 102,
+		completeQuests_ = 103,
+		mineReward_ = 104,
+		jjcBattleMsg_ = 105,
+		friend_ = 106,
+		blacklist_ = 107,
+		achValues_ = 108,
+		achievement_ = 109,
+		empBattleGroup_ = 110,
+		employeeGroup1_ = 111,
+		employeeGroup2_ = 112,
+		gatherData_ = 113,
+		compoundList_ = 114,
+		MAX = 115,
 	}
 	public new void serialize(bin.IWriter w)
 	{
 		base.serialize(w);
 		bin.FieldMask __fm__ = new bin.FieldMask(new byte[5]);
+		__fm__.writeBit(versionNumber_==0?false:true);
 		__fm__.writeBit(freeze_);
 		__fm__.writeBit(seal_);
 		__fm__.writeBit(signs_==0?false:true);
@@ -15364,6 +15420,8 @@ public class SGE_DBPlayerData : COM_PlayerInst
 		__fm__.writeBit(acceptRandQuestCounter_==0?false:true);
 		__fm__.writeBit(submitRandQuestCounter_==0?false:true);
 		__fm__.writeBit(pfid_.Length>0?true:false);
+		__fm__.writeBit(itemStoreSize_==0?false:true);
+		__fm__.writeBit(babyStoreSize_==0?false:true);
 		__fm__.writeBit((orders_==null)?false:(orders_.Length>0?true:false));
 		__fm__.writeBit(loginTime_==0?false:true);
 		__fm__.writeBit(logoutTime_==0?false:true);
@@ -15391,6 +15449,10 @@ public class SGE_DBPlayerData : COM_PlayerInst
 		__fm__.writeBit((compoundList_==null)?false:(compoundList_.Length>0?true:false));
 		bin.ProtocolWriter.writeType(w, __fm__.getBits());
 		{
+			if(versionNumber_ != 0)
+				bin.ProtocolWriter.writeType(w, versionNumber_);
+		}
+		{
 		}
 		{
 		}
@@ -15417,6 +15479,14 @@ public class SGE_DBPlayerData : COM_PlayerInst
 		{
 			if(pfid_.Length > 0)
 				bin.ProtocolWriter.writeType(w, pfid_);
+		}
+		{
+			if(itemStoreSize_ != 0)
+				bin.ProtocolWriter.writeType(w, itemStoreSize_);
+		}
+		{
+			if(babyStoreSize_ != 0)
+				bin.ProtocolWriter.writeType(w, babyStoreSize_);
 		}
 		{
 			if(orders_ != null && orders_.Length > 0)
@@ -15649,6 +15719,12 @@ public class SGE_DBPlayerData : COM_PlayerInst
 		if(!bin.ProtocolReader.readType(r, out __fmbits__, 5)) return false;
 		bin.FieldMask __fm__ = new bin.FieldMask(__fmbits__);
 		{
+			if(__fm__.readBit())
+			{
+				if(!bin.ProtocolReader.readType(r, out versionNumber_)) return false;
+			}
+		}
+		{
 			freeze_ = __fm__.readBit();
 		}
 		{
@@ -15688,6 +15764,18 @@ public class SGE_DBPlayerData : COM_PlayerInst
 			if(__fm__.readBit())
 			{
 				if(!bin.ProtocolReader.readType(r, out pfid_, 65535)) return false;
+			}
+		}
+		{
+			if(__fm__.readBit())
+			{
+				if(!bin.ProtocolReader.readType(r, out itemStoreSize_)) return false;
+			}
+		}
+		{
+			if(__fm__.readBit())
+			{
+				if(!bin.ProtocolReader.readType(r, out babyStoreSize_)) return false;
 			}
 		}
 		{
@@ -15963,6 +16051,13 @@ public class SGE_DBPlayerData : COM_PlayerInst
 	{
 		switch(fid)
 		{
+			case (uint)FID.versionNumber_:
+			{
+				{
+					bin.ProtocolWriter.writeType(w, versionNumber_);
+				}
+			}
+			return true;
 			case (uint)FID.freeze_:
 			{
 				{
@@ -16016,6 +16111,20 @@ public class SGE_DBPlayerData : COM_PlayerInst
 			{
 				{
 					bin.ProtocolWriter.writeType(w, pfid_);
+				}
+			}
+			return true;
+			case (uint)FID.itemStoreSize_:
+			{
+				{
+					bin.ProtocolWriter.writeType(w, itemStoreSize_);
+				}
+			}
+			return true;
+			case (uint)FID.babyStoreSize_:
+			{
+				{
+					bin.ProtocolWriter.writeType(w, babyStoreSize_);
 				}
 			}
 			return true;
@@ -16292,6 +16401,13 @@ public class SGE_DBPlayerData : COM_PlayerInst
 	{
 		switch(fid)
 		{
+			case (uint)FID.versionNumber_:
+			{
+				{
+					if(!bin.ProtocolReader.readType(r, out versionNumber_)) return false;
+				}
+			}
+			return true;
 			case (uint)FID.freeze_:
 			{
 				{
@@ -16345,6 +16461,20 @@ public class SGE_DBPlayerData : COM_PlayerInst
 			{
 				{
 					if(!bin.ProtocolReader.readType(r, out pfid_, 65535)) return false;
+				}
+			}
+			return true;
+			case (uint)FID.itemStoreSize_:
+			{
+				{
+					if(!bin.ProtocolReader.readType(r, out itemStoreSize_)) return false;
+				}
+			}
+			return true;
+			case (uint)FID.babyStoreSize_:
+			{
+				{
+					if(!bin.ProtocolReader.readType(r, out babyStoreSize_)) return false;
 				}
 			}
 			return true;

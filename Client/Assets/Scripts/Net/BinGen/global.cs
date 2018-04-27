@@ -279,5 +279,7 @@ public enum Constant : int
 	C_IntegralRatio,
 	C_BoxBlueSpendDiamond,
 	C_BoxGoldSpendDiamond,
+	C_ShopMailSender,
+	C_ShopMailContent,
 	C_Max,
 }

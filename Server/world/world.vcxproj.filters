@@ -177,12 +177,8 @@
     <ClCompile Include="sceneplayer.cpp">
       <Filter>player</Filter>
     </ClCompile>
-    <ClCompile Include="centerServer.cpp" />
-    <ClCompile Include="gift.cpp" />
     <ClCompile Include="GMCmdMgr.cpp" />
-    <ClCompile Include="logTask.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="sms.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script\GameScript.h">

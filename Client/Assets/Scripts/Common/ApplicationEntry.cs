@@ -470,73 +470,73 @@ public class ApplicationEntry : MonoBehaviour
 
     IEnumerator PullResFolderName()
     {
-		WWWForm form = new WWWForm();
-		form.AddField("channel", GlobalValue.channelID);
-		form.AddField("version", version);
-		Request www = new Request("post", GlobalValue.centerservhost + GlobalValue.resVersion, form);
-		www.Send ();
+        //WWWForm form = new WWWForm();
+        //form.AddField("channel", GlobalValue.channelID);
+        //form.AddField("version", version);
+        //Request www = new Request("post", GlobalValue.centerservhost + GlobalValue.resVersion, form);
+        //www.Send ();
 
-		while( !www.isDone )
-		{
-			yield return null;
-		}
+        //while( !www.isDone )
+        //{
+        //    yield return null;
+        //}
 
-        if (www.isDone)
-        {
-            if (www.exception == null && www.response != null)
-            {
-                ResVersion = www.response.Text;
-                ResVerIsDirty = true;
-                //GlobalValue.cdnservhost = string.Format("{0}{1}/", GlobalValue.cdnservhost, ResVersion);
-                //ClientLog.Instance.Log(GlobalValue.cdnservhost);
-                UIFactory.Instance.LoadUIPanel("LoginPanel", () =>
-                {
-                    mayShowSysNotice = true;
-                    UIFactory.Instance.OpenUI(GlobalValue.StageName_LoginScene, menuTypes.MAIN);
-                    //AssetLoader.LoadAssetBundle("NpcNameLabel", AssetLoader.EAssetType.ASSET_UI, (AssetBundle bundle2, ParamData data2) =>
-                    //{
-                    //    nameLabel = bundle2.mainAsset;
-                    //}, null, Configure.assetsPathstreaming);
-                    //PopText.Instance.Init();
-                    //NpcHeadChat.Instance.Init();
-                    //UIManager.Instance.InitIconCell();
-                    //GuideManager.Instance.creator.InitArrow();
-                    //AssetLoader.LoadAssetBundle("PlayerShader", AssetLoader.EAssetType.ASSET_PLAYER, null, null);
-                    //cinemaPre_ = Resources.Load<GameObject>("Cinema");
+        //if (www.isDone)
+        //{
+        //    if (www.exception == null && www.response != null)
+        //    {
+        //        ResVersion = www.response.Text;
+        //        ResVerIsDirty = true;
+        //        //GlobalValue.cdnservhost = string.Format("{0}{1}/", GlobalValue.cdnservhost, ResVersion);
+        //        //ClientLog.Instance.Log(GlobalValue.cdnservhost);
+        //        UIFactory.Instance.LoadUIPanel("LoginPanel", () =>
+        //        {
+        //            mayShowSysNotice = true;
+        //            UIFactory.Instance.OpenUI(GlobalValue.StageName_LoginScene, menuTypes.MAIN);
+        //            //AssetLoader.LoadAssetBundle("NpcNameLabel", AssetLoader.EAssetType.ASSET_UI, (AssetBundle bundle2, ParamData data2) =>
+        //            //{
+        //            //    nameLabel = bundle2.mainAsset;
+        //            //}, null, Configure.assetsPathstreaming);
+        //            //PopText.Instance.Init();
+        //            //NpcHeadChat.Instance.Init();
+        //            //UIManager.Instance.InitIconCell();
+        //            //GuideManager.Instance.creator.InitArrow();
+        //            //AssetLoader.LoadAssetBundle("PlayerShader", AssetLoader.EAssetType.ASSET_PLAYER, null, null);
+        //            //cinemaPre_ = Resources.Load<GameObject>("Cinema");
 
-                });
-            }
-            else
-            {
-                ErrorTipsUI.ShowMe(LanguageManager.instance.GetValue("resVersionGetError"));
-				ClientLog.Instance.Log(www.exception);
-            }
-        }
+        //        });
+        //    }
+        //    else
+        //    {
+        //        ErrorTipsUI.ShowMe(LanguageManager.instance.GetValue("resVersionGetError"));
+        //        ClientLog.Instance.Log(www.exception);
+        //    }
+        //}
         yield return null;
     }
 
     IEnumerator SysNotice()
     {
-		WWWForm form = new WWWForm();
-		form.AddField("channelid", GlobalValue.channelID);
-		Request www = new Request("post", GlobalValue.centerservhost + GlobalValue.sysNotice, form); 
-		www.Send ();
-		while( !www.isDone )
-		{
-			yield return null;
-		}
+        //WWWForm form = new WWWForm();
+        //form.AddField("channelid", GlobalValue.channelID);
+        //Request www = new Request("post", GlobalValue.centerservhost + GlobalValue.sysNotice, form); 
+        //www.Send ();
+        //while( !www.isDone )
+        //{
+        //    yield return null;
+        //}
 
-        if (www.isDone)
-        {
-            if (www.exception == null)
-            {
-                if(www.response != null)
-                {
-                    if(!string.IsNullOrEmpty(www.response.Text))
-                        NoticeManager.Instance.ShowUpdateNotice(LanguageManager.instance.GetValue("sysNotice"), www.response.Text);
-                }
-            }
-        }
+        //if (www.isDone)
+        //{
+        //    if (www.exception == null)
+        //    {
+        //        if(www.response != null)
+        //        {
+        //            if(!string.IsNullOrEmpty(www.response.Text))
+        //                NoticeManager.Instance.ShowUpdateNotice(LanguageManager.instance.GetValue("sysNotice"), www.response.Text);
+        //        }
+        //    }
+        //}
         yield return null;
     }
 
@@ -679,7 +679,7 @@ public class ApplicationEntry : MonoBehaviour
             logQue.Dequeue();
         logQue.Enqueue(sLog);
 		CommonEvent.ExcuteException(sLog);
-        NGUIDebug.Log (sLog);
+        //NGUIDebug.Log (sLog);
 
         //Backlog.Instance.log(SystemInfo.deviceUniqueIdentifier, cond, stack.Replace('\n', '|'), "0");
 	}

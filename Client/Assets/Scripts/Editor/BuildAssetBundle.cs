@@ -249,8 +249,8 @@ public class BuildAssetBundle : MonoBehaviour
     static void CopyTablePC()
     {
         ProcessStartInfo startInfo = new ProcessStartInfo();
-        startInfo.WorkingDirectory = Application.dataPath + "/../../../Config/";
-        startInfo.FileName = Application.dataPath + "/../../../Config/syncTable.bat";
+        startInfo.WorkingDirectory = Application.dataPath + "/../../Config/";
+        startInfo.FileName = Application.dataPath + "/../../Config/syncTable.bat";
         startInfo.Arguments = "AssetBundlePC";
         Process.Start(startInfo);
     }
@@ -393,8 +393,8 @@ public class BuildAssetBundle : MonoBehaviour
     static void CopyTableAndroid()
     {
         ProcessStartInfo startInfo = new ProcessStartInfo();
-        startInfo.WorkingDirectory = Application.dataPath + "/../../../Config/";
-        startInfo.FileName = Application.dataPath + "/../../../Config/syncTable.bat";
+        startInfo.WorkingDirectory = Application.dataPath + "/../../Config/";
+        startInfo.FileName = Application.dataPath + "/../../Config/syncTable.bat";
         startInfo.Arguments = "AssetBundleAndroid";
         Process.Start(startInfo);
     }
@@ -633,7 +633,7 @@ public class BuildAssetBundle : MonoBehaviour
 
         if (path.Equals(uiAssetsPath_))
         {
-            string file = EditorUtility.OpenFilePanel("请选择UI依赖数据文件", Application.dataPath + "/../../../Config/Tables/", "json");
+            string file = EditorUtility.OpenFilePanel("请选择UI依赖数据文件", Application.dataPath + "/../../Config/Tables/", "json");
             string jsonStr = System.IO.File.ReadAllText(file);
             atlasRefDic_ = LitJson.JsonMapper.ToObject<Dictionary<string, List<string>>>(jsonStr);
 
@@ -654,7 +654,7 @@ public class BuildAssetBundle : MonoBehaviour
 
         if (path.Equals(playerAssetsPath_))
         {
-            string file = EditorUtility.OpenFilePanel("请选择角色依赖数据文件", Application.dataPath + "/../../../Config/Tables/", "json");
+            string file = EditorUtility.OpenFilePanel("请选择角色依赖数据文件", Application.dataPath + "/../../Config/Tables/", "json");
             string jsonStr = System.IO.File.ReadAllText(file);
             playerRefDic_ = LitJson.JsonMapper.ToObject<Dictionary<string, List<string>>>(jsonStr);
             
@@ -671,7 +671,7 @@ public class BuildAssetBundle : MonoBehaviour
 
         if (path.Equals(effectAssetsPath_))
         {
-            string file = EditorUtility.OpenFilePanel("请选择特效依赖数据文件", Application.dataPath + "/../../../Config/Tables/", "json");
+            string file = EditorUtility.OpenFilePanel("请选择特效依赖数据文件", Application.dataPath + "/../../Config/Tables/", "json");
             string jsonStr = System.IO.File.ReadAllText(file);
             effectRefDic_ = LitJson.JsonMapper.ToObject<Dictionary<string, List<string>>>(jsonStr);
 
@@ -709,15 +709,17 @@ public class BuildAssetBundle : MonoBehaviour
             {
                 List<string> pr = GetRefAssets(files[i].name);
                 if (pr != null)
+                {
                     BuildPipeline.PushAssetDependencies();
 
-                //List<Object> refAsssets = new List<Object>();
-                for (int j = 0; j < pr.Count; ++j)
-                {
-                    string assetfile = FindAsset(pr[j]);
-                    Object mainAsset = AssetDatabase.LoadMainAssetAtPath(assetfile);
-                    BuildPipeline.BuildAssetBundle(mainAsset, null, string.Format(pathName + "{0}.bytes", pr[j]), BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.DeterministicAssetBundle, tar);
-                    //refAsssets.Add(mainAsset);
+                    //List<Object> refAsssets = new List<Object>();
+                    for (int j = 0; j < pr.Count; ++j)
+                    {
+                        string assetfile = FindAsset(pr[j]);
+                        Object mainAsset = AssetDatabase.LoadMainAssetAtPath(assetfile);
+                        BuildPipeline.BuildAssetBundle(mainAsset, null, string.Format(pathName + "{0}.bytes", pr[j]), BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.DeterministicAssetBundle, tar);
+                        //refAsssets.Add(mainAsset);
+                    }
                 }
                 //if (refAsssets.Count > 0)
                 //    BuildPipeline.BuildAssetBundle(null, refAsssets.ToArray(), string.Format(pathName + "{0}{1}.bytes", files[i].name, "_dep"), BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.DeterministicAssetBundle, tar);
@@ -731,20 +733,26 @@ public class BuildAssetBundle : MonoBehaviour
             {
                 List<string> pr = GetRefEffAssets(files[i].name);
                 if (pr != null)
+                {
                     BuildPipeline.PushAssetDependencies();
 
-                //List<Object> refAsssets = new List<Object>();
-                for (int j = 0; j < pr.Count; ++j)
-                {
-                    string assetfile = FindAsset(pr[j]);
-                    Object mainAsset = AssetDatabase.LoadMainAssetAtPath(assetfile);
-                    if (mainAsset == null)
+                    //List<Object> refAsssets = new List<Object>();
+                    for (int j = 0; j < pr.Count; ++j)
                     {
-                        UnityEngine.Debug.Log(assetfile + " is can not find.");
-                        continue;
+                        string assetfile = FindAsset(pr[j]);
+                        Object mainAsset = AssetDatabase.LoadMainAssetAtPath(assetfile);
+                        if (mainAsset == null)
+                        {
+                            UnityEngine.Debug.Log(assetfile + " is can not find.");
+                            continue;
+                        }
+                        BuildPipeline.BuildAssetBundle(mainAsset, null, string.Format(pathName + "{0}.bytes", pr[j]), BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.DeterministicAssetBundle, tar);
+                        //refAsssets.Add(mainAsset);
                     }
-                    BuildPipeline.BuildAssetBundle(mainAsset, null, string.Format(pathName + "{0}.bytes", pr[j]), BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.DeterministicAssetBundle, tar);
-                    //refAsssets.Add(mainAsset);
+                }
+                else
+                {
+                    UnityEngine.Debug.Log(files[i].name + " is can not find file effect.");
                 }
                 //if (refAsssets.Count > 0)
                 //    BuildPipeline.BuildAssetBundle(null, refAsssets.ToArray(), string.Format(pathName + "{0}{1}.bytes", files[i].name, "_dep"), BuildAssetBundleOptions.CollectDependencies | BuildAssetBundleOptions.DeterministicAssetBundle, tar);
@@ -808,7 +816,7 @@ public class BuildAssetBundle : MonoBehaviour
         if (pathName.Contains(platformIOS_)) tar = BuildTarget.iPhone;
         else if (pathName.Contains(platformAndroid_)) tar = BuildTarget.Android;
 
-        string file = EditorUtility.OpenFilePanel("请选择UI依赖数据文件", Application.dataPath + "/../../../Config/Tables/", "json");
+        string file = EditorUtility.OpenFilePanel("请选择UI依赖数据文件", Application.dataPath + "/../../Config/Tables/", "json");
         string jsonStr = System.IO.File.ReadAllText(file);
         atlasRefDic_ = LitJson.JsonMapper.ToObject<Dictionary<string, List<string>>>(jsonStr);
 
@@ -862,7 +870,7 @@ public class BuildAssetBundle : MonoBehaviour
         if (pathName.Contains(platformIOS_)) tar = BuildTarget.iPhone;
         else if (pathName.Contains(platformAndroid_)) tar = BuildTarget.Android;
 
-        string file = EditorUtility.OpenFilePanel("请选择角色依赖数据文件", Application.dataPath + "/../../../Config/Tables/", "json");
+        string file = EditorUtility.OpenFilePanel("请选择角色依赖数据文件", Application.dataPath + "/../../Config/Tables/", "json");
         string jsonStr = System.IO.File.ReadAllText(file);
         playerRefDic_ = LitJson.JsonMapper.ToObject<Dictionary<string, List<string>>>(jsonStr);
 
@@ -919,7 +927,7 @@ public class BuildAssetBundle : MonoBehaviour
         if (pathName.Contains(platformIOS_)) tar = BuildTarget.iPhone;
         else if (pathName.Contains(platformAndroid_)) tar = BuildTarget.Android;
 
-        string file = EditorUtility.OpenFilePanel("请选择特效依赖数据文件", Application.dataPath + "/../../../Config/Tables/", "json");
+        string file = EditorUtility.OpenFilePanel("请选择特效依赖数据文件", Application.dataPath + "/../../Config/Tables/", "json");
         string jsonStr = System.IO.File.ReadAllText(file);
         effectRefDic_ = LitJson.JsonMapper.ToObject<Dictionary<string, List<string>>>(jsonStr);
 
@@ -1071,7 +1079,7 @@ public class BuildAssetBundle : MonoBehaviour
             ListAtlas(((GameObject)file).transform);
         }
         string jsonStr = LitJson.JsonMapper.ToJson(atlasRefDic_);
-        System.IO.File.WriteAllText(Application.dataPath + "/../../../Config/Tables/UIDependence.json", jsonStr);
+        System.IO.File.WriteAllText(Application.dataPath + "/../../Config/Tables/UIDependence.json", jsonStr);
         AssetDatabase.Refresh();
         ClientLog.Instance.Log("Success");
     }
@@ -1123,7 +1131,7 @@ public class BuildAssetBundle : MonoBehaviour
             ListPlayerRef(((GameObject)file).transform);
         }
         string jsonStr = LitJson.JsonMapper.ToJson(playerRefDic_);
-        System.IO.File.WriteAllText(Application.dataPath + "/../../../Config/Tables/PlayerDependence.json", jsonStr);
+        System.IO.File.WriteAllText(Application.dataPath + "/../../Config/Tables/PlayerDependence.json", jsonStr);
         AssetDatabase.Refresh();
         ClientLog.Instance.Log("Success");
     }
@@ -1194,7 +1202,7 @@ public class BuildAssetBundle : MonoBehaviour
             ListEffectRef(((GameObject)file).transform);
         }
         string jsonStr = LitJson.JsonMapper.ToJson(effectRefDic_);
-        System.IO.File.WriteAllText(Application.dataPath + "/../../../Config/Tables/EffectDependence.json", jsonStr);
+        System.IO.File.WriteAllText(Application.dataPath + "/../../Config/Tables/EffectDependence.json", jsonStr);
         AssetDatabase.Refresh();
         ClientLog.Instance.Log("Success");
     }

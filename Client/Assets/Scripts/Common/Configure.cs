@@ -42,13 +42,13 @@ static public class Configure
     }
 
 #if UNITY_EDITOR
-    public static string cfgPath = "file:///" + Application.dataPath + "/../../../Config/Tables/";
-	public static string scriptPath = Application.dataPath + "/../../../Config/Tables/LuaRoot/";
+    public static string cfgPath = "file:///" + Application.dataPath + "/../../Config/Tables/";
+	public static string scriptPath = Application.dataPath + "/../../Config/Tables/LuaRoot/";
 	//public static string assetsPath = "file:///" + Application.persistentDataPath + "/AssetBundlePC/";
 	public static string assetsPath = "file:///" + Application.streamingAssetsPath + "/AssetBundlePC/"; //
-	public static string cfgPathStn = "file:///" + Application.dataPath + "/../../../Config/Tables/";
+	public static string cfgPathStn = "file:///" + Application.dataPath + "/../../Config/Tables/";
 	public static string assetsPathstreaming = "file:///" + Application.streamingAssetsPath + "/AssetBundlePC/";
-	public static string scriptPathStre = Application.dataPath + "/../../../Config/Tables/LuaRoot/";
+	public static string scriptPathStre = Application.dataPath + "/../../Config/Tables/LuaRoot/";
 
 #elif UNITY_IOS || UNITY_IPHONE
 	public static string cfgPath = "file:///" + CommonDefines.persistentDataPath + "/AssetBundleIOS/TableTemp/";

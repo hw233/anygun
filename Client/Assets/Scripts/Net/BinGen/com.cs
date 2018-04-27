@@ -697,6 +697,7 @@ public enum QuestKind : int
 	QK_Wishing,
 	QK_Guild,
 	QK_Rand,
+	QK_Sub1,
 	QK_Max,
 }
 //=============================================================
@@ -710,6 +711,8 @@ public enum QuestType : int
 	QT_Item,
 	QT_Profession,
 	QT_Other,
+	QT_GiveItem,
+	QT_GiveBaby,
 	QT_Max,
 }
 //=============================================================
@@ -864,6 +867,12 @@ public enum GuideAimType : int
 	GAT_MainBag,
 	GAT_MainBagTipUseItem,
 	GAT_MainbagTipEquip,
+	GAT_MainBagFuwenTab,
+	GAT_MainBagFuwenFirstItem,
+	GAT_MainBagFuwenTipsCombieBtn,
+	GAT_MainBagFuwenTipsInsertBtn,
+	GAT_MainFuwenUICombieBtn,
+	GAT_MainFuwenCloseBtn,
 	GAT_MainSkill,
 	GAT_MainMake,
 	GAT_MainMakeSword,
@@ -915,6 +924,8 @@ public enum GuideAimType : int
 	GAT_BattleRunaway,
 	GAT_BattlePlayerInfo,
 	GAT_BattleRewardClose,
+	GAT_FirstAutoSkill,
+	GAT_PlayerAuto,
 	GAT_Max,
 }
 //=============================================================
@@ -957,6 +968,11 @@ public enum ScriptGameEvent : int
 	SGE_JJCEntryUI,
 	SGE_OfflineJJCUI,
 	SGE_BagItemDoubleClick,
+	SGE_BagFuwenOpen,
+	SGE_BagFuwenCombieUI,
+	SGE_BagFuwenCombieSuccess,
+	SGE_BagFuwenClickTipsInsertBtn,
+	SGE_FuwenUIClose,
 	SGE_NpcDialogBegin,
 	SGE_NpcRenwuUIOpen,
 	SGE_NpcRenwuPreAccept,
@@ -1043,6 +1059,8 @@ public enum ScriptGameEvent : int
 	SGE_PlayerPropUpdate,
 	SGE_NpcTalked,
 	SGE_EnterCopy,
+	SGE_PlayerAutoOrder,
+	SGE_OpenAutoPanel,
 	SGE_SenseEnter2,
 	SGE_WaitTalk,
 	SGE_SenseTalked,
@@ -1132,6 +1150,8 @@ public enum GameEventType : int
 	GET_Recharge,
 	GET_PhoneNumber,
 	GET_ChangeProfession,
+	GET_BagFullSendMail,
+	GET_WearFuwen,
 	GET_Max,
 }
 //=============================================================

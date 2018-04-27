@@ -2455,6 +2455,31 @@ public abstract class Client2ServerStub
 		}
 		methodEnd();
 	}
+	public void magicItemOneKeyLevel()
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 222;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		methodEnd();
+	}
+	public void submitQuest2(int npcId,int questId,int instId)
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 223;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, npcId);
+		}
+		{
+			bin.ProtocolWriter.writeType(w, questId);
+		}
+		{
+			bin.ProtocolWriter.writeType(w, instId);
+		}
+		methodEnd();
+	}
 }
 //=============================================================
 public interface Client2ServerProxy
@@ -2681,6 +2706,8 @@ public interface Client2ServerProxy
 	bool submitEmployeeQuest(int questId);
 	bool crystalUpLevel();
 	bool resetCrystalProp(int[] locklist);
+	bool magicItemOneKeyLevel();
+	bool submitQuest2(int npcId,int questId,int instId);
 }
 //=============================================================
 public static class Client2ServerDispatcher
@@ -4482,6 +4509,26 @@ public static class Client2ServerDispatcher
 		}
 		return __p__.resetCrystalProp(locklist);
 	}
+	public static bool magicItemOneKeyLevel(bin.IReader __r__, Client2ServerProxy __p__)
+	{
+		return __p__.magicItemOneKeyLevel();
+	}
+	public static bool submitQuest2(bin.IReader __r__, Client2ServerProxy __p__)
+	{
+		int npcId;
+		int questId;
+		int instId;
+		{
+			if(!bin.ProtocolReader.readType(__r__, out npcId)) return false;
+		}
+		{
+			if(!bin.ProtocolReader.readType(__r__, out questId)) return false;
+		}
+		{
+			if(!bin.ProtocolReader.readType(__r__, out instId)) return false;
+		}
+		return __p__.submitQuest2(npcId,questId,instId);
+	}
 	public static bool dispatch(bin.IReader r, Client2ServerProxy p)
 	{
 		ushort pid;
@@ -5596,6 +5643,16 @@ public static class Client2ServerDispatcher
 			case 221:
 			{
 				if(!Client2ServerDispatcher.resetCrystalProp(r, p)) return false;
+			}
+			break;
+			case 222:
+			{
+				if(!Client2ServerDispatcher.magicItemOneKeyLevel(r, p)) return false;
+			}
+			break;
+			case 223:
+			{
+				if(!Client2ServerDispatcher.submitQuest2(r, p)) return false;
 			}
 			break;
 			default: return false;
@@ -8988,6 +9045,20 @@ public abstract class Server2ClientStub
 		}
 		methodEnd();
 	}
+	public void updateTeamMember(int playerId,bool isMember)
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 269;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, playerId);
+		}
+		{
+			bin.ProtocolWriter.writeType(w, isMember);
+		}
+		methodEnd();
+	}
 }
 //=============================================================
 public interface Server2ClientProxy
@@ -9261,6 +9332,7 @@ public interface Server2ClientProxy
 	bool sycnCourseGift(COM_CourseGift[] data);
 	bool orderOk(string orderId,int shopId);
 	bool updateRandSubmitQuestCount(int submitCount);
+	bool updateTeamMember(int playerId,bool isMember);
 }
 //=============================================================
 public static class Server2ClientDispatcher
@@ -11997,6 +12069,18 @@ public static class Server2ClientDispatcher
 		}
 		return __p__.updateRandSubmitQuestCount(submitCount);
 	}
+	public static bool updateTeamMember(bin.IReader __r__, Server2ClientProxy __p__)
+	{
+		int playerId;
+		bool isMember;
+		{
+			if(!bin.ProtocolReader.readType(__r__, out playerId)) return false;
+		}
+		{
+			if(!bin.ProtocolReader.readType(__r__, out isMember)) return false;
+		}
+		return __p__.updateTeamMember(playerId,isMember);
+	}
 	public static bool dispatch(bin.IReader r, Server2ClientProxy p)
 	{
 		ushort pid;
@@ -13348,6 +13432,11 @@ public static class Server2ClientDispatcher
 				if(!Server2ClientDispatcher.updateRandSubmitQuestCount(r, p)) return false;
 			}
 			break;
+			case 269:
+			{
+				if(!Server2ClientDispatcher.updateTeamMember(r, p)) return false;
+			}
+			break;
 			default: return false;
 		}
 		return true;
@@ -13615,7 +13704,7 @@ public abstract class SGE_World2DBStub
 {
 	protected abstract bin.IWriter methodBegin();
 	protected abstract void methodEnd();
-	public void queryPlayer(string username,int serverId)
+	public void queryPlayerSimpleInformation(string username,int serverId)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
@@ -13629,11 +13718,25 @@ public abstract class SGE_World2DBStub
 		}
 		methodEnd();
 	}
-	public void createPlayer(string username,SGE_DBPlayerData inst,int serverId)
+	public void queryPlayer(string username,int playerId)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
 		ushort __pid__ = 1;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, username);
+		}
+		{
+			bin.ProtocolWriter.writeType(w, playerId);
+		}
+		methodEnd();
+	}
+	public void createPlayer(string username,SGE_DBPlayerData inst,int serverId)
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 2;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, username);
@@ -13650,7 +13753,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 2;
+		ushort __pid__ = 3;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, username);
@@ -13664,18 +13767,18 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 3;
+		ushort __pid__ = 4;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playername);
 		}
 		methodEnd();
 	}
-	public void queryPlayerById(string name,int instId,bool isFlag)
+	public void queryPlayerById(string name,int instId,int where)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 4;
+		ushort __pid__ = 5;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, name);
@@ -13684,25 +13787,11 @@ public abstract class SGE_World2DBStub
 			bin.ProtocolWriter.writeType(w, instId);
 		}
 		{
-			bin.ProtocolWriter.writeType(w, isFlag);
+			bin.ProtocolWriter.writeType(w, where);
 		}
 		methodEnd();
 	}
 	public void insertEndlessStair(int rank,string name)
-	{
-		bin.IWriter w = methodBegin();
-		if(w == null) return;
-		ushort __pid__ = 5;
-		bin.ProtocolWriter.writeType(w, __pid__);
-		{
-			bin.ProtocolWriter.writeType(w, rank);
-		}
-		{
-			bin.ProtocolWriter.writeType(w, name);
-		}
-		methodEnd();
-	}
-	public void updateEndlessStair(int rank,string name)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
@@ -13716,11 +13805,25 @@ public abstract class SGE_World2DBStub
 		}
 		methodEnd();
 	}
-	public void createBaby(string playername,COM_BabyInst inst,bool isToStorage)
+	public void updateEndlessStair(int rank,string name)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
 		ushort __pid__ = 7;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, rank);
+		}
+		{
+			bin.ProtocolWriter.writeType(w, name);
+		}
+		methodEnd();
+	}
+	public void createBaby(string playername,COM_BabyInst inst,bool isToStorage)
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 8;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playername);
@@ -13734,20 +13837,6 @@ public abstract class SGE_World2DBStub
 		methodEnd();
 	}
 	public void deleteBaby(string playername,int babyInstId)
-	{
-		bin.IWriter w = methodBegin();
-		if(w == null) return;
-		ushort __pid__ = 8;
-		bin.ProtocolWriter.writeType(w, __pid__);
-		{
-			bin.ProtocolWriter.writeType(w, playername);
-		}
-		{
-			bin.ProtocolWriter.writeType(w, babyInstId);
-		}
-		methodEnd();
-	}
-	public void resetBabyOwner(string playername,int babyInstId)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
@@ -13772,11 +13861,30 @@ public abstract class SGE_World2DBStub
 		}
 		methodEnd();
 	}
-	public void queryBabyById(string name,uint instid)
+	public void updateBabys(string playername,COM_BabyInst[] babys)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
 		ushort __pid__ = 11;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, playername);
+		}
+		{
+			uint __len__ = (babys == null)?0:(uint)babys.Length;
+			bin.ProtocolWriter.writeDynSize(w, __len__);
+			for(uint i = 0; i < __len__; i++)
+			{
+				babys[i].serialize(w);
+			}
+		}
+		methodEnd();
+	}
+	public void queryBabyById(string name,uint instid)
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 12;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, name);
@@ -13790,7 +13898,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 12;
+		ushort __pid__ = 13;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playername);
@@ -13804,7 +13912,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 13;
+		ushort __pid__ = 14;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playername);
@@ -13823,7 +13931,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 14;
+		ushort __pid__ = 15;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			inst.serialize(w);
@@ -13834,7 +13942,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 15;
+		ushort __pid__ = 16;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, name);
@@ -13848,7 +13956,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 16;
+		ushort __pid__ = 17;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			mail.serialize(w);
@@ -13859,7 +13967,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 17;
+		ushort __pid__ = 18;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			mail.serialize(w);
@@ -13870,7 +13978,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 18;
+		ushort __pid__ = 19;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			mail.serialize(w);
@@ -13889,7 +13997,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 19;
+		ushort __pid__ = 20;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, recvName);
@@ -13903,7 +14011,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 20;
+		ushort __pid__ = 21;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, recvName);
@@ -13917,7 +14025,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 21;
+		ushort __pid__ = 22;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			mail.serialize(w);
@@ -13928,7 +14036,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 22;
+		ushort __pid__ = 23;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			guild.serialize(w);
@@ -13942,7 +14050,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 23;
+		ushort __pid__ = 24;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, guildId);
@@ -13961,7 +14069,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 24;
+		ushort __pid__ = 25;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			guildMember.serialize(w);
@@ -13972,7 +14080,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 25;
+		ushort __pid__ = 26;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, guildId);
@@ -13983,7 +14091,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 26;
+		ushort __pid__ = 27;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, guildId);
@@ -13997,7 +14105,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 27;
+		ushort __pid__ = 28;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			guild.serialize(w);
@@ -14008,7 +14116,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 28;
+		ushort __pid__ = 29;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, roleId);
@@ -14023,7 +14131,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 29;
+		ushort __pid__ = 30;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, roleId);
@@ -14037,7 +14145,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 30;
+		ushort __pid__ = 31;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, guildId);
@@ -14054,35 +14162,10 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 31;
-		bin.ProtocolWriter.writeType(w, __pid__);
-		{
-			bin.ProtocolWriter.writeType(w, playerId);
-		}
-		methodEnd();
-	}
-	public void queryIdgen(string playerName,string idgen)
-	{
-		bin.IWriter w = methodBegin();
-		if(w == null) return;
 		ushort __pid__ = 32;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
-			bin.ProtocolWriter.writeType(w, playerName);
-		}
-		{
-			bin.ProtocolWriter.writeType(w, idgen);
-		}
-		methodEnd();
-	}
-	public void updateKeyGift(COM_KeyContent giftdata)
-	{
-		bin.IWriter w = methodBegin();
-		if(w == null) return;
-		ushort __pid__ = 33;
-		bin.ProtocolWriter.writeType(w, __pid__);
-		{
-			giftdata.serialize(w);
+			bin.ProtocolWriter.writeType(w, playerId);
 		}
 		methodEnd();
 	}
@@ -14090,7 +14173,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 34;
+		ushort __pid__ = 33;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			byte __e__ = (byte)adt;
@@ -14105,7 +14188,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 35;
+		ushort __pid__ = 34;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playerId);
@@ -14119,7 +14202,7 @@ public abstract class SGE_World2DBStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 36;
+		ushort __pid__ = 35;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playerId);
@@ -14129,21 +14212,44 @@ public abstract class SGE_World2DBStub
 		}
 		methodEnd();
 	}
+	public void delEmployeeQuest(uint playerId)
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 36;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, playerId);
+		}
+		methodEnd();
+	}
+	public void deleteEndlessStair(string name)
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 37;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, name);
+		}
+		methodEnd();
+	}
 }
 //=============================================================
 public interface SGE_World2DBProxy
 {
-	bool queryPlayer(string username,int serverId);
+	bool queryPlayerSimpleInformation(string username,int serverId);
+	bool queryPlayer(string username,int playerId);
 	bool createPlayer(string username,SGE_DBPlayerData inst,int serverId);
 	bool updatePlayer(string username,SGE_DBPlayerData inst);
 	bool deletePlayer(string playername);
-	bool queryPlayerById(string name,int instId,bool isFlag);
+	bool queryPlayerById(string name,int instId,int where);
 	bool insertEndlessStair(int rank,string name);
 	bool updateEndlessStair(int rank,string name);
 	bool createBaby(string playername,COM_BabyInst inst,bool isToStorage);
 	bool deleteBaby(string playername,int babyInstId);
-	bool resetBabyOwner(string playername,int babyInstId);
 	bool updateBaby(COM_BabyInst inst);
+	bool updateBabys(string playername,COM_BabyInst[] babys);
 	bool queryBabyById(string name,uint instid);
 	bool createEmployee(string playername,COM_EmployeeInst inst);
 	bool deleteEmployee(string playername,uint[] instIds);
@@ -14165,16 +14271,16 @@ public interface SGE_World2DBProxy
 	bool updateMemberContribution(int roleId,int contribution);
 	bool updateGuildStruction(uint guildId,sbyte level,int struction);
 	bool deleteGuildMember(int playerId);
-	bool queryIdgen(string playerName,string idgen);
-	bool updateKeyGift(COM_KeyContent giftdata);
 	bool insertActivity(ADType adt,SGE_SysActivity date);
 	bool insertLoseCharge(int playerId,SGE_OrderInfo order);
 	bool insertEmployeeQuest(uint playerId,SGE_PlayerEmployeeQuest data);
+	bool delEmployeeQuest(uint playerId);
+	bool deleteEndlessStair(string name);
 }
 //=============================================================
 public static class SGE_World2DBDispatcher
 {
-	public static bool queryPlayer(bin.IReader __r__, SGE_World2DBProxy __p__)
+	public static bool queryPlayerSimpleInformation(bin.IReader __r__, SGE_World2DBProxy __p__)
 	{
 		string username;
 		int serverId;
@@ -14184,7 +14290,19 @@ public static class SGE_World2DBDispatcher
 		{
 			if(!bin.ProtocolReader.readType(__r__, out serverId)) return false;
 		}
-		return __p__.queryPlayer(username,serverId);
+		return __p__.queryPlayerSimpleInformation(username,serverId);
+	}
+	public static bool queryPlayer(bin.IReader __r__, SGE_World2DBProxy __p__)
+	{
+		string username;
+		int playerId;
+		{
+			if(!bin.ProtocolReader.readType(__r__, out username, 65535)) return false;
+		}
+		{
+			if(!bin.ProtocolReader.readType(__r__, out playerId)) return false;
+		}
+		return __p__.queryPlayer(username,playerId);
 	}
 	public static bool createPlayer(bin.IReader __r__, SGE_World2DBProxy __p__)
 	{
@@ -14226,7 +14344,7 @@ public static class SGE_World2DBDispatcher
 	{
 		string name;
 		int instId;
-		bool isFlag;
+		int where;
 		{
 			if(!bin.ProtocolReader.readType(__r__, out name, 65535)) return false;
 		}
@@ -14234,9 +14352,9 @@ public static class SGE_World2DBDispatcher
 			if(!bin.ProtocolReader.readType(__r__, out instId)) return false;
 		}
 		{
-			if(!bin.ProtocolReader.readType(__r__, out isFlag)) return false;
+			if(!bin.ProtocolReader.readType(__r__, out where)) return false;
 		}
-		return __p__.queryPlayerById(name,instId,isFlag);
+		return __p__.queryPlayerById(name,instId,where);
 	}
 	public static bool insertEndlessStair(bin.IReader __r__, SGE_World2DBProxy __p__)
 	{
@@ -14290,18 +14408,6 @@ public static class SGE_World2DBDispatcher
 		}
 		return __p__.deleteBaby(playername,babyInstId);
 	}
-	public static bool resetBabyOwner(bin.IReader __r__, SGE_World2DBProxy __p__)
-	{
-		string playername;
-		int babyInstId;
-		{
-			if(!bin.ProtocolReader.readType(__r__, out playername, 65535)) return false;
-		}
-		{
-			if(!bin.ProtocolReader.readType(__r__, out babyInstId)) return false;
-		}
-		return __p__.resetBabyOwner(playername,babyInstId);
-	}
 	public static bool updateBaby(bin.IReader __r__, SGE_World2DBProxy __p__)
 	{
 		COM_BabyInst inst = new COM_BabyInst();
@@ -14309,6 +14415,25 @@ public static class SGE_World2DBDispatcher
 			if(!inst.deserialize(__r__)) return false;
 		}
 		return __p__.updateBaby(inst);
+	}
+	public static bool updateBabys(bin.IReader __r__, SGE_World2DBProxy __p__)
+	{
+		string playername;
+		COM_BabyInst[] babys;
+		{
+			if(!bin.ProtocolReader.readType(__r__, out playername, 65535)) return false;
+		}
+		{
+			uint __len__;
+			if(!bin.ProtocolReader.readDynSize(__r__, out __len__) || __len__ > 65535) return false;
+			babys = new COM_BabyInst[__len__];
+			for(uint i = 0; i < __len__; i++)
+			{
+				babys[i] = new COM_BabyInst();
+				if(!babys[i].deserialize(__r__)) return false;
+			}
+		}
+		return __p__.updateBabys(playername,babys);
 	}
 	public static bool queryBabyById(bin.IReader __r__, SGE_World2DBProxy __p__)
 	{
@@ -14555,26 +14680,6 @@ public static class SGE_World2DBDispatcher
 		}
 		return __p__.deleteGuildMember(playerId);
 	}
-	public static bool queryIdgen(bin.IReader __r__, SGE_World2DBProxy __p__)
-	{
-		string playerName;
-		string idgen;
-		{
-			if(!bin.ProtocolReader.readType(__r__, out playerName, 65535)) return false;
-		}
-		{
-			if(!bin.ProtocolReader.readType(__r__, out idgen, 65535)) return false;
-		}
-		return __p__.queryIdgen(playerName,idgen);
-	}
-	public static bool updateKeyGift(bin.IReader __r__, SGE_World2DBProxy __p__)
-	{
-		COM_KeyContent giftdata = new COM_KeyContent();
-		{
-			if(!giftdata.deserialize(__r__)) return false;
-		}
-		return __p__.updateKeyGift(giftdata);
-	}
 	public static bool insertActivity(bin.IReader __r__, SGE_World2DBProxy __p__)
 	{
 		ADType adt;
@@ -14613,6 +14718,22 @@ public static class SGE_World2DBDispatcher
 		}
 		return __p__.insertEmployeeQuest(playerId,data);
 	}
+	public static bool delEmployeeQuest(bin.IReader __r__, SGE_World2DBProxy __p__)
+	{
+		uint playerId;
+		{
+			if(!bin.ProtocolReader.readType(__r__, out playerId)) return false;
+		}
+		return __p__.delEmployeeQuest(playerId);
+	}
+	public static bool deleteEndlessStair(bin.IReader __r__, SGE_World2DBProxy __p__)
+	{
+		string name;
+		{
+			if(!bin.ProtocolReader.readType(__r__, out name, 65535)) return false;
+		}
+		return __p__.deleteEndlessStair(name);
+	}
 	public static bool dispatch(bin.IReader r, SGE_World2DBProxy p)
 	{
 		ushort pid;
@@ -14621,52 +14742,52 @@ public static class SGE_World2DBDispatcher
 		{
 			case 0:
 			{
-				if(!SGE_World2DBDispatcher.queryPlayer(r, p)) return false;
+				if(!SGE_World2DBDispatcher.queryPlayerSimpleInformation(r, p)) return false;
 			}
 			break;
 			case 1:
 			{
-				if(!SGE_World2DBDispatcher.createPlayer(r, p)) return false;
+				if(!SGE_World2DBDispatcher.queryPlayer(r, p)) return false;
 			}
 			break;
 			case 2:
 			{
-				if(!SGE_World2DBDispatcher.updatePlayer(r, p)) return false;
+				if(!SGE_World2DBDispatcher.createPlayer(r, p)) return false;
 			}
 			break;
 			case 3:
 			{
-				if(!SGE_World2DBDispatcher.deletePlayer(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updatePlayer(r, p)) return false;
 			}
 			break;
 			case 4:
 			{
-				if(!SGE_World2DBDispatcher.queryPlayerById(r, p)) return false;
+				if(!SGE_World2DBDispatcher.deletePlayer(r, p)) return false;
 			}
 			break;
 			case 5:
 			{
-				if(!SGE_World2DBDispatcher.insertEndlessStair(r, p)) return false;
+				if(!SGE_World2DBDispatcher.queryPlayerById(r, p)) return false;
 			}
 			break;
 			case 6:
 			{
-				if(!SGE_World2DBDispatcher.updateEndlessStair(r, p)) return false;
+				if(!SGE_World2DBDispatcher.insertEndlessStair(r, p)) return false;
 			}
 			break;
 			case 7:
 			{
-				if(!SGE_World2DBDispatcher.createBaby(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateEndlessStair(r, p)) return false;
 			}
 			break;
 			case 8:
 			{
-				if(!SGE_World2DBDispatcher.deleteBaby(r, p)) return false;
+				if(!SGE_World2DBDispatcher.createBaby(r, p)) return false;
 			}
 			break;
 			case 9:
 			{
-				if(!SGE_World2DBDispatcher.resetBabyOwner(r, p)) return false;
+				if(!SGE_World2DBDispatcher.deleteBaby(r, p)) return false;
 			}
 			break;
 			case 10:
@@ -14676,132 +14797,137 @@ public static class SGE_World2DBDispatcher
 			break;
 			case 11:
 			{
-				if(!SGE_World2DBDispatcher.queryBabyById(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateBabys(r, p)) return false;
 			}
 			break;
 			case 12:
 			{
-				if(!SGE_World2DBDispatcher.createEmployee(r, p)) return false;
+				if(!SGE_World2DBDispatcher.queryBabyById(r, p)) return false;
 			}
 			break;
 			case 13:
 			{
-				if(!SGE_World2DBDispatcher.deleteEmployee(r, p)) return false;
+				if(!SGE_World2DBDispatcher.createEmployee(r, p)) return false;
 			}
 			break;
 			case 14:
 			{
-				if(!SGE_World2DBDispatcher.updateEmployee(r, p)) return false;
+				if(!SGE_World2DBDispatcher.deleteEmployee(r, p)) return false;
 			}
 			break;
 			case 15:
 			{
-				if(!SGE_World2DBDispatcher.queryEmployeeById(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateEmployee(r, p)) return false;
 			}
 			break;
 			case 16:
 			{
-				if(!SGE_World2DBDispatcher.insertMail(r, p)) return false;
+				if(!SGE_World2DBDispatcher.queryEmployeeById(r, p)) return false;
 			}
 			break;
 			case 17:
 			{
-				if(!SGE_World2DBDispatcher.insertMailAll(r, p)) return false;
+				if(!SGE_World2DBDispatcher.insertMail(r, p)) return false;
 			}
 			break;
 			case 18:
 			{
-				if(!SGE_World2DBDispatcher.insertMailByRecvs(r, p)) return false;
+				if(!SGE_World2DBDispatcher.insertMailAll(r, p)) return false;
 			}
 			break;
 			case 19:
 			{
-				if(!SGE_World2DBDispatcher.fatchMail(r, p)) return false;
+				if(!SGE_World2DBDispatcher.insertMailByRecvs(r, p)) return false;
 			}
 			break;
 			case 20:
 			{
-				if(!SGE_World2DBDispatcher.delMail(r, p)) return false;
+				if(!SGE_World2DBDispatcher.fatchMail(r, p)) return false;
 			}
 			break;
 			case 21:
 			{
-				if(!SGE_World2DBDispatcher.updateMail(r, p)) return false;
+				if(!SGE_World2DBDispatcher.delMail(r, p)) return false;
 			}
 			break;
 			case 22:
 			{
-				if(!SGE_World2DBDispatcher.insertGuild(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateMail(r, p)) return false;
 			}
 			break;
 			case 23:
 			{
-				if(!SGE_World2DBDispatcher.updateGuildRequestList(r, p)) return false;
+				if(!SGE_World2DBDispatcher.insertGuild(r, p)) return false;
 			}
 			break;
 			case 24:
 			{
-				if(!SGE_World2DBDispatcher.createGuildMember(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateGuildRequestList(r, p)) return false;
 			}
 			break;
 			case 25:
 			{
-				if(!SGE_World2DBDispatcher.delGuild(r, p)) return false;
+				if(!SGE_World2DBDispatcher.createGuildMember(r, p)) return false;
 			}
 			break;
 			case 26:
 			{
-				if(!SGE_World2DBDispatcher.updateGuildNotice(r, p)) return false;
+				if(!SGE_World2DBDispatcher.delGuild(r, p)) return false;
 			}
 			break;
 			case 27:
 			{
-				if(!SGE_World2DBDispatcher.updateGuild(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateGuildNotice(r, p)) return false;
 			}
 			break;
 			case 28:
 			{
-				if(!SGE_World2DBDispatcher.updateMemberPosition(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateGuild(r, p)) return false;
 			}
 			break;
 			case 29:
 			{
-				if(!SGE_World2DBDispatcher.updateMemberContribution(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateMemberPosition(r, p)) return false;
 			}
 			break;
 			case 30:
 			{
-				if(!SGE_World2DBDispatcher.updateGuildStruction(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateMemberContribution(r, p)) return false;
 			}
 			break;
 			case 31:
 			{
-				if(!SGE_World2DBDispatcher.deleteGuildMember(r, p)) return false;
+				if(!SGE_World2DBDispatcher.updateGuildStruction(r, p)) return false;
 			}
 			break;
 			case 32:
 			{
-				if(!SGE_World2DBDispatcher.queryIdgen(r, p)) return false;
+				if(!SGE_World2DBDispatcher.deleteGuildMember(r, p)) return false;
 			}
 			break;
 			case 33:
 			{
-				if(!SGE_World2DBDispatcher.updateKeyGift(r, p)) return false;
+				if(!SGE_World2DBDispatcher.insertActivity(r, p)) return false;
 			}
 			break;
 			case 34:
 			{
-				if(!SGE_World2DBDispatcher.insertActivity(r, p)) return false;
+				if(!SGE_World2DBDispatcher.insertLoseCharge(r, p)) return false;
 			}
 			break;
 			case 35:
 			{
-				if(!SGE_World2DBDispatcher.insertLoseCharge(r, p)) return false;
+				if(!SGE_World2DBDispatcher.insertEmployeeQuest(r, p)) return false;
 			}
 			break;
 			case 36:
 			{
-				if(!SGE_World2DBDispatcher.insertEmployeeQuest(r, p)) return false;
+				if(!SGE_World2DBDispatcher.delEmployeeQuest(r, p)) return false;
+			}
+			break;
+			case 37:
+			{
+				if(!SGE_World2DBDispatcher.deleteEndlessStair(r, p)) return false;
 			}
 			break;
 			default: return false;
@@ -14841,7 +14967,7 @@ public abstract class SGE_DB2WorldStub
 		}
 		methodEnd();
 	}
-	public void queryPlayerOk(string username,SGE_DBPlayerData[] insts,int inDoorId)
+	public void queryPlayerSimpleInformationOk(string username,COM_SimpleInformation[] insts,int serverId)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
@@ -14859,7 +14985,21 @@ public abstract class SGE_DB2WorldStub
 			}
 		}
 		{
-			bin.ProtocolWriter.writeType(w, inDoorId);
+			bin.ProtocolWriter.writeType(w, serverId);
+		}
+		methodEnd();
+	}
+	public void queryPlayerOk(string username,SGE_DBPlayerData player)
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 3;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, username);
+		}
+		{
+			player.serialize(w);
 		}
 		methodEnd();
 	}
@@ -14867,7 +15007,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 3;
+		ushort __pid__ = 4;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, username);
@@ -14884,18 +15024,18 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 4;
+		ushort __pid__ = 5;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, username);
 		}
 		methodEnd();
 	}
-	public void queryPlayerByIdOK(string playername,SGE_DBPlayerData inst,bool isFlag)
+	public void queryPlayerByIdOK(string playername,SGE_DBPlayerData inst,int where)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 5;
+		ushort __pid__ = 6;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playername);
@@ -14904,7 +15044,7 @@ public abstract class SGE_DB2WorldStub
 			inst.serialize(w);
 		}
 		{
-			bin.ProtocolWriter.writeType(w, isFlag);
+			bin.ProtocolWriter.writeType(w, where);
 		}
 		methodEnd();
 	}
@@ -14912,7 +15052,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 6;
+		ushort __pid__ = 7;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			uint __len__ = (name == null)?0:(uint)name.Length;
@@ -14928,7 +15068,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 7;
+		ushort __pid__ = 8;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			uint __len__ = (info == null)?0:(uint)info.Length;
@@ -14944,7 +15084,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 8;
+		ushort __pid__ = 9;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			uint __len__ = (info == null)?0:(uint)info.Length;
@@ -14960,7 +15100,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 9;
+		ushort __pid__ = 10;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playername);
@@ -14977,7 +15117,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 10;
+		ushort __pid__ = 11;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playername);
@@ -14991,7 +15131,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 11;
+		ushort __pid__ = 12;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			uint __len__ = (infos == null)?0:(uint)infos.Length;
@@ -15007,7 +15147,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 12;
+		ushort __pid__ = 13;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, name);
@@ -15017,11 +15157,22 @@ public abstract class SGE_DB2WorldStub
 		}
 		methodEnd();
 	}
+	public void UpdateBabysOK(string playername)
+	{
+		bin.IWriter w = methodBegin();
+		if(w == null) return;
+		ushort __pid__ = 14;
+		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, playername);
+		}
+		methodEnd();
+	}
 	public void createEmployeeOK(string playername,COM_EmployeeInst inst)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 13;
+		ushort __pid__ = 15;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playername);
@@ -15035,7 +15186,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 14;
+		ushort __pid__ = 16;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, playername);
@@ -15054,7 +15205,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 15;
+		ushort __pid__ = 17;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			uint __len__ = (infos == null)?0:(uint)infos.Length;
@@ -15070,7 +15221,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 16;
+		ushort __pid__ = 18;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, name);
@@ -15080,12 +15231,15 @@ public abstract class SGE_DB2WorldStub
 		}
 		methodEnd();
 	}
-	public void appendMail(COM_Mail[] mails)
+	public void appendMail(string playerName,COM_Mail[] mails)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 17;
+		ushort __pid__ = 19;
 		bin.ProtocolWriter.writeType(w, __pid__);
+		{
+			bin.ProtocolWriter.writeType(w, playerName);
+		}
 		{
 			uint __len__ = (mails == null)?0:(uint)mails.Length;
 			bin.ProtocolWriter.writeDynSize(w, __len__);
@@ -15100,7 +15254,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 18;
+		ushort __pid__ = 20;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			guild.serialize(w);
@@ -15114,7 +15268,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 19;
+		ushort __pid__ = 21;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			bin.ProtocolWriter.writeType(w, roleId);
@@ -15129,7 +15283,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 20;
+		ushort __pid__ = 22;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			uint __len__ = (guilds == null)?0:(uint)guilds.Length;
@@ -15145,7 +15299,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 21;
+		ushort __pid__ = 23;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			uint __len__ = (guildMember == null)?0:(uint)guildMember.Length;
@@ -15157,28 +15311,11 @@ public abstract class SGE_DB2WorldStub
 		}
 		methodEnd();
 	}
-	public void queryIdgenOK(string playerName,COM_KeyContent content,bool isHas)
-	{
-		bin.IWriter w = methodBegin();
-		if(w == null) return;
-		ushort __pid__ = 22;
-		bin.ProtocolWriter.writeType(w, __pid__);
-		{
-			bin.ProtocolWriter.writeType(w, playerName);
-		}
-		{
-			content.serialize(w);
-		}
-		{
-			bin.ProtocolWriter.writeType(w, isHas);
-		}
-		methodEnd();
-	}
 	public void fatchActivity(SGE_SysActivity date)
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 23;
+		ushort __pid__ = 24;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			date.serialize(w);
@@ -15189,7 +15326,7 @@ public abstract class SGE_DB2WorldStub
 	{
 		bin.IWriter w = methodBegin();
 		if(w == null) return;
-		ushort __pid__ = 24;
+		ushort __pid__ = 25;
 		bin.ProtocolWriter.writeType(w, __pid__);
 		{
 			uint __len__ = (info == null)?0:(uint)info.Length;
@@ -15207,10 +15344,11 @@ public interface SGE_DB2WorldProxy
 {
 	bool syncGlobalGuid(uint id);
 	bool syncContactInfo(SGE_ContactInfoExt[] info);
-	bool queryPlayerOk(string username,SGE_DBPlayerData[] insts,int inDoorId);
+	bool queryPlayerSimpleInformationOk(string username,COM_SimpleInformation[] insts,int serverId);
+	bool queryPlayerOk(string username,SGE_DBPlayerData player);
 	bool createPlayerOk(string username,SGE_DBPlayerData inst,int inDoorId);
 	bool createPlayerSameName(string username);
-	bool queryPlayerByIdOK(string playername,SGE_DBPlayerData inst,bool isFlag);
+	bool queryPlayerByIdOK(string playername,SGE_DBPlayerData inst,int where);
 	bool queryEndlessStairAllDateOK(string[] name);
 	bool queryPlayerByLevelOK(COM_ContactInfo[] info);
 	bool queryPlayerByFFOK(COM_ContactInfo[] info);
@@ -15218,16 +15356,16 @@ public interface SGE_DB2WorldProxy
 	bool deleteBabyOK(string playername,int babyInstId);
 	bool queryBabyByFFOK(COM_BabyRankData[] infos);
 	bool queryBabyByIdOK(string name,COM_BabyInst inst);
+	bool UpdateBabysOK(string playername);
 	bool createEmployeeOK(string playername,COM_EmployeeInst inst);
 	bool deleteEmployeeOK(string playername,uint[] instIds);
 	bool queryEmployeeByFFOK(COM_EmployeeRankData[] infos);
 	bool queryEmployeeByIdOK(string name,COM_EmployeeInst inst);
-	bool appendMail(COM_Mail[] mails);
+	bool appendMail(string playerName,COM_Mail[] mails);
 	bool insertGuildOK(COM_Guild guild,COM_GuildMember guildMember);
 	bool updateMemberJobOk(int roleId,GuildJob job);
 	bool syncGuild(COM_Guild[] guilds);
 	bool syncGuildMember(COM_GuildMember[] guildMember);
-	bool queryIdgenOK(string playerName,COM_KeyContent content,bool isHas);
 	bool fatchActivity(SGE_SysActivity date);
 	bool syncEmployeeQuest(SGE_PlayerEmployeeQuest[] info);
 }
@@ -15257,28 +15395,40 @@ public static class SGE_DB2WorldDispatcher
 		}
 		return __p__.syncContactInfo(info);
 	}
-	public static bool queryPlayerOk(bin.IReader __r__, SGE_DB2WorldProxy __p__)
+	public static bool queryPlayerSimpleInformationOk(bin.IReader __r__, SGE_DB2WorldProxy __p__)
 	{
 		string username;
-		SGE_DBPlayerData[] insts;
-		int inDoorId;
+		COM_SimpleInformation[] insts;
+		int serverId;
 		{
 			if(!bin.ProtocolReader.readType(__r__, out username, 65535)) return false;
 		}
 		{
 			uint __len__;
 			if(!bin.ProtocolReader.readDynSize(__r__, out __len__) || __len__ > 65535) return false;
-			insts = new SGE_DBPlayerData[__len__];
+			insts = new COM_SimpleInformation[__len__];
 			for(uint i = 0; i < __len__; i++)
 			{
-				insts[i] = new SGE_DBPlayerData();
+				insts[i] = new COM_SimpleInformation();
 				if(!insts[i].deserialize(__r__)) return false;
 			}
 		}
 		{
-			if(!bin.ProtocolReader.readType(__r__, out inDoorId)) return false;
+			if(!bin.ProtocolReader.readType(__r__, out serverId)) return false;
 		}
-		return __p__.queryPlayerOk(username,insts,inDoorId);
+		return __p__.queryPlayerSimpleInformationOk(username,insts,serverId);
+	}
+	public static bool queryPlayerOk(bin.IReader __r__, SGE_DB2WorldProxy __p__)
+	{
+		string username;
+		SGE_DBPlayerData player = new SGE_DBPlayerData();
+		{
+			if(!bin.ProtocolReader.readType(__r__, out username, 65535)) return false;
+		}
+		{
+			if(!player.deserialize(__r__)) return false;
+		}
+		return __p__.queryPlayerOk(username,player);
 	}
 	public static bool createPlayerOk(bin.IReader __r__, SGE_DB2WorldProxy __p__)
 	{
@@ -15308,7 +15458,7 @@ public static class SGE_DB2WorldDispatcher
 	{
 		string playername;
 		SGE_DBPlayerData inst = new SGE_DBPlayerData();
-		bool isFlag;
+		int where;
 		{
 			if(!bin.ProtocolReader.readType(__r__, out playername, 65535)) return false;
 		}
@@ -15316,9 +15466,9 @@ public static class SGE_DB2WorldDispatcher
 			if(!inst.deserialize(__r__)) return false;
 		}
 		{
-			if(!bin.ProtocolReader.readType(__r__, out isFlag)) return false;
+			if(!bin.ProtocolReader.readType(__r__, out where)) return false;
 		}
-		return __p__.queryPlayerByIdOK(playername,inst,isFlag);
+		return __p__.queryPlayerByIdOK(playername,inst,where);
 	}
 	public static bool queryEndlessStairAllDateOK(bin.IReader __r__, SGE_DB2WorldProxy __p__)
 	{
@@ -15419,6 +15569,14 @@ public static class SGE_DB2WorldDispatcher
 		}
 		return __p__.queryBabyByIdOK(name,inst);
 	}
+	public static bool UpdateBabysOK(bin.IReader __r__, SGE_DB2WorldProxy __p__)
+	{
+		string playername;
+		{
+			if(!bin.ProtocolReader.readType(__r__, out playername, 65535)) return false;
+		}
+		return __p__.UpdateBabysOK(playername);
+	}
 	public static bool createEmployeeOK(bin.IReader __r__, SGE_DB2WorldProxy __p__)
 	{
 		string playername;
@@ -15478,7 +15636,11 @@ public static class SGE_DB2WorldDispatcher
 	}
 	public static bool appendMail(bin.IReader __r__, SGE_DB2WorldProxy __p__)
 	{
+		string playerName;
 		COM_Mail[] mails;
+		{
+			if(!bin.ProtocolReader.readType(__r__, out playerName, 65535)) return false;
+		}
 		{
 			uint __len__;
 			if(!bin.ProtocolReader.readDynSize(__r__, out __len__) || __len__ > 65535) return false;
@@ -15489,7 +15651,7 @@ public static class SGE_DB2WorldDispatcher
 				if(!mails[i].deserialize(__r__)) return false;
 			}
 		}
-		return __p__.appendMail(mails);
+		return __p__.appendMail(playerName,mails);
 	}
 	public static bool insertGuildOK(bin.IReader __r__, SGE_DB2WorldProxy __p__)
 	{
@@ -15547,22 +15709,6 @@ public static class SGE_DB2WorldDispatcher
 		}
 		return __p__.syncGuildMember(guildMember);
 	}
-	public static bool queryIdgenOK(bin.IReader __r__, SGE_DB2WorldProxy __p__)
-	{
-		string playerName;
-		COM_KeyContent content = new COM_KeyContent();
-		bool isHas;
-		{
-			if(!bin.ProtocolReader.readType(__r__, out playerName, 65535)) return false;
-		}
-		{
-			if(!content.deserialize(__r__)) return false;
-		}
-		{
-			if(!bin.ProtocolReader.readType(__r__, out isHas)) return false;
-		}
-		return __p__.queryIdgenOK(playerName,content,isHas);
-	}
 	public static bool fatchActivity(bin.IReader __r__, SGE_DB2WorldProxy __p__)
 	{
 		SGE_SysActivity date = new SGE_SysActivity();
@@ -15604,115 +15750,120 @@ public static class SGE_DB2WorldDispatcher
 			break;
 			case 2:
 			{
-				if(!SGE_DB2WorldDispatcher.queryPlayerOk(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryPlayerSimpleInformationOk(r, p)) return false;
 			}
 			break;
 			case 3:
 			{
-				if(!SGE_DB2WorldDispatcher.createPlayerOk(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryPlayerOk(r, p)) return false;
 			}
 			break;
 			case 4:
 			{
-				if(!SGE_DB2WorldDispatcher.createPlayerSameName(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.createPlayerOk(r, p)) return false;
 			}
 			break;
 			case 5:
 			{
-				if(!SGE_DB2WorldDispatcher.queryPlayerByIdOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.createPlayerSameName(r, p)) return false;
 			}
 			break;
 			case 6:
 			{
-				if(!SGE_DB2WorldDispatcher.queryEndlessStairAllDateOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryPlayerByIdOK(r, p)) return false;
 			}
 			break;
 			case 7:
 			{
-				if(!SGE_DB2WorldDispatcher.queryPlayerByLevelOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryEndlessStairAllDateOK(r, p)) return false;
 			}
 			break;
 			case 8:
 			{
-				if(!SGE_DB2WorldDispatcher.queryPlayerByFFOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryPlayerByLevelOK(r, p)) return false;
 			}
 			break;
 			case 9:
 			{
-				if(!SGE_DB2WorldDispatcher.createBabyOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryPlayerByFFOK(r, p)) return false;
 			}
 			break;
 			case 10:
 			{
-				if(!SGE_DB2WorldDispatcher.deleteBabyOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.createBabyOK(r, p)) return false;
 			}
 			break;
 			case 11:
 			{
-				if(!SGE_DB2WorldDispatcher.queryBabyByFFOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.deleteBabyOK(r, p)) return false;
 			}
 			break;
 			case 12:
 			{
-				if(!SGE_DB2WorldDispatcher.queryBabyByIdOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryBabyByFFOK(r, p)) return false;
 			}
 			break;
 			case 13:
 			{
-				if(!SGE_DB2WorldDispatcher.createEmployeeOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryBabyByIdOK(r, p)) return false;
 			}
 			break;
 			case 14:
 			{
-				if(!SGE_DB2WorldDispatcher.deleteEmployeeOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.UpdateBabysOK(r, p)) return false;
 			}
 			break;
 			case 15:
 			{
-				if(!SGE_DB2WorldDispatcher.queryEmployeeByFFOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.createEmployeeOK(r, p)) return false;
 			}
 			break;
 			case 16:
 			{
-				if(!SGE_DB2WorldDispatcher.queryEmployeeByIdOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.deleteEmployeeOK(r, p)) return false;
 			}
 			break;
 			case 17:
 			{
-				if(!SGE_DB2WorldDispatcher.appendMail(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryEmployeeByFFOK(r, p)) return false;
 			}
 			break;
 			case 18:
 			{
-				if(!SGE_DB2WorldDispatcher.insertGuildOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.queryEmployeeByIdOK(r, p)) return false;
 			}
 			break;
 			case 19:
 			{
-				if(!SGE_DB2WorldDispatcher.updateMemberJobOk(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.appendMail(r, p)) return false;
 			}
 			break;
 			case 20:
 			{
-				if(!SGE_DB2WorldDispatcher.syncGuild(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.insertGuildOK(r, p)) return false;
 			}
 			break;
 			case 21:
 			{
-				if(!SGE_DB2WorldDispatcher.syncGuildMember(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.updateMemberJobOk(r, p)) return false;
 			}
 			break;
 			case 22:
 			{
-				if(!SGE_DB2WorldDispatcher.queryIdgenOK(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.syncGuild(r, p)) return false;
 			}
 			break;
 			case 23:
 			{
-				if(!SGE_DB2WorldDispatcher.fatchActivity(r, p)) return false;
+				if(!SGE_DB2WorldDispatcher.syncGuildMember(r, p)) return false;
 			}
 			break;
 			case 24:
+			{
+				if(!SGE_DB2WorldDispatcher.fatchActivity(r, p)) return false;
+			}
+			break;
+			case 25:
 			{
 				if(!SGE_DB2WorldDispatcher.syncEmployeeQuest(r, p)) return false;
 			}

@@ -15,10 +15,10 @@
 #include "broadcaster.h"
 #include "PeriodEvent.h"
 #include "ShowDataTemplate.h"
-#include "centerServer.h"
-#include "gift.h"
-#include "sms.h"
-#include "logTask.h"
+//#include "centerServer.h"
+//#include "gift.h"
+//#include "sms.h"
+//#include "logTask.h"
 struct NoticeCmd{
 	NoticeSendType type_;
 	float thetime_;
@@ -148,10 +148,10 @@ public:
 	ShowItemInstData					showItemInstData_;
 	ShowbabyInstData					showBabyInstData_;
 
-	SyncCentreServerTask				syncCentreTask_;
-	GiftTask							giftTask_;
-	SMSTask								smsTask_;
-	LogTask								logTask_;
+	//SyncCentreServerTask				syncCentreTask_;
+	//GiftTask							giftTask_;
+	//SMSTask								smsTask_;
+	//LogTask								logTask_;
 	std::vector<U32>			inDoorIds_;
 	///tmp	
 private:
@@ -166,8 +166,8 @@ private:
 	std::vector<COM_Wish>				wishstore_;			//–Ì‘∏≥ÿ
 	
 	
-	std::vector<SMSContent>		prepareSMS_;
-	std::vector<SMSContent>		complateSMS_;
+	//std::vector<SMSContent>		prepareSMS_;
+	//std::vector<SMSContent>		complateSMS_;
 
 	
 };

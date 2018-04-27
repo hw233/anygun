@@ -120,8 +120,8 @@ public class UILoginPanel : UIBase {
             }
 
             SelectServPanel ssp = selectServPanel_.GetComponent<SelectServPanel>();
-            string host = ssp.Host(GameManager.ServName_);//"121.69.36.174";"testmhflc.tanyu.mobi";//"120.26.58.230";
-            int port = ssp.Port(GameManager.ServName_);//20101;20401
+            string host = "127.0.0.1";//ssp.Host(GameManager.ServName_);//"121.69.36.174";"testmhflc.tanyu.mobi";//"120.26.58.230";
+            int port = 28000;// ssp.Port(GameManager.ServName_);//20101;20401
             ApplicationEntry.Instance.ConnectToWorld(host, port);
             string localSaveServInfo = GameManager.ServName_ + ":" + GameManager.ServId_;
             PlayerPrefs.SetString(servSaveStr, localSaveServInfo);
@@ -219,47 +219,49 @@ public class UILoginPanel : UIBase {
     
     IEnumerator ServNotice()
     {
-        WWWForm form = new WWWForm();
-		form.AddField("servid", GameManager.ServId_.ToString());
-		Request www = new Request("post", GlobalValue.centerservhost + GlobalValue.servNotice, form);
-		www.Send ();
-		while( !www.isDone )
-		{
-			yield return null;
-		}
+        LaunchLoginInfo();
+        NetConnection.Instance.sessionlogin(GameManager.Instance.loginInfo_);
+        //WWWForm form = new WWWForm();
+        //form.AddField("servid", GameManager.ServId_.ToString());
+        //Request www = new Request("post", GlobalValue.centerservhost + GlobalValue.servNotice, form);
+        //www.Send ();
+        //while( !www.isDone )
+        //{
+        //    yield return null;
+        //}
 
-        if (www.isDone)
-        {
-            if (www.exception == null && www.response != null)
-            {
-                updateContent_ = www.response.Text;
-				if(string.IsNullOrEmpty(updateContent_))
-				{
-                    LaunchLoginInfo();
-					NetConnection.Instance.sessionlogin(GameManager.Instance.loginInfo_);
-					ErrorTipsUI.ShowMe("连接中...请稍候...");
-					ApplicationEntry.Instance.isChcekFile = true;
-				}
-				else
-				{
-                    NoticeManager.Instance.ShowUpdateNotice("区服公告", updateContent_, (GameObject go) =>
-                    {
-                        LaunchLoginInfo();
-                        NetConnection.Instance.sessionlogin(GameManager.Instance.loginInfo_);
-                        ErrorTipsUI.ShowMe("连接中...请稍候...");
-                        ApplicationEntry.Instance.isChcekFile = true;
-                    });
-				}
-            }
-            else
-            {
-                Debug.Log("Pull ServNotice  isDone! has error");
-                LaunchLoginInfo();
-                NetConnection.Instance.sessionlogin(GameManager.Instance.loginInfo_);
-                ErrorTipsUI.ShowMe("连接中...请稍候...");
-                ApplicationEntry.Instance.isChcekFile = true;
-            }
-		}
+        //if (www.isDone)
+        //{
+        //    if (www.exception == null && www.response != null)
+        //    {
+        //        updateContent_ = www.response.Text;
+        //        if(string.IsNullOrEmpty(updateContent_))
+        //        {
+        //            LaunchLoginInfo();
+        //            NetConnection.Instance.sessionlogin(GameManager.Instance.loginInfo_);
+        //            ErrorTipsUI.ShowMe("连接中...请稍候...");
+        //            ApplicationEntry.Instance.isChcekFile = true;
+        //        }
+        //        else
+        //        {
+        //            NoticeManager.Instance.ShowUpdateNotice("区服公告", updateContent_, (GameObject go) =>
+        //            {
+        //                LaunchLoginInfo();
+        //                NetConnection.Instance.sessionlogin(GameManager.Instance.loginInfo_);
+        //                ErrorTipsUI.ShowMe("连接中...请稍候...");
+        //                ApplicationEntry.Instance.isChcekFile = true;
+        //            });
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Pull ServNotice  isDone! has error");
+        //        LaunchLoginInfo();
+        //        NetConnection.Instance.sessionlogin(GameManager.Instance.loginInfo_);
+        //        ErrorTipsUI.ShowMe("连接中...请稍候...");
+        //        ApplicationEntry.Instance.isChcekFile = true;
+        //    }
+        //}
         yield return null;
     }
 
@@ -292,32 +294,34 @@ public class UILoginPanel : UIBase {
 
     IEnumerator pullServs(string userName)
     {
-        WWWForm form = new WWWForm();
-        form.AddField("username", userName);
-        form.AddField("version", GameManager.Instance.GetVersionNum());
-        form.AddField("channel", GlobalValue.channelID);
+        //WWWForm form = new WWWForm();
+        //form.AddField("username", userName);
+        //form.AddField("version", GameManager.Instance.GetVersionNum());
+        //form.AddField("channel", GlobalValue.channelID);
 
-		Request post = new Request("post", GlobalValue.centerservhost + GlobalValue.servListUrl, form);
-		post.Send ();
-		while( !post.isDone )
-		{
-			yield return null;
-		}
+        //Request post = new Request("post", GlobalValue.centerservhost + GlobalValue.servListUrl, form);
+        //post.Send ();
+        //while( !post.isDone )
+        //{
+        //    
+        //}
 
-        if (post.isDone)
-        {
-            if (post.exception == null && post.response != null)
-            {
-                servInfo_ = post.response.Text;
-                selectServPanel_.GetComponent<SelectServPanel>().SetData(servInfo_);
-                selectServ_.SetActive(true);
-            }
-            else
-            {
-                userName_ = "";
-                ApplicationEntry.Instance.PostSocketErr(90090);
-            }
-         }
+        //if (post.isDone)
+        //{
+        //    if (post.exception == null && post.response != null)
+        //    {
+        //        servInfo_ = post.response.Text;
+        //        selectServPanel_.GetComponent<SelectServPanel>().SetData(servInfo_);
+        //        selectServ_.SetActive(true);
+        //    }
+        //    else
+        //    {
+        //        userName_ = "";
+        //        ApplicationEntry.Instance.PostSocketErr(90090);
+        //    }
+        // }
+
+        yield return null;
     }
 
     void OnSocketException(int errCode)
