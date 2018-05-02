@@ -1,1 +1,1 @@
-xcopy %~dp0\Tables\*.* %~dp0\..\Client\Work\Assets\StreamingAssets\%1\TableTemp\ /s/e/y
+xcopy %~dp0\Tables\*.* %~dp0\..\Client\Assets\StreamingAssets\%1\TableTemp\ /s/e/y
