@@ -238,6 +238,13 @@ public class BuildAssetBundle : MonoBehaviour
         AssetDatabase.Refresh();
     }
 
+    [MenuItem("Custom Editor/Build/PCAssetbundle/Music")]
+    static void BuildPCAssetbundleMusic()
+    {
+        Pack(musicAssetsPath_, string.Format(musicBundleOutputPath_, platformPC_));
+        AssetDatabase.Refresh();
+    }
+
     [MenuItem("Custom Editor/Build/PCAssetbundle/Icon")]
     static void BuildPCAssetbundleIcon()
     {
@@ -1155,6 +1162,7 @@ public class BuildAssetBundle : MonoBehaviour
         if (anim != null && anim.runtimeAnimatorController != null)
         {
             path = AssetDatabase.GetAssetPath(anim.runtimeAnimatorController);
+            
             guid = AssetDatabase.AssetPathToGUID(path);
             if (!playerRefDic_[crtPlayer_].Contains(guid))
                 playerRefDic_[crtPlayer_].Add(guid);
